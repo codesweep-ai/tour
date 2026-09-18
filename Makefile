@@ -45,7 +45,7 @@ CAMPAIGN = PATH="$(TOOLSDIR):$$PATH" \
 
 .PHONY: help help-all setup check doctor clean clean-all demo-clean \
         demo demo-start demo-watch demo-stop demo-destroy show-reports show-app \
-        lint ledger ledger-render no-local-paths \
+        lint ledger ledger-render no-local-paths no-session-links \
         demo-preflight demo-profile demo-validate demo-reset demo-wait \
         demo-fetch demo-archive demo-dispatch-page demo-trajectories
 
@@ -126,7 +126,7 @@ doctor:
 	$(CAMPAIGN) doctor
 
 ## check: everything that must pass before a commit
-check: lint ledger no-local-paths
+check: lint ledger no-local-paths no-session-links
 
 ### lint: the two linters that read the tree and nothing else
 lint:
@@ -141,6 +141,24 @@ ledger:
 ledger-render:
 	$(CS_LEDGER) render $(LEDGER_DIR)
 	$(CS_LEDGER) check $(LEDGER_DIR)
+
+### no-session-links: refuse an agent session link in any commit message
+##
+## A session link is private to whoever ran it, it is useless to everyone else, and it
+## cannot be taken out once the history is public. This repository is meant to be
+## published, so the guard runs inside `make check` rather than living in a convention
+## nobody reads.
+no-session-links:
+	@bad=$$(git log --all --format='%H' 2>/dev/null | while read -r c; do \
+	  git log -1 --format='%B' "$$c" 2>/dev/null \
+	    | grep -qiE 'claude-session|claude\.ai/code/session' && echo "$$c"; \
+	done); \
+	if [ -n "$$bad" ]; then \
+	  echo "these commits carry an agent session link, which must not be published:" >&2; \
+	  echo "$$bad" >&2; \
+	  exit 1; \
+	fi; \
+	echo "no session links in commit messages"
 
 ### no-local-paths: refuse any absolute path from this machine in a committed file
 no-local-paths:

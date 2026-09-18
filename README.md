@@ -218,6 +218,16 @@ instruct the developer to use it. The host-side port is whichever one is free at
 the time. Both the Tailscale address and the orchestrator's sandbox name are
 queried when you run the target, so neither is written down anywhere.
 
+## Committing to this repo
+
+This repository is meant to be published, so its history is part of what readers see.
+Keep commit subjects under 60 characters, and keep bodies to two paragraphs at most.
+
+Never put an agent session link in a commit message. Such a link is private to whoever
+ran the session, it is useless to everybody else, and it cannot be taken out once the
+history is public. `make check` refuses one, so the rule holds without anybody
+remembering it.
+
 ## What this repo commits
 
 The committed files are the profile template, the mission, the three role briefs
