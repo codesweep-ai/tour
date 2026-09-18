@@ -209,6 +209,14 @@ demo-watch:
 ## the harvested app: your own evidence on your own tailnet.
 show-reports:
 	@[ -f $(WORKDIR)/viewer.html ] || { echo "no dispatch page yet. Run: make demo-archive demo-dispatch-page" >&2; exit 1; }
+	@rec="$$(find $(WORKDIR)/archive -name campaign.json -print -quit 2>/dev/null)"; \
+	for page in $(WORKDIR)/viewer.html $(WORKDIR)/traces/site/index.html; do \
+	  [ -f "$$page" ] || continue; \
+	  if [ -z "$$rec" ] || [ "$$page" -ot "$$rec" ]; then \
+	    echo "$$page is older than the archive, so it describes an earlier one." >&2; \
+	    echo "Rebuild with: make demo-dispatch-page demo-trajectories" >&2; exit 1; \
+	  fi; \
+	done
 	@if [ -f $(VIEW_PID) ]; then kill "$$(cat $(VIEW_PID))" 2>/dev/null; rm -f $(VIEW_PID); fi
 	@ts="$$(tailscale ip -4 2>/dev/null | head -1)"; \
 	[ -n "$$ts" ] || { echo "no Tailscale IPv4 address. Is tailscale up?" >&2; exit 1; }; \
@@ -321,7 +329,12 @@ demo-profile: demo-preflight
 ##      holds the opencode session id from the previous run. The turn driver then
 ##      drives that dead id against a brand-new member, and every turn fails with
 ##      "TUI server does not know session". That one cost a day.
-demo-reset:
+##
+## The previous run's archive, dispatch page and trajectories are moved aside into
+## .work/runs/<time>, and whatever was serving them is stopped. Left in place they
+## would be served as if they belonged to the new run, and a stale archive would
+## satisfy the guard in demo-destroy on behalf of a run that has none.
+demo-reset: demo-stop
 	@rec="$${CS_CAMPAIGN_STATE_DIR:-$$HOME/.config/cs-campaign/campaigns}/$(CAMPAIGN_NAME).json"; \
 	if [ -f "$$rec" ]; then \
 	  echo "destroying the previous $(CAMPAIGN_NAME) campaign"; \
@@ -332,6 +345,13 @@ demo-reset:
 	@rm -f $$HOME/.cs-opencode-remote-sessions/$(CAMPAIGN_NAME)-* 2>/dev/null || true
 	@rm -rf $$HOME/.cs-opencode-remote-locks/$(CAMPAIGN_NAME)-*.lock 2>/dev/null || true
 	@rm -rf $(APP_REPO) $(CAMPAIGN_WS)
+	@if [ -e $(WORKDIR)/archive ] || [ -e $(WORKDIR)/traces ] || [ -e $(WORKDIR)/viewer.html ]; then \
+	  old="$(WORKDIR)/runs/$$(date -u +%Y%m%dT%H%M%SZ)"; mkdir -p "$$old"; \
+	  for f in archive traces viewer.html; do \
+	    [ -e "$(WORKDIR)/$$f" ] && mv "$(WORKDIR)/$$f" "$$old/"; \
+	  done; \
+	  echo "reset: moved the previous run's reports to $$old"; \
+	fi
 	@echo "reset: forgot recorded sessions, removed $(APP_REPO)"
 
 ### demo-wait: block until the orchestrator closes the mission
@@ -381,26 +401,32 @@ demo-dispatch-page:
 	$(TOOLSDIR)/cs-dispatch-viewer "$$dir" -o $(WORKDIR)/viewer.html; \
 	echo "wrote $(WORKDIR)/viewer.html"
 
-### demo-trajectories: build one trajectory site covering every member session
+### demo-trajectories: build a trajectory site per member, under one index
 ##
-## The archive packs each member's agent-CLI session as transcript/cli-evidence.tgz,
-## so each is unpacked under one tree and cs-tracer reads the lot in a single pass.
-## `--split` is what gives an index: index.html, shared assets and a page per
-## session, which is what a fleet wants rather than one file per member.
+## The archive packs each member's agent-CLI session as transcript/cli-evidence.tgz.
+## cs-tracer titles a session by what the agent called it, which is the dispatch and
+## never the member, so one site over every member cannot say whose session is whose.
+## Each member therefore gets its own site, and the index above them names the member.
 demo-trajectories:
 	@root="$$(dirname "$$(find $(WORKDIR)/archive -name campaign.json -print -quit)")"; \
 	[ -n "$$root" ] && [ "$$root" != "." ] || { echo "no archive found. Run: make demo-archive" >&2; exit 1; }; \
-	rm -rf $(WORKDIR)/traces; mkdir -p $(WORKDIR)/traces/src; \
-	n=0; \
+	rm -rf $(WORKDIR)/traces; mkdir -p $(WORKDIR)/traces/src $(WORKDIR)/traces/site; \
+	n=0; rows=""; \
 	for tgz in "$$root"/orchestrator/transcript/cli-evidence.tgz "$$root"/agents/*/transcript/cli-evidence.tgz; do \
 	  [ -f "$$tgz" ] || continue; \
 	  m="$$(basename "$$(dirname "$$(dirname "$$tgz")")")"; \
 	  mkdir -p "$(WORKDIR)/traces/src/$$m"; \
-	  tar xzf "$$tgz" -C "$(WORKDIR)/traces/src/$$m" && n=$$((n+1)); \
+	  tar xzf "$$tgz" -C "$(WORKDIR)/traces/src/$$m" \
+	    || { echo "cannot unpack the $$m transcript" >&2; exit 1; }; \
+	  echo "$$m:"; \
+	  $(TOOLSDIR)/cs-tracer "$(WORKDIR)/traces/src/$$m" --split -o "$(WORKDIR)/traces/site/$$m" --force \
+	    || { echo "cs-tracer failed on the $$m transcript" >&2; exit 1; }; \
+	  rows="$$rows<li><a href=\"$$m/index.html\">$$m</a></li>"; n=$$((n+1)); \
 	done; \
 	[ "$$n" -gt 0 ] || { echo "no member transcripts in $$root" >&2; exit 1; }; \
-	$(TOOLSDIR)/cs-tracer $(WORKDIR)/traces/src --split -o $(WORKDIR)/traces/site --force; \
-	echo "unpacked $$n member transcript(s); index at $(WORKDIR)/traces/site/index.html"
+	printf '<!doctype html>\n<meta charset="utf-8">\n<title>%s trajectories</title>\n<body style="font:16px system-ui;margin:2rem">\n<h1>%s trajectories, by member</h1>\n<ul>%s</ul>\n' \
+	  "$(CAMPAIGN_NAME)" "$(CAMPAIGN_NAME)" "$$rows" > $(WORKDIR)/traces/site/index.html; \
+	echo "built $$n member site(s); index at $(WORKDIR)/traces/site/index.html"
 
 ## demo-clean: drop the members and delete the demo's artefacts
 ##

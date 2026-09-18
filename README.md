@@ -73,6 +73,14 @@ wrote. The trajectory step also prints how many traces and events it found.
 
 **`make show-app`** and **`make show-reports`** print URLs on your Tailscale address.
 
+The trajectory index lists the members by name, and each name opens that member's own
+sessions. A session is titled by its dispatch and never by its member, so the index is
+how you tell the orchestrator from the developer and from qa.
+
+Reports never carry over from one run to the next. `make demo-start` moves the previous
+archive, dispatch page and trajectories into `.work/runs`, under the time of the move.
+`make show-reports` also refuses a page that is older than the archive beside it.
+
 The whole cycle took about half an hour on the run this README was written against.
 Most of that was the orchestrator reviewing the developer's work and checking the
 built interface itself.
