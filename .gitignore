@@ -1,0 +1,9 @@
+# Dev-mode tools: pinned by package.json + package-lock.json, fetched by npm.
+node_modules/
+
+# Use-mode tools: pinned by CAMPAIGN_VERSION/SANDBOX_VERSION in the Makefile,
+# fetched by `make tools`. Binaries are build output, never committed.
+tools/
+
+# Campaign workspace, throwaway app repo, port-forward state.
+.work/

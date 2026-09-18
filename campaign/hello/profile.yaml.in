@@ -1,0 +1,26 @@
+apiVersion: codesweep.ai/v1alpha1
+kind: CampaignProfile
+# Rendered by `make test-campaign`. @REPO@ becomes an absolute path under .work,
+# which does not exist yet, so `create` makes an empty repository with a fixed
+# first commit as the base. Nothing here is committed to simple-tools-demo.
+defaults:
+  engine: firecracker
+  deadline: 2h
+  credentials: lend
+  resources: {cpus: 2, memoryMiB: 2048}
+orchestrator:
+  cli: opencode
+  model: @MODEL@
+  repos: [{path: @REPO@}]
+  auth: {apiKey: [fireworks]}
+agents:
+  developer:
+    cli: opencode
+    model: @MODEL@
+    repos: [{path: @REPO@}]
+    auth: {apiKey: [fireworks]}
+  qa:
+    cli: opencode
+    model: @MODEL@
+    repos: [{path: @REPO@}]
+    auth: {apiKey: [fireworks]}

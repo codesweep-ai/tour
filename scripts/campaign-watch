@@ -1,0 +1,177 @@
+#!/usr/bin/env bash
+# campaign-watch — continuous progress and health for one cs-campaign run.
+#
+# Reads three live sources and needs no cooperation from the campaign:
+#   1. `cs-campaign observe --json`, the derived facts per node;
+#   2. the orchestrator's log mirror, which is the claim feed as it happens;
+#   3. each member's agent-CLI log, where provider failures actually surface.
+#
+# Exit status:
+#   0  every dispatch is closed, so the run finished
+#   1  a problem was detected (stuck, stopped, unreachable, or a provider error)
+#   2  usage or environment error
+#
+# cs-campaign is taken from $CS_CAMPAIGN_BIN, else ./tools/cs-campaign, else PATH.
+set -uo pipefail
+
+usage() {
+  cat >&2 <<USAGE
+usage: campaign-watch <campaign> [--interval SECONDS] [--stall SECONDS] [--once]
+
+  --interval SECONDS  how often to look (default 20)
+  --stall SECONDS     call an open dispatch stalled after this long with no
+                      activity at all (default 1800). Activity means a new
+                      orchestrator claim OR a member agent log that grew.
+                      Claims alone are too sparse: an agent can work for many
+                      minutes between one claim and the next.
+  --once              print one report and exit, instead of watching
+USAGE
+  exit 2
+}
+
+CAMPAIGN=""; INTERVAL=20; STALL=1800; ONCE=0
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --interval) INTERVAL="${2:-}"; shift 2 ;;
+    --stall)    STALL="${2:-}";    shift 2 ;;
+    --once)     ONCE=1;            shift ;;
+    -h|--help)  usage ;;
+    -*)         echo "unknown flag: $1" >&2; usage ;;
+    *)          [ -z "$CAMPAIGN" ] && CAMPAIGN="$1" || usage; shift ;;
+  esac
+done
+[ -n "$CAMPAIGN" ] || usage
+
+CS="${CS_CAMPAIGN_BIN:-}"
+[ -n "$CS" ] || { [ -x ./tools/cs-campaign ] && CS=./tools/cs-campaign; }
+[ -n "$CS" ] || CS="$(command -v cs-campaign 2>/dev/null)"
+[ -n "$CS" ] && [ -x "$CS" ] || { echo "cannot find cs-campaign. Set CS_CAMPAIGN_BIN." >&2; exit 2; }
+
+STATE_DIR="${CS_CAMPAIGN_STATE_DIR:-$HOME/.config/cs-campaign/campaigns}"
+MIRROR="$STATE_DIR/$CAMPAIGN.log-mirror.jsonl"
+
+# Provider and connectivity failures worth stopping for. Deliberately narrow:
+# a pattern that fires on ordinary agent chatter makes the watcher useless.
+ERR_RE='(connection refused|no such host|dial tcp|i/o timeout|TLS handshake|certificate)'
+ERR_RE="$ERR_RE"'|(HTTP (401|403|429|5[0-9][0-9]))|(unauthorized|invalid api key|invalid_api_key)'
+ERR_RE="$ERR_RE"'|(rate.?limit|quota exceeded|insufficient_quota)'
+# A turn-lock timeout is the failure that looks most like health: `observe` still
+# reports node-working, because a driver is alive, and the queued message is never
+# read. Seen when a send arrives while a long turn already holds the lock.
+ERR_RE="$ERR_RE"'|(is busy — could not acquire its turn lock|could not acquire its turn lock)'
+
+# The campaign id, which is what agent-CLI log files are named after. Read from
+# the live record, because a name alone matches every campaign that ever used it,
+# and a destroyed run's log would then report its old failures as current ones.
+CAMPAIGN_ID=""
+campaign_id() {
+  [ -n "$CAMPAIGN_ID" ] && { echo "$CAMPAIGN_ID"; return; }
+  local rec="$STATE_DIR/$CAMPAIGN.json"
+  [ -f "$rec" ] || { echo ""; return; }
+  CAMPAIGN_ID="$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1])).get("id",""))' "$rec" 2>/dev/null)"
+  echo "$CAMPAIGN_ID"
+}
+
+member_logs() {
+  # Agent-CLI logs are named <campaign-id>-<member>.log under a per-CLI directory.
+  local id; id="$(campaign_id)"
+  [ -n "$id" ] || return 0
+  ls -1 "$HOME"/.cs-*-remote-logs/"$id"-*.log 2>/dev/null
+}
+
+mirror_lines() { [ -f "$MIRROR" ] && wc -l < "$MIRROR" | tr -d ' ' || echo 0; }
+
+# One value that changes whenever anything moves: the claim count, plus the
+# newest modification time across the member agent logs. An orchestrator can
+# think for many minutes without emitting a claim, and its log still grows.
+activity_stamp() {
+  local m t
+  m="$(mirror_lines)"
+  t="$(member_logs | xargs -r stat -c %Y 2>/dev/null | sort -n | tail -1)"
+  echo "$m:${t:-0}"
+}
+
+report() {
+  local now open_count problem=0
+  now="$(date '+%H:%M:%S')"
+
+  local json
+  json="$("$CS" observe "$CAMPAIGN" --json 2>/dev/null)"
+  if [ -z "$json" ]; then
+    echo "[$now] cannot observe $CAMPAIGN. Is it created?" >&2
+    return 1
+  fi
+
+  # One line per node, plus a machine-readable summary line for the caller.
+  local summary
+  summary="$(printf '%s' "$json" | python3 -c '
+import json,sys
+d=json.load(sys.stdin)
+bad={"node-stuck","node-stopped","node-unreachable"}
+rows=d.get("derived",[])
+openc=0; problem=0
+for r in rows:
+    st=r.get("state",""); det=r.get("detail","")
+    flag="  "
+    if st in bad: flag="!!"; problem=1
+    if "open" in det: openc+=1
+    print("%s %-14s %-16s %-6s %s" % (flag, r.get("name",""), st, r.get("dispatch",""), det))
+print("SUMMARY open=%d problem=%d" % (openc,problem))
+')"
+  echo "$summary" | sed "s/^/[$now] /" | grep -v '^\[.*\] SUMMARY'
+  open_count="$(printf '%s' "$summary" | awk '/^SUMMARY/{print $2}' | cut -d= -f2)"
+  problem="$(printf '%s' "$summary" | awk '/^SUMMARY/{print $3}' | cut -d= -f2)"
+
+  # New claims since the last look, which is the readable progress feed.
+  local total
+  total="$(mirror_lines)"
+  if [ "$total" -gt "${SEEN:-0}" ]; then
+    tail -n "$(( total - ${SEEN:-0} ))" "$MIRROR" 2>/dev/null | python3 -c '
+import json,sys
+for line in sys.stdin:
+    try: e=json.loads(line)
+    except Exception: continue
+    text=" ".join((e.get("text") or "").split())
+    print("   claim %-10s %s" % (e.get("kind",""), text[:110]))
+'
+    SEEN="$total"
+  fi
+
+  # Provider failures, which `observe` cannot see because they happen inside.
+  local hits
+  hits="$(member_logs | xargs -r grep -hoiE "$ERR_RE" 2>/dev/null | sort | uniq -c | sort -rn | head -4)"
+  if [ -n "$hits" ]; then
+    echo "[$now] PROVIDER ERRORS seen in member logs:"
+    printf '%s\n' "$hits" | sed 's/^/     /'
+    problem=1
+  fi
+
+  if [ "$problem" = "1" ]; then
+    echo "[$now] PROBLEM detected. Look with: $CS observe $CAMPAIGN" >&2
+    return 1
+  fi
+  if [ "${open_count:-0}" = "0" ]; then
+    echo "[$now] every dispatch is closed. The run has finished."
+    return 0
+  fi
+  return 2   # still working
+}
+
+SEEN=0
+if [ "$ONCE" = "1" ]; then report; exit $?; fi
+
+LAST_CHANGE="$(date +%s)"; LAST_STAMP="$(activity_stamp)"
+while :; do
+  report; rc=$?
+  [ "$rc" = "0" ] && exit 0
+  [ "$rc" = "1" ] && exit 1
+
+  now="$(date +%s)"; stamp="$(activity_stamp)"
+  if [ "$stamp" != "$LAST_STAMP" ]; then LAST_STAMP="$stamp"; LAST_CHANGE="$now"; fi
+  if [ $(( now - LAST_CHANGE )) -ge "$STALL" ]; then
+    echo "STALLED: no claims and no agent-log activity for $(( now - LAST_CHANGE ))s" >&2
+    echo "Look inside with: $CS ssh $CAMPAIGN/orchestrator, or read $MIRROR" >&2
+    exit 1
+  fi
+  sleep "$INTERVAL"
+done

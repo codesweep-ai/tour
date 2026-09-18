@@ -1,0 +1,17 @@
+{
+  "name": "simple-tools-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@codesweep-ai/ledger": "0.0.0-20260915074254-129b17f78d58",
+    "@codesweep-ai/lint": "0.0.0-20260915074254-271c4a39b67b"
+  }
+}
