@@ -7,7 +7,10 @@ defaults:
   engine: firecracker
   deadline: 2h
   credentials: lend
-  resources: {cpus: 2, memoryMiB: 2048}
+  # 2048 is not enough. The opencode server and its attached run hold about 1 GiB
+  # between them, so an `npm install` or a Vite server on top of that ends with the
+  # kernel killing the agent. The member then sits idle until it is prodded.
+  resources: {cpus: 2, memoryMiB: 4096}
 orchestrator:
   cli: opencode
   model: @MODEL@

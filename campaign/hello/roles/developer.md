@@ -29,7 +29,8 @@ Take the greeting colours from the `--color-*` tokens rather than writing hex va
 
 The catalog is a file on disk at `node_modules/@codesweep-ai/ui/catalog.json`, and it
 names what else is there. Read it as a file, because the package does not export it
-for import. The package lists `mermaid`, `puppeteer`, `pixelmatch` and `pngjs` as
+for import. Each entry names a `spec` file, and the package does not ship those. Read
+the props of a component from `dist/components/<Name>.d.ts` instead. The package lists `mermaid`, `puppeteer`, `pixelmatch` and `pngjs` as
 optional peers. This application needs none of them, so leave them out.
 
 Bind the development server to `0.0.0.0` on port 5173. The host forwards that
@@ -37,6 +38,9 @@ exact port, so a different port leaves the page unreachable.
 
 Write a `README.md` at the repository root naming the build command and the serve
 command. Commit it with the application.
+
+Write a `.gitignore` holding `node_modules/` and `dist/` before your first commit, so
+that neither one is ever committed.
 
 Deliver everything in one pass. Nothing is held back for a later round, because no
 later round will come.
