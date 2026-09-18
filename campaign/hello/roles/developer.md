@@ -12,8 +12,9 @@ what it says rather than what you would have chosen.
 
 Use React with Vite, and hold the interface state with `useState`.
 
-Install `@codesweep-ai/ui` at its latest version, and take the `Header`, the `Footer`
-and the `Button` from it. The catalog has no entry called `Header` or `Footer`,
+Install the design system with `npm install @codesweep-ai/ui`, which takes its latest
+version. Let npm write the version range into `package.json`, and do not write the word
+`latest` there yourself. Take the `Header`, the `Footer` and the `Button` from it. The catalog has no entry called `Header` or `Footer`,
 because both belong to `AppShell`. Wrap the page in `AppShell` and place them inside.
 
 Import the styles once at the entry point. The core sheet holds the tokens and no
