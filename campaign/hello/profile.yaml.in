@@ -1,6 +1,6 @@
 apiVersion: codesweep.ai/v1alpha1
 kind: CampaignProfile
-# Rendered by `make test-campaign`. @REPO@ becomes an absolute path under .work,
+# Rendered by `make demo-profile`. @REPO@ becomes an absolute path under .work,
 # which does not exist yet, so `create` makes an empty repository with a fixed
 # first commit as the base. Nothing here is committed to simple-tools-demo.
 defaults:

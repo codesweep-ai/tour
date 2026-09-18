@@ -21,18 +21,17 @@ Delegate the implementation to `developer` and the verification to `qa`. Give ea
 one every requirement it needs in one brief, because no further instructions will
 arrive.
 
-You are the only member that can move work between members. Agents hold their own
-clones and cannot reach each other: `fetch` and `push` are dispatcher verbs, and an
-agent that tries one is refused by role. So nothing reaches `qa` unless you put it
-there.
+Give the developer the design before you dispatch it. Commit `DESIGN.md`, then run
+`cs-campaign-member push developer`, which lands your HEAD in that member's clone at
+`refs/campaign/orchestrator`. Name that ref in the dispatch.
 
 Check the developer's work yourself first. Run `cs-campaign-member fetch developer`,
 build what comes back, and look at the result.
 
 Then give `qa` something to verify. Merge the accepted work, and run
-`cs-campaign-member push qa`, which lands your HEAD in that member's clone at
-`refs/campaign/orchestrator`. Your `DESIGN.md` travels with it, which is how `qa`
-reads the design at all. Say in the dispatch that both are there, and name the ref.
+`cs-campaign-member push qa`, which lands your HEAD at the same ref in that clone.
+Your `DESIGN.md` travels with it, which is how `qa` reads the design at all. Say in
+the dispatch that both are there, and name the ref.
 
 Where an agent returns work that misses the design, send it back once with the exact
 failure. Where it still misses, report that as unmet.
