@@ -1,0 +1,22 @@
+{
+  "id": "TOUR-014",
+  "title": "The documents said a live run costs a few cents, and it costs about a dollar",
+  "type": "defect",
+  "severity": "med",
+  "status": "closed",
+  "foundBy": "session agent, while reading the cost that a replayed run's trajectories show",
+  "opened": "2026-09-19",
+  "resolved": "2026-09-19",
+  "stint": null,
+  "evidence": {
+    "commits": [
+      "689ad00"
+    ],
+    "integrated": [],
+    "verified": "Read from the trajectories of the committed recording: orchestrator $0.72, developer $0.30 and qa $0.17, which is $1.19 for the campaign. The exported session of the small cassette comes to $0.0238 in total. Both are the agent's own accounting from recorded token counts, and neither was checked against a provider invoice."
+  },
+  "resolution": null,
+  "details": "The README, the contributing guide, the Makefile help and two scripts all said that a live campaign costs a few cents. They also said that the small cassette costs a fraction of a cent. Nobody had measured either figure, and both came from the first draft of the README.\n\nA recorded response carries the provider's token counts, so the trajectories show what a recording cost. The orchestrator resends its whole conversation on each of about sixty requests, and a late one holds over 60,000 prompt tokens.\n\nA reader deciding whether to run step 7 was told a price more than ten times too low. Every figure now comes from a measurement, and the README says why a replayed run's trajectories still show a cost.",
+  "notes": [],
+  "links": []
+}

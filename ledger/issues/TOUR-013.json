@@ -1,0 +1,22 @@
+{
+  "id": "TOUR-013",
+  "title": "Two clones on one machine could destroy each other's campaign",
+  "type": "defect",
+  "severity": "high",
+  "status": "closed",
+  "foundBy": "a first-time reader agent, while running the replay step from a second clone",
+  "opened": "2026-09-19",
+  "resolved": "2026-09-19",
+  "stint": null,
+  "evidence": {
+    "commits": [
+      "689ad00"
+    ],
+    "integrated": [],
+    "verified": "With a record of the same name whose `profilePath` was in another directory, `make demo-reset` printed `It is not this clone's to destroy` and exited 2. A full `make demo-replay` then ran under the name `hello3956` and ended with `replayed 157`, `upstream calls 0` and `misses 0`, with the same commit ids as the recording. The reader's own second run, under a name of its choosing, had passed the same way."
+  },
+  "resolution": null,
+  "details": "`cs-campaign` keeps its records under the user's home directory and not under the clone. Every clone named its campaign `hello`, so a second clone saw the first one's record as its own. `make demo-reset` would then destroy the first clone's live members.\n\nThe replay step was worse. It found the campaign's network by searching every podman network on the host for the campaign's name and taking the first match. With another `hello` campaign alive, the proxy joined that campaign's network under the alias `vcr`. A proxy in record mode there would have recorded somebody else's agents.\n\nThe reader met this because a replay from the first clone had been left running. It stopped, removed only what it had created, and ran again under another name.\n\nThe campaign's name now ends in four digits taken from the clone's path. The proxy's network is read from the campaign's own record. `make demo-reset` refuses a record whose profile sits in another directory, and says how to choose another name.",
+  "notes": [],
+  "links": []
+}
