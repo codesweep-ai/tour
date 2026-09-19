@@ -1,0 +1,24 @@
+{
+  "id": "TOUR-017",
+  "title": "The sandbox step printed four commands and quietly ran a fifth, so a person who retyped them kept a network and a gateway",
+  "type": "defect",
+  "severity": "med",
+  "status": "closed",
+  "foundBy": "a first-time reader agent, retyping by hand the commands that step 5 printed",
+  "opened": "2026-09-19",
+  "resolved": "2026-09-19",
+  "stint": null,
+  "evidence": {
+    "commits": [
+      "0db1e4d"
+    ],
+    "integrated": [],
+    "verified": "The reader's clone showed a `cs-sandbox-tour1829-keepalive` container and a `cs-sandbox-tour1829` network after the four printed commands, and two clones that only ran `make try-sandbox` showed neither. After the fix, `make try-sandbox` was run in this clone with exit 0. It printed `$ cs-sandbox group rm tour3956` and `removed group tour3956`, and `podman ps -a` and `podman network ls` then held nothing named `tour3956`."
+  },
+  "resolution": null,
+  "details": "Step 5 creates its sandbox with `--group`, so that it cannot touch anything else on the machine. A group has a network, a keepalive container and a gateway of its own, and `cs-sandbox destroy` leaves those up after the last sandbox goes. The step cleared them in an exit trap that ran `cs-sandbox group rm` with its output hidden.\n\nThe README and the step both showed the loop as create, exec, fetch and destroy. A reader who typed those four by hand ended with a container and a network that nothing had told them about. That breaks the rule from TOUR-007, which is that a step prints every tool command it runs.\n\nThe step now runs `cs-sandbox group rm` in the open as a sixth part, and says why a group needs it. The README lists it as the fifth command. The hidden trap stays, and it only clears what a failed run left behind.",
+  "notes": [],
+  "links": [
+    "TOUR-007"
+  ]
+}
