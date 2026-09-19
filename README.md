@@ -284,7 +284,7 @@ machine, which is where the loan token is exchanged for the real key.
 `cs-campaign` runs a fleet of agents, each in a sandbox of its own, against one mission.
 This step runs a real campaign with no key, because `cs-vcr` from step 4 serves every
 model call from a recording. It needs podman and KVM as step 5 does, and it takes about
-five minutes.
+seven minutes. Most of that is the agents' real work, such as `npm install` and the build.
 
 ```bash
 make demo-replay

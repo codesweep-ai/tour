@@ -70,7 +70,7 @@ help:
 	@echo "    make try-vcr            cs-vcr      replay a recorded agent run, with no key at all"
 	@echo "    make try-sandbox        cs-sandbox  create, work, fetch, destroy   (needs podman and KVM)"
 	@echo ""
-	@echo "  five more minutes, still no key, still nothing spent"
+	@echo "  seven more minutes, still no key, still nothing spent"
 	@echo "    make demo-replay        cs-campaign three real agents run a whole campaign, from a recording"
 	@echo ""
 	@echo "  about ten minutes, a Fireworks key on disk, about a dollar"
