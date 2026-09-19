@@ -1,0 +1,22 @@
+{
+  "id": "TOUR-015",
+  "title": "A machine without Tailscale could not open the page the campaign built",
+  "type": "defect",
+  "severity": "med",
+  "status": "closed",
+  "foundBy": "user report (host): \"We have to fall back if tailscale isn't present\"",
+  "opened": "2026-09-19",
+  "resolved": "2026-09-19",
+  "stint": null,
+  "evidence": {
+    "commits": [
+      "63aec60"
+    ],
+    "integrated": [],
+    "verified": "With a `tailscale` that prints nothing placed first on `PATH`, `make show-reports` served both pages on `127.0.0.1`, and each answered 200. A full `make demo-replay` run the same way forwarded the app with `--bind 127.0.0.1`, and the page answered 200 there. The same ports on the machine's Tailscale address did not answer. With Tailscale up, both targets still print the Tailscale address."
+  },
+  "resolution": null,
+  "details": "`make show-app` and `make show-reports` both stopped with `no Tailscale IPv4 address` on a machine where Tailscale was not running. The reports open from disk, so a reader could still read those. The app runs inside the orchestrator's sandbox, so without the forward there was no way to open it at all. The step that ends with a served page ended with an error.\n\nBoth targets now serve on `127.0.0.1` when Tailscale gives no address, and say that they did. `BIND_ADDR` chooses an address outright. Neither binds to every interface, because the app and the reports are not meant for a shared network.",
+  "notes": [],
+  "links": []
+}

@@ -29,6 +29,10 @@
     {
       "date": "2026-09-19",
       "text": "A brief line saying the git identity was already set made things worse. It sent the developer to look at its git configuration, which is how the identity leaked, and the run grew from 143 model calls to 210. The line was reverted."
+    },
+    {
+      "date": "2026-09-19",
+      "text": "The design this took is filed upstream as SAC-033 in the campaign repository's ledger, as a `--record` and `--replay` pair for the command. The identity leak is filed as SBX-043 in the sandbox ledger, and two scrubber gaps as VCR-025 and VCR-026 in the vcr ledger."
     }
   ],
   "links": [
