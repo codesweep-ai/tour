@@ -1,0 +1,22 @@
+{
+  "id": "STD-011",
+  "title": "The README quoted tool output that the tools do not print",
+  "type": "defect",
+  "severity": "med",
+  "status": "closed",
+  "foundBy": "a first-time reader agent, comparing each README claim with the programs",
+  "opened": "2026-09-19",
+  "resolved": "2026-09-19",
+  "stint": null,
+  "evidence": {
+    "commits": [
+      "7736cb0"
+    ],
+    "integrated": [],
+    "verified": "`grep -c WATCH_STALL scripts/campaign-watch` returned 0 and the README no longer names it. The README's ledger block was compared with a fresh `make try-ledger` run, and the three errors match apart from the record id. `cs-campaign doctor` now reports `ok` for both `cs-lint` and `cs-ledger`."
+  },
+  "resolution": null,
+  "details": "The ledger step's sample output was shortened to two lines, where `cs-ledger check` prints three errors and a verdict. The third error is the stale page gate, which the README never mentioned. The section on watching a campaign also named a `WATCH_STALL` setting. No such setting exists, and the script takes a `--stall` flag, so exporting the variable did nothing.\n\nBoth passages now say what the programs do. The same reader found that `make setup` ended on two `??` lines from the version check. The `cs-lint` and `cs-ledger` pins were older than the versions the pinned campaign names, and they now match.",
+  "notes": [],
+  "links": []
+}

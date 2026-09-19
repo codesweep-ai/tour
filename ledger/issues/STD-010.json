@@ -1,0 +1,22 @@
+{
+  "id": "STD-010",
+  "title": "The command wrapper printed a secret that sat on a command line",
+  "type": "defect",
+  "severity": "high",
+  "status": "closed",
+  "foundBy": "a first-time reader agent, while testing the sandbox step's key isolation by hand",
+  "opened": "2026-09-19",
+  "resolved": "2026-09-19",
+  "stint": null,
+  "evidence": {
+    "commits": [
+      "7736cb0"
+    ],
+    "integrated": [],
+    "verified": "Ran `scripts/cs echo` with the real key inside one argument. The printed line held `<redacted>` and 0 copies of the key, and the echoed output held 1 copy, which shows the command still received it."
+  },
+  "resolution": null,
+  "details": "`scripts/cs` prints the command it is about to run. A reader built a command that held the real Fireworks key as an argument, and the wrapper printed the whole line into that reader's log files. The reader deleted both files at once, and a search of the machine afterwards found no copy of the key.\n\nA terminal, a CI log and a scrollback all keep what is printed, so the wrapper must never echo a secret. The printed line now replaces the value of a provider key variable, and the contents of any file under `~/.cs-keys`, with `<redacted>`. The command that runs still receives the real value.",
+  "notes": [],
+  "links": []
+}
