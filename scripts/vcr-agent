@@ -5,7 +5,7 @@
 #        scripts/vcr-agent agent <port> [cassette]
 #
 # record  calls Fireworks for real, and writes cassettes/<cassette>. It needs
-#         FIREWORKS_API_KEY, and it costs a fraction of a cent.
+#         FIREWORKS_API_KEY, and it costs about two cents.
 # replay  serves that cassette back. It contacts no provider and needs no key.
 # agent   starts no cs-vcr. It runs the agent against one you started yourself on
 #         <port>, which is how you drive the two halves by hand.

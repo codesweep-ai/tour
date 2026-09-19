@@ -4,7 +4,7 @@
 # usage: scripts/campaign-vcr record|replay
 #
 # record  runs the campaign for real, through a cs-vcr that writes cassettes/campaign-*.
-#         It needs the Fireworks key, and it costs what a live run costs.
+#         It needs the Fireworks key, and it costs about a dollar.
 # replay  runs the same campaign against those cassettes. It boots the same three
 #         machines and runs every command the agents ran, and it calls no provider.
 #         It needs no key.
@@ -23,7 +23,10 @@ set -uo pipefail
 mode="${1:-}"
 case "$mode" in record|replay) ;; *) echo "usage: scripts/campaign-vcr record|replay" >&2; exit 2 ;; esac
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"; cs="$root/scripts/cs"; cd "$root"
-name="${CAMPAIGN_NAME:-hello}"
+# The name comes from the Makefile, which makes it particular to this clone. Exported, so
+# that every make stage below works on the same campaign.
+name="${CAMPAIGN_NAME:-hello$(printf '%s' "$root" | cksum | cut -c1-4)}"; export CAMPAIGN_NAME="$name"
+record="${CS_CAMPAIGN_STATE_DIR:-$HOME/.config/cs-campaign/campaigns}/$name.json"
 work="$root/.work"; ws="$work/$name"; vw="$work/campaign-vcr"
 store="$root/cassettes"; meta="$store/campaign.json"
 model="${FW_MODEL:-fireworks-ai/accounts/fireworks/models/kimi-k2p7-code}"
@@ -42,7 +45,7 @@ fi
 
 # --- 1. start clean ---------------------------------------------------------------
 make --no-print-directory demo-reset || exit 1
-podman rm -f $(podman ps -aq --filter "name=^cs-vcr-$name-") >/dev/null 2>&1 || true
+podman rm -f $(podman ps -aq --filter "name=^cs-vcr-$name-[0-9a-f]{8}$") >/dev/null 2>&1 || true
 rm -rf "$vw"; mkdir -p "$vw" "$ws/roles"
 if [ "$mode" = record ]; then for m in "${members[@]}"; do rm -rf "$store/campaign-$m"; done; rm -f "$meta"; fi
 
@@ -126,10 +129,13 @@ fi
 # --- 5. create, and start the proxy the moment the campaign's network exists --------
 "$cs" cs-campaign create "$name" --profile "$ws/profile.yaml" >"$vw/create.log" 2>&1 &
 create_pid=$!
+# The network is read from this campaign's own record, never searched for on the host.
+# Another campaign's network can match any pattern, and a proxy joined to it would record
+# or serve somebody else's agents.
 network=""
 for _ in $(seq 240); do
-  network="$(podman network ls --format '{{.Name}}' | grep -E "^cs-sandbox-$name-[0-9a-f]{8}$" | head -1)"
-  [ -n "$network" ] && break
+  want="$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1])).get("network",""))' "$record" 2>/dev/null || true)"
+  if [ -n "$want" ] && podman network exists "$want" 2>/dev/null; then network="$want"; break; fi
   kill -0 "$create_pid" 2>/dev/null || break
   sleep 0.5
 done
@@ -193,6 +199,13 @@ if [ "$mode" = replay ]; then
   fi
   echo ""
   echo "  \`upstream calls 0\` is the point: three agents ran a whole campaign, and no provider was called."
+  echo ""
+  echo "  the app is on the URL above, served from inside the orchestrator."
+  echo "  the reports open from disk, with no server behind them:"
+  echo "    dispatch page   file://$work/reports/viewer.html"
+  echo "    trajectories    file://$work/reports/traces/index.html"
+  echo "  to reach them from another machine:   make show-reports"
+  echo "  when you are done:                    make demo-destroy"
 else
   # A recording is only kept when it holds nothing of the person who made it. The values
   # are this machine's own, so the search is exact, and it reports counts and never values.

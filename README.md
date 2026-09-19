@@ -15,7 +15,7 @@ Every tool is pinned, and every step prints the command it runs.
 The first six steps need no key and they spend nothing. Step 6 runs three AI agents
 that design, build, verify and serve a small web page, with every model call served
 from a recording. Step 7 runs the same campaign live, and that one needs a Fireworks
-key and a few cents.
+key and about a dollar.
 
 Steps 1 to 4 run on any machine with node and Go. Steps 5 to 7 boot small virtual
 machines, so they need Linux with podman and a writable `/dev/kvm`.
@@ -205,7 +205,7 @@ A cassette only replays when the agent asks the same question it asked before. T
 script `scripts/vcr-agent` holds still everything that could change the question. The
 agent gets an empty home directory, a working directory inside this repo, and the
 `opencode` version pinned in `package.json`. `make vcr-record` records the cassette
-again, which calls Fireworks and costs a fraction of a cent.
+again, which calls Fireworks and costs about two cents.
 
 ### 5. cs-sandbox: a disposable machine for an agent
 
@@ -263,9 +263,18 @@ open was built here a minute ago. The proxy's own count ends the run, and it has
 ```
     requests                          157
     replayed                          157
+    recorded                          0
     upstream calls                    0
     misses                            0
+    drifted observations              962
+    out of recorded order             5
 ```
+
+A drifted observation is a tool result that differs from the recorded one, such as a
+timing, a port or a file time. `cs-vcr` matches exactly on what an agent asked the model
+and loosely on what its tools printed, so hundreds of these are normal. A request out of
+recorded order is an agent asking for a session title beside its first real question.
+Neither is a fault. A miss is, because it is a request the recording never held.
 
 The step is `scripts/campaign-vcr`, and it uses three documented surfaces of the tools.
 The profile's `env:` block gives each member `OPENCODE_BASE_URL`, which aims it at the
@@ -278,6 +287,10 @@ what the models said. `NPM_CONFIG_BEFORE` makes npm resolve every package as it 
 the recording date. Every commit carries one fixed author and date, so the commit ids in
 the delivered repository are the same on every run and on every machine.
 
+The trajectories of a replayed run show a cost of about a dollar. That is what the
+recording cost when it was made, because the recorded answers carry the provider's token
+counts. The replay itself costs nothing.
+
 A replay reproduces the models' decisions, not the world's facts. If the network is
 down and an install fails, a recorded agent still says what it said. So judge a replay
 the way the step does: by the proxy's count, by the fetched commits, and by the page
@@ -285,8 +298,8 @@ answering.
 
 ### 7. cs-campaign, live: the same mission, decided afresh
 
-This is the only step that spends. It runs the campaign from step 6 against the real
-model, so the agents make their own decisions and the design comes out different each
+This is the only step that spends, and a run costs about a dollar. It runs the campaign
+from step 6 against the real model, so the agents make their own decisions and the design comes out different each
 time. It needs podman and KVM, and it needs a Fireworks key in two places. Export `FIREWORKS_API_KEY`, and write the same key to
 `~/.cs-keys/fireworks` with mode `0600`. The campaign lends the key to its members, and
 the lender reads a host file, so an environment variable alone is not enough.
@@ -306,16 +319,19 @@ owns the design of the page, and it commits that design as `DESIGN.md`. The deve
 the `@codesweep-ai/ui` design system, and the qa role verifies it in a real browser.
 The orchestrator checks both of them itself and serves the result.
 
-Six commands do the work, and `make demo` prints each one as it runs:
+Six commands do the work, and `make demo` prints each one as it runs. The campaign is
+named `hello` with four digits from the path of your clone, such as `hello1234`.
+`cs-campaign` keeps its records for each user and not for each clone, so the digits stop
+two clones replacing each other's campaign. The table below writes it as `<name>`:
 
 | Command | What it does |
 |---|---|
 | `cs-campaign validate <profile>` | Checks the profile, the mission and the briefs. |
-| `cs-campaign create hello --profile <profile>` | Boots the members and dispatches the mission. |
-| `cs-campaign observe hello` | Reports the state of every member. |
-| `cs-campaign fetch hello` | Brings the orchestrator's branch back to this machine. |
-| `cs-campaign archive hello --output <dir>` | Collects every channel and transcript. |
-| `cs-campaign destroy hello --force` | Removes the members. |
+| `cs-campaign create <name> --profile <profile>` | Boots the members and dispatches the mission. |
+| `cs-campaign observe <name>` | Reports the state of every member. |
+| `cs-campaign fetch <name>` | Brings the orchestrator's branch back to this machine. |
+| `cs-campaign archive <name> --output <dir>` | Collects every channel and transcript. |
+| `cs-campaign destroy <name> --force` | Removes the members. |
 
 Two more tools turn the archive into pages. `cs-dispatch-viewer` writes the
 campaign's timeline. `cs-tracer`, from step 1, writes a page for every member's sessions. The trajectory index
@@ -439,7 +455,7 @@ dispatch is open, so nothing in the derived state looks wrong.
 
 ```bash
 make demo-watch                  # follow it until the run ends or breaks
-./scripts/campaign-watch hello --once    # one report, then exit
+./scripts/campaign-watch <name> --once   # one report, then exit
 ```
 
 The script prints one line per node on every look, and it follows that with any
@@ -494,7 +510,7 @@ recording stops matching. `make check` compares a hash of those files with the o
 recording stored, and says when the cassettes are stale.
 
 ```bash
-make demo-record     # calls Fireworks, for what a live run costs
+make demo-record     # calls Fireworks, for about a dollar
 make demo-replay     # then replay it, twice
 ```
 

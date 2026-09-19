@@ -25,7 +25,10 @@ CAMPAIGN_MOD     := https://proxy.golang.org/github.com/codesweep-ai/campaign/@v
 CS  := $(CURDIR)/scripts/cs
 CSQ := CS_QUIET=1 $(CURDIR)/scripts/cs
 
-CAMPAIGN_NAME ?= hello
+# The campaign's name carries four digits taken from this clone's path. cs-campaign keeps
+# its records per user and not per clone, so two clones that both said `hello` would read,
+# replace and destroy each other's campaign.
+CAMPAIGN_NAME ?= hello$(shell printf '%s' "$(CURDIR)" | cksum | cut -c1-4)
 CAMPAIGN_SRC  := $(CURDIR)/campaign/hello
 WORKDIR       := $(CURDIR)/.work
 CAMPAIGN_WS   := $(WORKDIR)/$(CAMPAIGN_NAME)
@@ -65,7 +68,7 @@ help:
 	@echo "  five more minutes, still no key, still nothing spent"
 	@echo "    make demo-replay        cs-campaign three real agents run a whole campaign, from a recording"
 	@echo ""
-	@echo "  about ten minutes, a Fireworks key on disk, a few cents"
+	@echo "  about ten minutes, a Fireworks key on disk, about a dollar"
 	@echo "    make demo-validate      cs-campaign check the campaign before it costs anything"
 	@echo "    make demo               the same campaign live, with the agents deciding afresh"
 	@echo "    make show-reports       read the dispatch page and the trajectories"
@@ -171,7 +174,7 @@ try-vcr:
 try-sandbox:
 	@./scripts/try-sandbox
 
-### vcr-record: record cassettes/hello again. Calls Fireworks, for a fraction of a cent.
+### vcr-record: record cassettes/hello again. Calls Fireworks, for about two cents.
 ##
 ## Do this after changing the opencode pin in package.json, because another version of
 ## the agent sends another prompt and the old cassette stops matching. The scrub that
@@ -313,9 +316,9 @@ no-local-paths:
 ## ago. It ends the way the live run does, with the app, the dispatch page and the
 ## trajectories.
 demo-replay:
-	@./scripts/campaign-vcr replay
+	@CAMPAIGN_NAME=$(CAMPAIGN_NAME) ./scripts/campaign-vcr replay
 
-### demo-record: record the campaign again. Calls Fireworks, for what a live run costs.
+### demo-record: record the campaign again. Calls Fireworks, for about a dollar.
 ##
 ## Do this after any change to the mission, a brief, the profile or CAMPAIGN_VERSION, which
 ## `make check` reports as stale cassettes. A recording is kept only when it holds nothing
@@ -323,7 +326,7 @@ demo-replay:
 ## the cs-vcr scrubber, and moves a recording that fails into .work. Replay it twice
 ## before you commit it, because each recording holds different decisions.
 demo-record:
-	@./scripts/campaign-vcr record
+	@CAMPAIGN_NAME=$(CAMPAIGN_NAME) ./scripts/campaign-vcr record
 
 ## demo-validate: check the profile, the mission and the briefs, spending nothing
 demo-validate: demo-profile
@@ -332,8 +335,12 @@ demo-validate: demo-profile
 ## demo: the whole cycle, ending with the app and both reports on a URL
 demo: demo-start demo-wait demo-fetch demo-archive demo-dispatch-page demo-trajectories show-app
 	@echo ""
-	@echo "the app is on the URL above. For the reports:  make show-reports"
-	@echo "when you are done:                             make demo-destroy"
+	@echo "the app is on the URL above, served from inside the orchestrator."
+	@echo "the reports open from disk, with no server behind them:"
+	@echo "  dispatch page   file://$(REPORTS)/viewer.html"
+	@echo "  trajectories    file://$(REPORTS)/traces/index.html"
+	@echo "to reach them from another machine:   make show-reports"
+	@echo "when you are done:                    make demo-destroy"
 
 ### demo-start: create the campaign and dispatch the mission. THIS SPENDS.
 ##
@@ -491,6 +498,12 @@ demo-profile: demo-preflight
 ## demo-destroy on behalf of a run that has none.
 demo-reset: demo-stop
 	@if [ -f "$(RECORD)" ]; then \
+	  owner="$$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1])).get("profilePath",""))' "$(RECORD)")"; \
+	  case "$$owner" in "$(CURDIR)"/*|"") ;; *) \
+	    echo "a campaign called $(CAMPAIGN_NAME) is already running from another directory:" >&2; \
+	    echo "  $$owner" >&2; \
+	    echo "It is not this clone's to destroy. Destroy it from there, or choose another name:" >&2; \
+	    echo "  make $(MAKECMDGOALS) CAMPAIGN_NAME=another-name" >&2; exit 1 ;; esac; \
 	  echo "destroying the previous $(CAMPAIGN_NAME) campaign"; \
 	  $(CS) cs-campaign destroy $(CAMPAIGN_NAME) --force || true; \
 	else \

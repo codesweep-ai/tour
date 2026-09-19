@@ -35,7 +35,7 @@ runs the three tour steps that check themselves and need no machine to boot. The
 `make try-lint`, `make try-ledger` and `make try-vcr`. None of them needs a key, and none spends.
 
 `make try-sandbox` and `make demo` boot virtual machines, so CI cannot run them. Run them yourself
-when you change a script they use, or a file under `campaign/`. `make demo` spends a few cents.
+when you change a script they use, or a file under `campaign/`. `make demo` spends about a dollar.
 
 ## The rules a diff does not show
 
@@ -45,9 +45,13 @@ when you change a script they use, or a file under `campaign/`. `make demo` spen
 2. **Judge a campaign from the trajectories, not from its outcome line.** Every defect in the
    ledger was found by reading what a member did. After a change to a brief, run the campaign and
    read each member's session before you call the change good.
-3. **Record a cassette again after you move the `opencode` pin.** Another version of the agent
+3. **Record the campaign again after you change what its agents are asked.** The mission, a
+   brief, the profile and `CAMPAIGN_VERSION` all reach the prompts. `make check` says when the
+   campaign's cassettes are stale, and `make demo-record` records them again for about a dollar.
+   Replay a new recording twice before you commit it, because each one holds different decisions.
+4. **Record the small cassette again after you move the `opencode` pin.** Another version of the agent
    sends another prompt, and the old cassette stops matching. `make vcr-record` does it, and it
-   scrubs the result for keys. It calls Fireworks, and it costs a fraction of a cent.
+   scrubs the result for keys. It calls Fireworks, and it costs about two cents.
 
 ## Issues
 
