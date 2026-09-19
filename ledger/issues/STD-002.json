@@ -21,6 +21,10 @@
     {
       "date": "2026-09-18",
       "text": "This is a workaround in the Makefile. The better fix belongs in `cs-tracer`, which could label a session by the directory it was read from. One site would then show every member side by side, with their tokens and cost."
+    },
+    {
+      "date": "2026-09-19",
+      "text": "This is filed upstream in the tracer repository's ledger as TRC-005. When `cs-tracer` can say which directory a session came from, `make demo-trajectories` can go back to one site over every member."
     }
   ],
   "links": []

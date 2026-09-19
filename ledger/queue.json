@@ -13,6 +13,10 @@
     {
       "id": "STD-008",
       "why": "Cheap to try, and it may take a minute off a five minute run."
+    },
+    {
+      "id": "STD-012",
+      "why": "Costs nothing until ui 0.3.1 is released, and then the developer brief is wrong."
     }
   ]
 }

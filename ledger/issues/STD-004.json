@@ -17,6 +17,11 @@
   },
   "resolution": null,
   "details": "The profile gave each member 2048 MiB. The opencode server and its attached run hold about 1 GiB between them. An `npm install` or a Vite server on top of that ended with the kernel killing the agent.\n\nNothing reported it. `cs-campaign observe` still showed `node-working` with no continuations. The member sat idle for about five minutes until `wait` prodded it, and a new session redid the work. The stall was taken for a slow model. It happened to the developer and to qa in the same run.\n\nTo check a member that stalls, run `sudo dmesg | grep \"Out of memory\"` inside it.",
-  "notes": [],
+  "notes": [
+    {
+      "date": "2026-09-19",
+      "text": "This is filed upstream in the campaign repository's ledger as SAC-030: a member whose agent the kernel killed still reads as `node-working`. The 4096 MiB here removes the cause, and the silence is campaign's to fix."
+    }
+  ],
   "links": []
 }

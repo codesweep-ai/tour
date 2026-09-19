@@ -1,0 +1,20 @@
+{
+  "id": "STD-012",
+  "title": "The developer brief works around two package defects that the next ui release fixes",
+  "type": "improvement",
+  "severity": "low",
+  "status": "open",
+  "foundBy": "session agent, while checking the design system findings against the ui repository's ledger before filing them",
+  "opened": "2026-09-19",
+  "resolved": null,
+  "stint": null,
+  "evidence": {
+    "commits": [],
+    "integrated": [],
+    "verified": null
+  },
+  "resolution": null,
+  "details": "`campaign/hello/roles/developer.md` tells the developer two things about `@codesweep-ai/ui`. The catalog is read as a file because the package does not export it. Each catalog entry names a `spec` file that the package does not ship, so props are read from `dist/components/<Name>.d.ts`.\n\nBoth are true of version 0.3.0, which is what `latest` resolves to today. Both are already fixed in the ui repository, in its records CUI-086 and CUI-094, and the fixes are published under the `dev` tag as 0.3.1-dev. The brief says to install the latest version, so the day 0.3.1 is released the brief describes defects the package no longer has.\n\nNothing breaks when that happens, because the workaround still works. The brief will be wrong, and it will steer the developer away from the catalog links that then resolve. When 0.3.1 is released, run `npm view @codesweep-ai/ui version`, delete the two sentences, and run the campaign once to confirm the developer still finds what it needs.\n\nThe `README.md` section on `cs-vcr` has a workaround of the same kind. It tells the reader to change the provider key that `cs-vcr config` prints, which is filed in the vcr repository's ledger as VCR-024.",
+  "notes": [],
+  "links": []
+}
