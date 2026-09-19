@@ -226,7 +226,8 @@ if [ "$mode" = replay ]; then
     exit 1
   fi
   echo ""
-  echo "  \`upstream calls 0\` is the point: three agents ran a whole campaign, and no provider was called."
+  echo "  The replay passed. The line to look for is \`upstream calls 0\`. It means that three"
+  echo "  agents ran a whole campaign, and that no provider was called."
   echo ""
   echo "  the app is on the URL above, served from inside the orchestrator."
   echo "  the reports open from disk, with no server behind them:"

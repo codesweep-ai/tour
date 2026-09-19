@@ -1,7 +1,8 @@
 # tour
 
-> **Six small tools for working with AI coding agents, and a hands-on tour of each one: six
-> steps that need no key and spend nothing, then one that runs three agents live.**
+> **This repository is a hands-on tour of the six codesweep tools, which are small programs
+> for working with AI coding agents. Six steps need no key and spend nothing, and a seventh
+> runs three agents live.**
 
 [![CI](https://github.com/codesweep-ai/tour/actions/workflows/ci.yml/badge.svg)](https://github.com/codesweep-ai/tour/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
@@ -11,12 +12,13 @@ The codesweep tools are six small command-line programs for people who work with
 coding agents, such as Claude Code, Codex and OpenCode. An agent is a program that
 writes code for you: it reads your files, runs commands and makes changes on its own.
 
-An agent works fast, and that brings five problems. It needs somewhere safe to run,
-because it executes whatever it decides to. A job too big for one agent needs several,
-and somebody has to coordinate them. An agent leaves a record of what it did that nobody
-can read. Its work costs money to repeat, because every run calls a paid model. And what
-it writes has to be checked, and what is still wrong has to be written down, by something
-other than the agent itself. Each tool below takes one of those problems.
+There are five problems that come with working this way. The first is that an agent needs
+somewhere safe to run, because it executes whatever it decides to. The second is that a
+job too big for one agent needs several, and somebody has to coordinate them. The third is
+that the record an agent leaves of its work is in a format that people cannot read. The
+fourth is that its work costs money to repeat, because every run calls a paid model. The
+fifth is that its output has to be checked, and the faults that remain have to be written
+down, by something other than the agent. Each tool below addresses one of those problems.
 
 | Tool | What it is for |
 |---|---|
@@ -70,7 +72,8 @@ command, and then it runs exactly that command. A printed command looks like thi
 ```
 
 That line is what you would type in a project of your own, where this Makefile does not
-exist. The line and the run come from the same argument list, so they cannot disagree.
+exist. The script builds the printed line and the command from the same argument list.
+This means that the line you read is always the command that ran.
 
 To type a command yourself, put the pinned tools on your `PATH` first:
 
@@ -158,12 +161,13 @@ records, and `cs-ledger` checks them and renders one HTML page for people to rea
 make try-ledger
 ```
 
-The step first checks the ledger in `ledger/`. Those records are real. They are
-what went wrong while this demo was built, with the commit that fixed each one. Open
-`ledger/ledger.html` to read them.
+The step first checks the ledger in `ledger/`, which is this repository's own. Each
+record there describes something that went wrong while this tour was built, and it cites
+the commit that fixed it. You can read them by opening `ledger/ledger.html`.
 
-The step then copies the ledger into `.work` and works on the copy. A ledger has no
-`add` command, because a record is a file you write. The step writes one from
+The step then copies the ledger into `.work` and works on the copy. `cs-ledger` has no
+`add` command. The reason is that a record is an ordinary file, which a person or an
+agent writes directly. The step writes one from
 `tour/new-record.json`, renders the page and checks it. Then it closes that record with
 no evidence, and the check fails on purpose:
 
@@ -203,9 +207,10 @@ steps and then replays them:
   $ opencode run --model fireworks-ai/... 'Create a file called hello.txt ...'
 ```
 
-The agent is the real `opencode`, and it writes the real file. Its key is the string
-`not-a-real-key`. Look for `upstream calls 0` in the summary, which means no provider
-was called. This is what lets a CI job test an agent with no credential and no cost.
+The agent in this step is the real `opencode` program, and it really does create the
+file. The model is the only part that is replaced, so the key the agent holds is the
+string `not-a-real-key`. Look for `upstream calls 0` in the summary, which means that
+no provider was called. This is what lets a CI job test an agent with no credential and no cost.
 
 The agent's command line does not say where its model calls go. Its environment does,
 so the step prints those settings too. The one that matters most is a base URL ending
@@ -295,10 +300,11 @@ a real browser. Then the step fetches the work, archives the run, and builds the
 page and the trajectories. It ends with the page served on a URL, and
 `make show-reports` serves the two reports.
 
-The agents' decisions are a recording, and everything they run is real. The installs,
-the build, the browser check and the server all happen on your machine, so the page you
-open was built here a minute ago. The proxy's own count ends the run, and it has to read
-`upstream calls 0` and `misses 0`:
+In a replay, only the agents' decisions come from the recording. Every command that
+they decide to run is executed for real. The installs, the build, the browser check and
+the server all happen on your machine, so the page you open was built here a minute ago.
+The run ends with the proxy's own count of what it served. For the replay to pass, that
+count has to read `upstream calls 0` and `misses 0`:
 
 ```
     requests                          157
@@ -318,15 +324,16 @@ timing, a port or a file time. A screenshot an agent takes of the page is treate
 way, because two renderings of one page differ by a few bytes. `cs-vcr` matches exactly on what an agent asked the model
 and loosely on what its tools printed, so hundreds of these are normal. A request out of
 recorded order is an agent asking for a session title beside its first real question.
-Neither is a fault. A miss is, because it is a request the recording never held.
+Neither of those is a fault. A miss is a fault, because it means that an agent sent a
+request that the recording does not hold.
 
 One kind of miss does not come from an agent. `cs-sandbox doctor` checks every lender on
 the machine, and it does that by asking each proxy for `/`. If anybody runs it while your
 replay is going, the proxy counts a miss for each of your three agents. The step names
 those misses, takes them off the count, and fails only on a miss that an agent sent. The
-same `doctor` prints `NO` lines that say the proxy `does not answer`. It did answer, with
-a 400, because `/` is not a model call. Both are harmless, and a replay that ends is the
-proof.
+same `doctor` prints `NO` lines that say the proxy `does not answer`. The proxy did
+answer, with a 400, because `/` is not a model call. Both effects are harmless. You can
+tell because the step still ends by saying that no provider was called.
 
 The step is `scripts/campaign-vcr`, and it uses three documented surfaces of the tools.
 The profile's `env:` block gives each member `OPENCODE_BASE_URL`, which aims it at the
@@ -334,19 +341,21 @@ proxy. `cs-vcr` runs as one container on the campaign's own podman network, unde
 alias `vcr`. `CS_SANDBOX_AGENT_HOME` moves where the credential lender reads a key, so
 the key it lends is a file holding the words `not-a-real-key`.
 
-A replay gives the same result every time, and that is deliberate. The cassette pins
-what the models said. `NPM_CONFIG_BEFORE` makes npm resolve every package as it stood on
-the recording date. Every commit carries one fixed author and date, so the commit ids in
-the delivered repository are the same on every run and on every machine.
+A replay is designed to give the same result every time, and three things make that
+possible. The first is the cassette, which fixes what the models said. The second is
+`NPM_CONFIG_BEFORE`, which makes npm resolve every package as it stood on the recording
+date. The third is that every commit carries one fixed author and date. As a result, the
+commit ids in the delivered repository are the same on every run and on every machine.
 
 The trajectories of a replayed run show a cost of about a dollar. That is what the
 recording cost when it was made, because the recorded answers carry the provider's token
 counts. The replay itself costs nothing.
 
-A replay reproduces the models' decisions, not the world's facts. If the network is
-down and an install fails, a recorded agent still says what it said. So judge a replay
-the way the step does: by the proxy's count, by the fetched commits, and by the page
-answering.
+A replay reproduces what the models decided, and it does not reproduce the state of the
+world. For example, if the network is down and an install fails, a recorded agent still
+replies as it did when the install succeeded. For that reason you should judge a replay
+the way the step does. It looks at the proxy's count, at the fetched commits, and at
+whether the page answers.
 
 The three machines stay up when the step ends, because the page is served from one of
 them. `make demo-destroy` removes them and keeps the archive. A step that fails leaves
@@ -394,8 +403,9 @@ campaign's timeline. `cs-tracer`, from step 1, writes a page for every member's 
 lists the members by name, because a session is titled by its dispatch and never by its
 member.
 
-Do not trust the outcome line on its own. Open a member's trajectory and read what it
-did. Every defect recorded in `ledger/` was found that way.
+You should not rely on the outcome line alone, because an agent can report success for
+work that is wrong. It is better to open a member's trajectory and read what it did.
+Every defect recorded in `ledger/` was found that way.
 
 ## Using the tools in a project of your own
 
@@ -430,9 +440,9 @@ It reads that campaign's own `go.mod` from the module proxy, and it installs the
 `cs-sandbox`, `cs-tracer` and `cs-vcr` versions named there. This keeps the
 chain consistent without asking you to track four numbers.
 
-Only one of those versions has to agree at runtime, and that is `cs-sandbox`.
-Campaign executes it on every run, and `make doctor` fails when the two
-disagree. The sandbox image carries its own copy of `cs-vcr` inside it. Campaign
+Of those versions, `cs-sandbox` is the only one that has to agree with campaign at
+runtime. The reason is that campaign executes `cs-sandbox` on every run. `make doctor`
+fails when the two disagree. The sandbox image carries its own copy of `cs-vcr` inside it. Campaign
 never executes `cs-lint`, `cs-ledger` or `cs-tracer` during a run, so `make
 doctor` reports those as informational.
 
@@ -448,8 +458,9 @@ doctor` reports those as informational.
 first question to each member, which has to say back what its brief asks of it before
 any work is dispatched. It prints one
 line per member, and each one ends with `(confirmed by the answering turn)`. That
-phrase matters: it means the model each member answered on is the model
-the profile declared. This is where the run spends first.
+phrase is important, because it means that the model each member answered on is the
+model the profile declared. The readback is also the first point at which a live run
+spends money.
 
 **`make demo-fetch`** prints `tree differs from base (real changes present)` and a
 commit count. It fails when the orchestrator branch matches its base, because that
@@ -461,7 +472,7 @@ be empty. Anything it could not collect leaves a marker rather than failing quie
 **`make show-app`** and **`make show-reports`** print URLs. They are on your Tailscale
 address when Tailscale is up, so that another machine of yours can open them. They are
 on `127.0.0.1` when it is not, and the step says so. Set `BIND_ADDR` to choose an address
-yourself. Nothing here binds to every interface.
+yourself. None of these servers binds to every interface.
 `make show-reports` serves `.work/reports` and nothing else. The archive, the harvested
 application and any page from step 1 stay off the network.
 
@@ -481,7 +492,8 @@ the members.
 The demo treats that as a failure and stops. It does not resume the create, even
 though `create` is documented as resumable. A resumed create would show that
 resume works rather than that a clean create works, and the resume path is itself
-suspect. Destroy and create is the whole strategy here.
+suspect. For that reason the demo always destroys a failed campaign and creates a new
+one.
 
 When a readback fails, read the member logs under `~/.cs-opencode-remote-logs`. A
 first turn that dies with `TUI server does not know session` means a recorded
@@ -539,9 +551,10 @@ make demo-clean      # drops the members, removes .work, forgets the sessions
 make clean-all       # removes tools and node_modules
 ```
 
-Two things are left alone on purpose. Your credential at `~/.cs-keys/fireworks`
-belongs to you rather than to this repository. The sandbox images in your container
-store are shared with other work and are expensive to fetch again.
+Both targets deliberately leave two things alone. The first is your credential at
+`~/.cs-keys/fireworks`, which belongs to you rather than to this repository. The second
+is the set of sandbox images in your container store. Those images are shared with other
+work, and they are expensive to fetch again.
 
 Note that `demo-clean` deletes evidence that cannot be rebuilt. A campaign's
 channels and transcripts exist only while its members do, so an archive is the only
@@ -582,7 +595,8 @@ A recording that fails is moved into `.work` for you to read, where git ignores 
 
 Each recording holds different decisions, so replay a new one twice before you commit
 it. `make check` cannot do that for you. It proves that a cassette is whole and that the
-campaign has not changed since, and only a replay proves that a cassette replays. `make check` also runs `make no-identity`, which searches every file git would
+campaign has not changed since the recording. It does not run the agents, so it cannot
+show that they still ask the questions that were recorded. `make check` also runs `make no-identity`, which searches every file git would
 commit for those same values.
 
 ## What this repo commits
