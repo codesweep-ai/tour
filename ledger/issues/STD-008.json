@@ -1,0 +1,20 @@
+{
+  "id": "STD-008",
+  "title": "Thirty second polling is a large share of a five minute campaign",
+  "type": "improvement",
+  "severity": "low",
+  "status": "open",
+  "foundBy": "session agent, while reading the member trajectories of a `make demo` run",
+  "opened": "2026-09-18",
+  "resolved": null,
+  "stint": null,
+  "evidence": {
+    "commits": [],
+    "integrated": [],
+    "verified": null
+  },
+  "resolution": null,
+  "details": "`cs-campaign-member wait` checks for a reply every `pollSeconds`, and the default is 30. This campaign has about four handoffs, so polling adds up to two minutes. That is small against a two hour campaign. Here it is about as long as the developer's whole job.\n\nThe profile accepts a campaign-wide `policy.pollSeconds`. A value of 10 has not been tried, and the cost in ssh probes across three members has not been measured.",
+  "notes": [],
+  "links": []
+}

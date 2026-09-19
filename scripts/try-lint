@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# try-lint — watch cs-lint pass on this repository, then catch two planted faults.
+set -uo pipefail
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"; cs="$root/scripts/cs"; cd "$root"
+echo "1. The documents in this repository, as they are committed. This passes."
+"$cs" cs-lint prose || { echo "cs-lint found a fault in the committed documents, which was not the plan." >&2; exit 1; }
+echo ""
+echo "2. A page with two faults, copied from tour/broken-page.md.txt. This fails, on purpose."
+rm -rf .work/lint-try; mkdir -p .work/lint-try
+cp tour/broken-page.md.txt .work/lint-try/README.md
+if "$cs" cs-lint prose --root .work/lint-try; then
+  echo "cs-lint passed a page that holds two faults, which was not the plan." >&2; exit 1
+fi
+echo ""
+echo "That failure was the point. Each line gives a rule number, what is wrong, and the"
+echo "file and line. Edit .work/lint-try/README.md until this passes:"
+echo ""
+echo "  scripts/cs cs-lint prose --root .work/lint-try"
+echo ""
+echo "The other three linters are \`cs-lint refs\`, \`cs-lint surface\` and \`cs-lint oss\`."

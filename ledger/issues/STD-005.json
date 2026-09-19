@@ -1,0 +1,22 @@
+{
+  "id": "STD-005",
+  "title": "The orchestrator killed its own shell while restarting the served interface",
+  "type": "defect",
+  "severity": "med",
+  "status": "closed",
+  "foundBy": "session agent, while reading the member trajectories of a `make demo` run",
+  "opened": "2026-09-18",
+  "resolved": "2026-09-18",
+  "stint": null,
+  "evidence": {
+    "commits": [
+      "61db0b9"
+    ],
+    "integrated": [],
+    "verified": "`make demo` on 2026-09-18 at 23:51 UTC, read from the orchestrator session. It started the server once with the `nohup` line from the brief, and the session holds no `pkill` call. The mission closed 5.5 minutes after dispatch, against 12.6 minutes in the run before."
+  },
+  "resolution": null,
+  "details": "The orchestrator started a Vite server to check the developer's work, then tried to replace it before reporting. It ran `pkill -f \"vite\"`. That pattern is matched against every command line, and the shell running it contained the word. The command killed its own shell and hung until the 120 second tool timeout. It did this twice, which cost five minutes of a mission that took under thirteen.\n\nThe brief now has it start the server once, straight after the merge, and deliver that same server.",
+  "notes": [],
+  "links": []
+}

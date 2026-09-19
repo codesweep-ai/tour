@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# cs — run one pinned tool, and print the command first.
+#
+# usage: scripts/cs <tool> [args...]
+#
+# The line printed and the command run are the same argument list, so the two
+# cannot drift apart. Paths under this repository are printed relative to it, which
+# is how you would type them from here.
+#
+# The pins live in this file and nowhere else. `tools/` holds the Go binaries that
+# `make setup` fetched at the pinned versions, and `node_modules/.bin` holds the npm
+# ones. Both go first on PATH, so a bare tool name means the pinned copy. `make env`
+# prints the same settings for your own shell.
+set -euo pipefail
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+export PATH="$root/tools:$root/node_modules/.bin:$PATH"
+export CS_SANDBOX_BIN="$root/tools/cs-sandbox"
+export CS_CAMPAIGN_GUEST_BIN="$root/tools/cs-campaign-member"
+
+[ $# -gt 0 ] || { echo "usage: scripts/cs <tool> [args...]" >&2; exit 2; }
+command -v "$1" >/dev/null 2>&1 || { echo "cs: $1 is not installed. Run: make setup" >&2; exit 127; }
+
+if [ -z "${CS_QUIET:-}" ]; then
+  line=""
+  for a in "$@"; do
+    a="${a//"$root"\//}"
+    case "$a" in
+      *\'*) line+=" $(printf '%q' "$a")" ;;
+      *[!A-Za-z0-9_./:=@%+,-]*|"") line+=" '$a'" ;;
+      *) line+=" $a" ;;
+    esac
+  done
+  printf '\n  $%s\n\n' "$line" >&2
+fi
+exec "$@"

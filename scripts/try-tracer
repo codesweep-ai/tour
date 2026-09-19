@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# try-tracer — draw one of your own agent sessions as a page. Costs nothing.
+#
+# cs-tracer reads the session files an AI coding CLI leaves on disk, and writes one
+# self-contained HTML file. Set TRACE_DIR to choose the sessions yourself.
+set -euo pipefail
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"; cs="$root/scripts/cs"; cd "$root"
+dir="${TRACE_DIR:-}"; what="the directory you named in TRACE_DIR"
+if [ -z "$dir" ]; then
+  claude="$(ls -dt "$HOME"/.claude/projects/*/ 2>/dev/null | head -1 || true)"
+  codex="$(ls -dt "$HOME"/.codex/sessions/*/*/*/ 2>/dev/null | head -1 || true)"
+  if   [ -n "$claude" ]; then dir="$claude"; what="your most recent Claude Code project"
+  elif [ -n "$codex" ];  then dir="$codex";  what="your most recent day of Codex sessions"
+  elif [ -d .work/vcr/session ]; then dir=".work/vcr/session"; what="the session that \`make try-vcr\` replayed"
+  else
+    echo "No agent sessions found under ~/.claude/projects or ~/.codex/sessions." >&2
+    echo "Run \`make try-vcr\` first, which leaves one behind, or set TRACE_DIR yourself." >&2
+    exit 1
+  fi
+fi
+echo "Drawing $what."
+echo "The sessions stay where they are. The page goes into .work, which git ignores."
+mkdir -p .work
+"$cs" cs-tracer "$dir" --single -o .work/trace.html
+echo ""
+echo "Open it in a browser:  file://$root/.work/trace.html"
+echo "It is one file with no server behind it, so you can mail it or commit it."

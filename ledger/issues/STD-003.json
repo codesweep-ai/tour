@@ -1,0 +1,22 @@
+{
+  "id": "STD-003",
+  "title": "A new run served the previous run's reports as its own",
+  "type": "defect",
+  "severity": "med",
+  "status": "closed",
+  "foundBy": "user report (host): \"when we serve up the trajectories and the dispatch view, do we clean up the folders automatically before we do that? because we should if we don't\"",
+  "opened": "2026-09-18",
+  "resolved": "2026-09-18",
+  "stint": null,
+  "evidence": {
+    "commits": [
+      "4cd8c67"
+    ],
+    "integrated": [],
+    "verified": "The next `make demo` printed `reset: moved the previous run's reports to .work/runs/20260918T235143Z`. With a dispatch page dated before its archive, `make show-reports` printed `is older than the archive` and exited 2."
+  },
+  "resolution": null,
+  "details": "`demo-reset` left the previous run's archive, dispatch page and trajectories in `.work`. From `make demo-start` until the new archive step, `make show-reports` served the old pages. A stale archive also satisfied the guard in `make demo-destroy`, on behalf of a run that had no archive of its own.\n\n`demo-reset` now moves those reports into `.work/runs`, under the time of the move. `make show-reports` also refuses a page that is older than the archive beside it.",
+  "notes": [],
+  "links": []
+}

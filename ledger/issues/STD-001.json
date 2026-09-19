@@ -1,0 +1,22 @@
+{
+  "id": "STD-001",
+  "title": "Two briefs told agents to fetch work that an agent cannot reach",
+  "type": "defect",
+  "severity": "high",
+  "status": "closed",
+  "foundBy": "session agent, while checking a handoff note against the committed briefs",
+  "opened": "2026-09-18",
+  "resolved": "2026-09-18",
+  "stint": null,
+  "evidence": {
+    "commits": [
+      "bcfc938"
+    ],
+    "integrated": [],
+    "verified": "`make demo` on 2026-09-18, read from the member sessions. The developer ran `git merge refs/campaign/orchestrator` 7 seconds into its first dispatch. The qa member ran `git checkout refs/campaign/orchestrator` 6 seconds into its own. Neither session holds a tool call that looks for the work anywhere else."
+  },
+  "resolution": null,
+  "details": "The qa brief said to fetch the developer's branch, and the developer brief said to read `DESIGN.md` from the orchestrator. An agent can do neither. `fetch` and `push` belong to the orchestrator, and an agent that runs one is refused by role. In an earlier run qa spent three dispatches hunting for a branch it could never reach.\n\nBoth briefs now name `refs/campaign/orchestrator`, which is where the orchestrator's `push` lands its work. The orchestrator brief tells it to push to each member before it dispatches that member.",
+  "notes": [],
+  "links": []
+}

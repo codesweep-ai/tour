@@ -1,0 +1,22 @@
+{
+  "id": "STD-009",
+  "title": "Replay the whole campaign from cassettes, so the demo costs nothing to run",
+  "type": "feature-idea",
+  "severity": "med",
+  "status": "open",
+  "foundBy": "user report (host): \"eventually getting to a vcr for the campaign will be gold! that's truly repeatable\"",
+  "opened": "2026-09-19",
+  "resolved": null,
+  "stint": null,
+  "evidence": {
+    "commits": [],
+    "integrated": [],
+    "verified": null
+  },
+  "resolution": null,
+  "details": "`make try-vcr` replays one agent from a committed cassette, with no key and no provider call. The same idea applied to the three member campaign would let a stranger run `make demo` for nothing, and would make a run repeatable enough to test against.\n\nTwo things are in the way. Each member runs in its own sandbox, so each has to reach a `cs-vcr` on the host. The lender that fronts the provider has to sit on the same path. A campaign is also not one ordered script. Three agents run at once, and the orchestrator's prompts carry what the others replied, so the cassettes only match while every member answers as it did when recorded.",
+  "notes": [],
+  "links": [
+    "STD-007"
+  ]
+}

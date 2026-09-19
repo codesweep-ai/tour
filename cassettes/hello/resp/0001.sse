@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-1bca794ecfc74afaa3bee3358ae6d2fc","object":"chat.completion.chunk","created":1789836971,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"The user wants me to create a file called hello.txt with exactly the word \"hello\", and then say \"done\". This is a simple task. I need to use the Write tool to create the file. The working directory is <ROOT>/.work/vcr/proj. I should use an absolute path."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789836971,"id":"chatcmpl-1bca794ecfc74afaa3bee3358ae6d2fc","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"content\": \"hello\", \"filePath\": \"<ROOT>/.work/vcr/proj/hello.txt\"}","name":"write"},"id":"write_0","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789836971,"id":"chatcmpl-1bca794ecfc74afaa3bee3358ae6d2fc","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-1bca794ecfc74afaa3bee3358ae6d2fc","object":"chat.completion.chunk","created":1789836971,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-1bca794ecfc74afaa3bee3358ae6d2fc","object":"chat.completion.chunk","created":1789836971,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":6346,"total_tokens":6456,"completion_tokens":110,"prompt_tokens_details":{"cached_tokens":1},"completion_tokens_details":{"reasoning_tokens":70},"output_tokens_details":{"reasoning_tokens":70}}}
+
+data: [DONE]
+

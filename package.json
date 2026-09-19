@@ -12,6 +12,7 @@
   "type": "commonjs",
   "devDependencies": {
     "@codesweep-ai/ledger": "0.0.0-20260915074254-129b17f78d58",
-    "@codesweep-ai/lint": "0.0.0-20260915074254-271c4a39b67b"
+    "@codesweep-ai/lint": "0.0.0-20260915074254-271c4a39b67b",
+    "opencode-ai": "1.18.31"
   }
 }

@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# try-sandbox — create one sandbox, work in it, fetch the work out, and destroy it.
+#
+# Spends no tokens. The first create on a machine pulls the sandbox image, which is
+# several gigabytes, so that one run takes minutes. After that a create takes seconds.
+# Set TOUR_ID to run two of these at once.
+set -uo pipefail
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"; cs="$root/scripts/cs"; cd "$root"
+id="${TOUR_ID:-tour}"; name="$id.$id"; repo=".work/sandbox-try/repo"
+cleanup() { CS_QUIET=1 "$cs" cs-sandbox group rm "$id" -f >/dev/null 2>&1 || true; }
+trap cleanup EXIT
+cleanup
+rm -rf .work/sandbox-try; mkdir -p "$repo"
+git -C "$repo" init -q
+git -C "$repo" -c user.name=tour -c user.email=tour@example.invalid commit -q --allow-empty -m "Start"
+
+lend=(); [ -s "$HOME/.cs-keys/fireworks" ] && lend=(--lend-api-key fireworks)
+echo "1. Create. The sandbox shares one repository and nothing else from this machine."
+"$cs" cs-sandbox create "$id" --group "$id" --repo "$repo:work" "${lend[@]}" || exit 1
+
+echo ""
+echo "2. Work. It is a Linux machine of its own, with the three agent CLIs already installed."
+"$cs" cs-sandbox exec "$name" -- bash -lc 'uname -sr; ls ~; which opencode claude codex' || exit 1
+
+if [ ${#lend[@]} -gt 0 ]; then
+  echo ""
+  echo "3. Your Fireworks key was lent, not copied. Inside, the variable holds a loan token,"
+  echo "   and no file anywhere in the sandbox holds the real key."
+  real="$(cat "$HOME/.cs-keys/fireworks")"
+  "$cs" cs-sandbox exec "$name" -- bash -lc 'echo "FIREWORKS_API_KEY=${FIREWORKS_API_KEY:0:10}..."' || exit 1
+  n="$(CS_QUIET=1 "$cs" cs-sandbox exec "$name" -- bash -lc "grep -rlF -- '$real' ~ /etc /run 2>/dev/null | wc -l" | tail -1)"
+  echo "   files inside the sandbox that hold the real key: $n"
+else
+  echo ""
+  echo "3. Skipped: no key at ~/.cs-keys/fireworks to lend. With one there, this step shows"
+  echo "   that the sandbox gets a loan token and the real key never enters it."
+fi
+
+echo ""
+echo "4. Commit something inside, then fetch it back to the repository on this machine."
+"$cs" cs-sandbox exec "$name" -- bash -lc 'cd ~/work && echo "written inside the sandbox" > note.txt && git add note.txt && git commit -q -m "A note from inside the sandbox" && git log --oneline' || exit 1
+"$cs" cs-sandbox fetch "$name" || exit 1
+echo "   On this machine, in $repo:"
+git -C "$repo" log --oneline --all | sed 's/^/     /'
+
+echo ""
+echo "5. Destroy. The sandbox and its data go, and the fetched commit stays."
+"$cs" cs-sandbox destroy "$name" --force || exit 1

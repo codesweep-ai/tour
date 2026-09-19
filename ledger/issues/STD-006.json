@@ -1,0 +1,20 @@
+{
+  "id": "STD-006",
+  "title": "The test script that qa writes is lost when the campaign is destroyed",
+  "type": "improvement",
+  "severity": "med",
+  "status": "open",
+  "foundBy": "user report (host): \"does the QA generate any automated tests too? did we ask it to do that?\"",
+  "opened": "2026-09-18",
+  "resolved": null,
+  "stint": null,
+  "evidence": {
+    "commits": [],
+    "integrated": [],
+    "verified": null
+  },
+  "resolution": null,
+  "details": "The qa brief asks for a report and never asks for a test. In two runs qa wrote a Playwright script anyway, at `/tmp/verify.mjs` inside its sandbox. The script loads the served page, asserts the `data-component` attributes and the greeting, clicks each colour button, and exits 1 on any failure.\n\nOnly the prose report is committed, and the archive does not collect `/tmp`. The orchestrator's branch never receives qa's branch either. So `make demo-destroy` deletes the one runnable check the campaign produced.\n\nThe fix is two brief changes. The qa member commits the script under `tests/` and names the command that runs it. The orchestrator fetches qa, merges the script, and runs it once against its own server before it replies. The cost is Playwright as a dev dependency of the delivered app.",
+  "notes": [],
+  "links": []
+}

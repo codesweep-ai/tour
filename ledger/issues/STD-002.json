@@ -1,0 +1,27 @@
+{
+  "id": "STD-002",
+  "title": "The trajectory index does not say which member a session belongs to",
+  "type": "improvement",
+  "severity": "med",
+  "status": "closed",
+  "foundBy": "session agent, while reading the member trajectories of a `make demo` run",
+  "opened": "2026-09-18",
+  "resolved": "2026-09-18",
+  "stint": null,
+  "evidence": {
+    "commits": [
+      "4cd8c67"
+    ],
+    "integrated": [],
+    "verified": "`make demo-trajectories` on a real archive printed `built 3 member site(s)`. The index listed `orchestrator`, `developer` and `qa`, and each link opened that member's own sessions."
+  },
+  "resolution": null,
+  "details": "`cs-tracer` titles a session by what the agent called it, which is the dispatch, for example `Campaign dispatch d002 execution`. Every member also reports the same working directory. One site built over all three members could therefore not say whose session was whose.\n\n`make demo-trajectories` now builds one site per member, under a small index page that lists the members by name.",
+  "notes": [
+    {
+      "date": "2026-09-18",
+      "text": "This is a workaround in the Makefile. The better fix belongs in `cs-tracer`, which could label a session by the directory it was read from. One site would then show every member side by side, with their tokens and cost."
+    }
+  ],
+  "links": []
+}

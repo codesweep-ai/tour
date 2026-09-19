@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# try-ledger — read this repository's ledger, then file and close a record in a copy.
+#
+# A ledger has no `add` command. A record is a small JSON file that an agent writes, and
+# cs-ledger checks the records and renders the page. The copy lives in .work, so nothing
+# here touches the committed ledger.
+set -uo pipefail
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"; cs="$root/scripts/cs"; cd "$root"
+echo "1. The committed ledger. These are real findings from running this demo."
+"$cs" cs-ledger check ledger || exit 1
+echo "   Read it:  file://$root/ledger/ledger.html"
+echo ""
+try=.work/ledger-try; rm -rf "$try"; mkdir -p .work; cp -r ledger "$try"
+last="$(ls "$try"/issues | sed -E 's/^[A-Z]+-0*([0-9]+)\.json$/\1/' | sort -n | tail -1)"
+prefix="$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1]))["idPrefix"])' "$try/ledger.json")"
+id="$(printf '%s-%03d' "$prefix" $((last + 1)))"
+echo "2. File a record. The tour writes $try/issues/$id.json from tour/new-record.json:"
+sed -e "s/@ID@/$id/" -e "s/@TODAY@/$(date -u +%F)/" tour/new-record.json > "$try/issues/$id.json"
+sed 's/^/     /' "$try/issues/$id.json"
+"$cs" cs-ledger render "$try" || exit 1
+"$cs" cs-ledger check "$try" || exit 1
+echo ""
+echo "3. Close it with no evidence. This fails, on purpose."
+python3 - "$try/issues/$id.json" <<'PY'
+import json,sys,datetime
+p=sys.argv[1]; r=json.load(open(p)); r["status"]="closed"; r["resolved"]=datetime.date.today().isoformat()
+json.dump(r,open(p,"w"),indent=2)
+PY
+if "$cs" cs-ledger check "$try"; then
+  echo "cs-ledger accepted a closed record with no evidence, which was not the plan." >&2; exit 1
+fi
+echo ""
+echo "That failure was the point. A closed record has to cite the commit that fixed it and"
+echo "say how the fix was proved. Open $try/issues/$id.json, set \`evidence.commits\` to a"
+echo "real commit of this repository and \`evidence.verified\` to a sentence, then run:"
+echo ""
+echo "  scripts/cs cs-ledger render $try && scripts/cs cs-ledger check $try"
+echo ""
+echo "The page for the copy is file://$root/$try/ledger.html"
+echo "The practice an agent follows is in \`scripts/cs cs-ledger guide\`."

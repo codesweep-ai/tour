@@ -1,0 +1,16 @@
+{
+  "id": "@ID@",
+  "title": "The greeting is hard to read on a phone",
+  "type": "improvement",
+  "severity": "low",
+  "status": "open",
+  "foundBy": "a reader following `make try-ledger`",
+  "opened": "@TODAY@",
+  "resolved": null,
+  "stint": null,
+  "evidence": { "commits": [], "integrated": [], "verified": null },
+  "resolution": null,
+  "details": "On a screen 360 pixels wide the greeting wraps onto three lines. This record is a practice one, written by the tour into a scratch copy of the ledger.",
+  "notes": [],
+  "links": []
+}

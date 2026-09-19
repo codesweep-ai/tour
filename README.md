@@ -1,114 +1,220 @@
 # simple-tools-demo
 
-This repo serves as a simple demonstration of how to use the codesweep tools in
-a project of your own. It pins every tool it uses, and it runs a real campaign
-end to end so that you can see the whole cycle work.
+This repo is a tour of the codesweep tools. It starts with the smallest tool and ends
+with the largest, so that you get a feel for each one before the next one builds on it.
+Every tool is pinned, and every step prints the command it runs.
 
-## Before you start
+The first five steps take about five minutes. They need no key and they spend nothing.
+The last step runs three AI agents that design, build, verify and serve a small web
+page, and that one needs a Fireworks key and a few cents.
 
-You need node and npm for the dev-mode tools, and a Go toolchain for the use-mode
-ones. The members boot on podman with Firecracker, so this host needs podman and a
-writable `/dev/kvm`. Tailscale needs to be up if you want the app and the reports on
-a URL you can open from another machine.
+## Set up
 
-You also need a Fireworks key on disk at `~/.cs-keys/fireworks`, with mode `0600`.
-An exported environment variable is not enough, because the demo lends the key and
-the lender reads a host file. `make setup` ends by saying whether that file is there,
-and prints the three commands that write it.
-
-## Which sequence do you want
+You need node and npm, and a Go toolchain. Then run one command:
 
 ```bash
-make setup           # you just cloned this, and want the tools
-make demo-validate   # prove the campaign is wired, before it costs anything
-make demo            # run it end to end, which takes about half an hour
-make demo-watch      # in a second terminal, follow progress and health
-make show-reports    # read the dispatch page and the trajectories
-make demo-clean      # you are done, and want the demo and its artefacts gone
-make demo-clean clean-all   # you want this directory back to nothing
+make setup
 ```
 
-The check before the run matters, because `make demo` boots three members and spends
-real tokens. `make demo-validate` reads the profile, the mission and the three briefs
-and costs nothing, so a typo in a brief is found the cheap way.
+The tools come from two places. `cs-lint`, `cs-ledger` and the `opencode` agent
+come from npm, pinned in `package.json`. The Go tools have no npm package and no tagged
+release, so they come from the Go module proxy into a local `tools` directory. It takes
+a couple of minutes, and it ends by saying what to run next.
 
-The tools are only half of what the demo needs. It lends a Fireworks key from
-`~/.cs-keys/fireworks`, and `make setup` ends by saying whether that file is there
-and how to write it. Lending reads a host file rather than an environment variable,
-so an exported key on its own is not enough.
+Run `make` on its own at any time to see the tour again.
 
-Run `make` on its own to see this list again, along with every command and a one line
-description of each.
+## How to read what a step prints
 
-## Running it by hand
+Each step runs its tool through a small script, `scripts/cs`. The script prints the
+command, and then it runs exactly that command. A printed command looks like this:
 
-Each command below prints something you can check, so you can tell a working step
-from a silent one.
+```
+  $ cs-ledger check ledger
+```
 
-**`make setup`** ends with the credential line and the derived versions. Look for
-`credential  ~/.cs-keys/fireworks is present`, and a `cs-sandbox` version that says
-`named by campaign`. It takes a couple of minutes, mostly fetching binaries.
+That line is what you would type in a project of your own, where this Makefile does not
+exist. The line and the run come from the same argument list, so they cannot disagree.
 
-**`make demo-validate`** prints `valid CampaignProfile` with a digest, then
-`mission <digest>, 3 role briefs`. It costs nothing and takes a second.
+To type a command yourself, put the pinned tools on your `PATH` first:
 
-**`make demo-start`** boots three members and then runs the readback. It prints one
-line per member, and each one ends with `(confirmed by the answering turn)`. That
-phrase matters: it means the model each member answered on is the model
-the profile declared. It takes a few minutes, and it is where the run spends first.
+```bash
+eval "$(make env)"
+cs-ledger check ledger
+```
 
-**`make demo-watch`** belongs in a second terminal. It prints one line per member on
-every look, and new orchestrator claims as they appear. An orchestrator can work for
-many minutes between claims, so silence there is normal and the watcher says so.
+You need that step because a bare tool name finds whatever copy sits on your `PATH`.
+That copy is often a different version from the one this repo pins. `make env` prints
+the same three settings that `scripts/cs` applies, so both routes reach the same binary.
 
-**`make demo-fetch`** prints `tree differs from base (real changes present)` and a
-commit count. It fails when the orchestrator branch matches its base, because that
-means the campaign delivered nothing whatever it reported.
+## The tour
 
-**`make demo-archive`** prints the list of `INCOMPLETE` markers, and that list should
-be empty. Anything it could not collect leaves a marker rather than failing quietly.
+### 1. cs-tracer: read what an agent did
 
-**`make demo-dispatch-page`** and **`make demo-trajectories`** each print where they
-wrote. The trajectory step also prints how many traces and events it found.
+Every AI coding CLI leaves its sessions on disk, in a format written for the tool rather
+than for you. `cs-tracer` reads those files and writes one HTML page.
 
-**`make show-app`** and **`make show-reports`** print URLs on your Tailscale address.
+```bash
+make try-tracer
+```
 
-The trajectory index lists the members by name, and each name opens that member's own
-sessions. A session is titled by its dispatch and never by its member, so the index is
-how you tell the orchestrator from the developer and from qa.
+It looks for your most recent Claude Code project, and then for your Codex sessions.
+The command it runs is a single line:
 
-Reports never carry over from one run to the next. `make demo-start` moves the previous
-archive, dispatch page and trajectories into `.work/runs`, under the time of the move.
-`make show-reports` also refuses a page that is older than the archive beside it.
+```
+  $ cs-tracer ~/.claude/projects/<your-project>/ --single -o .work/trace.html
+```
 
-The whole cycle took about half an hour on the run this README was written against.
-Most of that was the orchestrator reviewing the developer's work and checking the
-built interface itself.
+Open the `file://` address it prints. You should see a timeline of the session, with
+every tool call, the tokens and an estimate of the cost. The page is one file with no
+server behind it. Set `TRACE_DIR` to draw a different directory.
 
-## Two kinds of tool
+Your sessions stay where they are, and the page goes into `.work`, which git ignores.
+A machine with no sessions at all can run step 4 first, which leaves one behind.
 
-This project is in use mode for every tool it touches. It edits none of them, so the
-dev-mode and use-mode split of the wider fleet does not divide anything here. Dev
-mode is what you are in when you open one of the tool repositories itself.
+### 2. cs-lint: a linter for documents
 
-The split that matters inside this repo is a different one. It is when a tool runs,
-and how it is pinned.
+`cs-lint` checks how a repository's documents are written, and whether what they point
+at still exists.
 
-**Tools that check this repo** are `cs-lint` and `cs-ledger`. They read the files in
-this directory and report whether the documents and the ledger are in order. Both are
-published to npm. The pins sit in `package.json`, the exact versions are locked in
-`package-lock.json`, and the binaries run from `node_modules/.bin`. They are dev dependencies
-in the ordinary npm sense of the phrase.
+```bash
+make try-lint
+```
 
-**The tool this repo runs** is `cs-campaign`, along with the programs it needs at run
-time. None of them is published to npm, and none has a tagged release, so this repo
-installs them from the Go module proxy into a local `tools` directory. That needs a Go
-toolchain on the machine that runs `make setup`.
+The step runs the linter twice. The first run reads this repository and passes. The
+second run reads a page with two planted faults, and it fails on purpose:
 
-You should always invoke a tool through a make target rather than by typing its
-bare name. The reason is that a bare name finds whatever copy happens to sit on
-your `PATH`, which is usually a different version from the one this repo pins.
-Each make target names its tool exactly once, so the pin cannot be bypassed.
+```
+  $ cs-lint prose --root .work/lint-try
+
+PROSE-103 error     49-word sentence (max 30) [README.md:5]
+PROSE-104 error     2 em-dash(es); use a full stop, a comma, or cut the aside [README.md:5]
+```
+
+Each line gives a rule number, what is wrong, and the file and line. The planted page
+is `tour/broken-page.md.txt`. The step tells you how to edit the copy until it passes.
+
+### 3. cs-ledger: issue tracking that lives in the repo
+
+A ledger is a directory of small JSON files, committed beside the code. Agents write the
+records, and `cs-ledger` checks them and renders one HTML page for people to read.
+
+```bash
+make try-ledger
+```
+
+The step first checks the ledger in `ledger/`. Those nine records are real. They are
+what went wrong while this demo was built, with the commit that fixed each one. Open
+`ledger/ledger.html` to read them.
+
+The step then copies the ledger into `.work` and works on the copy. A ledger has no
+`add` command, because a record is a file you write. The step writes one from
+`tour/new-record.json`, renders the page and checks it. Then it closes that record with
+no evidence, and the check fails on purpose:
+
+```
+  - issues/STD-010.json: status "closed" requires non-empty evidence.verified
+  - issues/STD-010.json: status "closed" requires evidence.commits
+```
+
+A closed record has to cite the commit that fixed it, and say how the fix was proved.
+`cs-ledger check` resolves that commit against the repository, so a made-up one fails.
+Run `scripts/cs cs-ledger guide` for the practice an agent follows day to day.
+
+### 4. cs-vcr: replay an agent run for nothing
+
+`cs-vcr` is a proxy that sits between an agent and its model provider. It records a
+session into a cassette, which is a directory of text files. Later it replays that
+cassette, and the whole agent loop runs again without calling the provider.
+
+```bash
+make try-vcr
+```
+
+The cassette in `cassettes/hello` holds one small session. An agent was asked to create
+a file holding the word hello, which took three model calls. The step shows those three
+steps and then replays them:
+
+```
+  $ cs-vcr cassette ls hello
+  $ cs-vcr replay --cassettes cassettes --listen 127.0.0.1:<port> ...
+  $ opencode run --model fireworks-ai/... 'Create a file called hello.txt ...'
+```
+
+The agent is the real `opencode`, and it writes the real file. Its key is the string
+`not-a-real-key`. Look for `upstream calls 0` in the summary, which means no provider
+was called. This is what lets a CI job test an agent with no credential and no cost.
+
+A cassette only replays when the agent asks the same question it asked before. The
+script `scripts/vcr-agent` holds still everything that could change the question. The
+agent gets an empty home directory, a working directory inside this repo, and the
+`opencode` version pinned in `package.json`. `make vcr-record` records the cassette
+again, which calls Fireworks and costs a fraction of a cent.
+
+### 5. cs-sandbox: a disposable machine for an agent
+
+`cs-sandbox` creates an isolated Linux machine with the agent CLIs already installed.
+This step needs podman and a writable `/dev/kvm`. The first create on a machine pulls an
+image of several gigabytes. After that a create takes about five seconds.
+
+```bash
+make try-sandbox
+```
+
+The step follows the whole loop, which is create, work, fetch and destroy:
+
+```
+  $ cs-sandbox create tour --group tour --repo .work/sandbox-try/repo:work --lend-api-key fireworks
+  $ cs-sandbox exec tour.tour -- bash -lc '...'
+  $ cs-sandbox fetch tour.tour
+  $ cs-sandbox destroy tour.tour --force
+```
+
+The sandbox shares one repository with this machine and nothing else. A commit made
+inside comes back with `fetch`. When you have a key at `~/.cs-keys/fireworks`, the step
+also shows how lending works. Inside the sandbox the variable holds a loan token such
+as `loan_tour_...`, and no file in the sandbox holds the real key.
+
+### 6. cs-campaign: three agents and one mission
+
+`cs-campaign` runs a fleet of agents, each in a sandbox of its own, against one mission.
+This is the only step that spends. It needs podman and KVM as step 5 does, and it needs
+a Fireworks key in two places. Export `FIREWORKS_API_KEY`, and write the same key to
+`~/.cs-keys/fireworks` with mode `0600`. The campaign lends the key to its members, and
+the lender reads a host file, so an environment variable alone is not enough.
+`make setup` prints the three commands that write the file.
+
+```bash
+make demo-validate   # check the campaign, which costs nothing
+make demo            # run it end to end, which takes about ten minutes
+make demo-watch      # in a second terminal, follow progress and health
+make show-reports    # read the dispatch page and the trajectories
+make demo-destroy    # drop the members, and keep the archive
+```
+
+The campaign lives in `campaign/hello`. It holds a profile, a mission and three role
+briefs, and `make demo-validate` checks all five files in a second. The orchestrator
+owns the design of the page, and it commits that design as `DESIGN.md`. The developer builds it with
+the `@codesweep-ai/ui` design system, and the qa role verifies it in a real browser.
+The orchestrator checks both of them itself and serves the result.
+
+Six commands do the work, and `make demo` prints each one as it runs:
+
+| Command | What it does |
+|---|---|
+| `cs-campaign validate <profile>` | Checks the profile, the mission and the briefs. |
+| `cs-campaign create hello --profile <profile>` | Boots the members and dispatches the mission. |
+| `cs-campaign observe hello` | Reports the state of every member. |
+| `cs-campaign fetch hello` | Brings the orchestrator's branch back to this machine. |
+| `cs-campaign archive hello --output <dir>` | Collects every channel and transcript. |
+| `cs-campaign destroy hello --force` | Removes the members. |
+
+Two more tools turn the archive into pages. `cs-dispatch-viewer` writes the
+campaign's timeline. `cs-tracer`, from step 1, writes a page for every member's sessions. The trajectory index
+lists the members by name, because a session is titled by its dispatch and never by its
+member.
+
+Do not trust the outcome line on its own. Open a member's trajectory and read what it
+did. Every defect recorded in `ledger/` was found that way.
 
 ## How the versions chain together
 
@@ -123,35 +229,36 @@ disagree. The sandbox image carries its own copy of `cs-vcr` inside it. Campaign
 never executes `cs-lint`, `cs-ledger` or `cs-tracer` during a run, so `make
 doctor` reports those as informational.
 
-## The campaign
+## More about the campaign
 
-The campaign in `campaign/hello` runs three members: an orchestrator, a developer
-and a qa role. It exercises every stage of the cycle, and it ends with a served
-application rather than a report claiming one exists.
+### The stages
 
-The work divides the way you would divide it yourself. The orchestrator designs the
-interface first and commits that design as `DESIGN.md`, so both agents build against
-one artefact rather than against prose in their own briefs. The developer builds what
-the design says, and the qa role checks the result against it. The orchestrator checks
-both of them itself, merges the verified work into its own branch, and serves the
-result. A served interface is the deliverable.
-
-The mission names the outcome and leaves the design open: a greeting whose colour
-changes when you click a button. What the greeting says, which colours, and how it
-is laid out are the orchestrator's choices.
-
-The Fireworks key is lent to each member rather than copied into it. Lending
-reads the key from `~/.cs-keys/fireworks`, so you need to create that file once
-with mode `0600`. An environment variable cannot be lent, because the lender
-reads a file on the host instead of an environment.
-
-Two stopping commands sit beside `make demo-clean`, for when you want less than a
-full discard. Run `make demo-stop` to stop serving while leaving the members alive,
-and `make demo-destroy` to drop the members while keeping the archive.
-
-The stages run one at a time too, in this order: `make demo-start`,
-`make demo-wait`, `make demo-fetch`, `make demo-archive`,
+`make demo` runs seven stages in order, and each one also runs by itself. They are
+`make demo-start`, `make demo-wait`, `make demo-fetch`, `make demo-archive`,
 `make demo-dispatch-page`, `make demo-trajectories` and `make show-app`.
+
+**`make demo-start`** boots three members and then runs the readback. It prints one
+line per member, and each one ends with `(confirmed by the answering turn)`. That
+phrase matters: it means the model each member answered on is the model
+the profile declared. This is where the run spends first.
+
+**`make demo-fetch`** prints `tree differs from base (real changes present)` and a
+commit count. It fails when the orchestrator branch matches its base, because that
+means the campaign delivered nothing whatever it reported.
+
+**`make demo-archive`** prints the list of `INCOMPLETE` markers, and that list should
+be empty. Anything it could not collect leaves a marker rather than failing quietly.
+
+**`make show-app`** and **`make show-reports`** print URLs on your Tailscale address.
+`make show-reports` serves `.work/reports` and nothing else. The archive, the harvested
+application and any page from step 1 stay off the network.
+
+### Each member needs 4 GiB
+
+The profile gives each member 4096 MiB. At 2048 the kernel killed the agent during
+`npm install`, and nothing reported it. The member sat idle for five minutes until it
+was prodded. When a member stalls, run `sudo dmesg | grep "Out of memory"` inside it
+before you suspect the brief.
 
 ### When the readback misses its bound
 
@@ -168,13 +275,19 @@ When a readback fails, read the member logs under `~/.cs-opencode-remote-logs`. 
 first turn that dies with `TUI server does not know session` means a recorded
 session outlived its campaign, which `make demo-reset` clears.
 
+### Reports never carry over
+
+`make demo-start` moves the previous run's archive and reports into `.work/runs`, under
+the time of the move. `make show-reports` also refuses a page that is older than the
+archive beside it.
+
 The archive has to happen while the members are alive. Their channels, configs and
 transcripts live inside the sandboxes and go with them, and the audit runs in the
 same pass. So `make demo` archives mid-cycle, and `make demo-destroy` only
 destroys. It refuses when no archive exists, because a destroy without one loses
 the evidence for good.
 
-## Watching a campaign
+### Watching a campaign
 
 A campaign reports its state through `cs-campaign observe`, but that command
 gives you one snapshot per call. The script in `scripts/campaign-watch` turns it
@@ -199,10 +312,15 @@ finished. Three conditions make it exit 1. The first is a node that reports `nod
 log. The third is an orchestrator that stops making claims for `WATCH_STALL`
 seconds.
 
-Other callers can use the script directly. Point `CS_CAMPAIGN_BIN` at the binary
-you want, or let the script find `./tools/cs-campaign` or your `PATH`.
+### Serving the app
 
-### Starting over completely
+The application runs inside the orchestrator, and the host reaches it through a
+port forward. The member-side port stays fixed at 5173, because the role briefs
+instruct the developer to use it. The host-side port is whichever one is free at
+the time. Both the Tailscale address and the orchestrator's sandbox name are
+queried when you run the target, so neither is written down anywhere.
+
+## Starting over
 
 ```bash
 make demo-clean      # drops the members, removes .work, forgets the sessions
@@ -218,15 +336,10 @@ channels and transcripts exist only while its members do, so an archive is the o
 copy once they are gone. Use `make demo-destroy` instead when you want the members
 gone but the archive kept, because that one refuses to run without an archive.
 
-## A note on serving the app
-
-The application runs inside the orchestrator, and the host reaches it through a
-port forward. The member-side port stays fixed at 5173, because the role briefs
-instruct the developer to use it. The host-side port is whichever one is free at
-the time. Both the Tailscale address and the orchestrator's sandbox name are
-queried when you run the target, so neither is written down anywhere.
-
 ## Committing to this repo
+
+Run `make check` before a commit. It runs the linters, checks the ledger, verifies the
+cassettes, and refuses a local path or a session link.
 
 This repository is meant to be published, so its history is part of what readers see.
 Keep commit subjects under 60 characters, and keep bodies to two paragraphs at most.
@@ -238,8 +351,7 @@ remembering it.
 
 ## What this repo commits
 
-The committed files are the profile template, the mission, the three role briefs
-and the ledger. Everything else is generated. The `tools` directory holds
-binaries, `node_modules` contains packages, and `.work` collects the rendered
-profile, the harvested application, the archive, the viewer page and the traces. All
-three stay out of git, and all three rebuild from what is committed.
+The committed files are the campaign, the ledger, one cassette, the two files the tour
+plants, and the scripts. Everything else is generated. The `tools` directory holds
+binaries, `node_modules` contains packages, and `.work` collects whatever a step writes.
+All three stay out of git, and all three rebuild from what is committed.
