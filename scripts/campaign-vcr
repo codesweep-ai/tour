@@ -107,6 +107,13 @@ providers:
     base_url: https://api.fireworks.ai/inference
 normalize:
   extend:
+    # A screenshot is something the world decides. An agent that photographs the page and
+    # shows it to the model sends the picture as part of a request. Two renderings of one
+    # page differ by a few bytes, more so on a busy machine, and nothing in them is a
+    # decision. cs-vcr already tolerates a tool's changed text, and this does the same
+    # for a tool's picture. \`cs-vcr calibrate\` proposed the rule from a real miss.
+    volatile:
+      - messages[].content[].image_url.url
     capture:
 $ident      - {pattern: '([A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,})', as: '<EMAIL>'}
       - {pattern: '$name-[0-9a-f]{16}', as: '<CAMPAIGN_ID>'}

@@ -128,7 +128,12 @@ PROSE-104 error     2 em-dash(es); use a full stop, a comma, or cut the aside [R
   $ cs-lint refs --root .work/lint-try --verbose
 
 REF-101  error     docs/setup-guide.md is named here and does not exist [README.md]
+REF-202  skip      the build shells out to nothing it checks for
+REF-301  skip      no MANUAL.md in the document set
+REF-302  skip      no AGENTS.md at the root
 REF-303  skip      no ledger/ledger.json at the root
+
+refs: 1 error(s), 0 warning(s), 4 skipped
 ```
 
 Each line gives a rule number, what is wrong, and the file. `prose` checks how a page is
@@ -273,7 +278,11 @@ five minutes.
 make demo-replay
 ```
 
-Three machines boot. An orchestrator designs a small web page and commits the design, a
+Three machines boot, and each agent first passes a readback. A readback is a first
+question to an agent, which has to say back what its brief asks of it before any work is
+handed out. The step prints one `ok  readback` line for each agent.
+
+An orchestrator then writes the design of a small web page, and it commits that design. A
 developer builds it with the `@codesweep-ai/ui` design system, and a qa role checks it in
 a real browser. Then the step fetches the work, archives the run, and builds the dispatch
 page and the trajectories. It ends with the page served on a URL, and
@@ -294,8 +303,12 @@ open was built here a minute ago. The proxy's own count ends the run, and it has
     out of recorded order             5
 ```
 
+Your counts will differ from these, apart from three. `replayed` has to equal `requests`,
+and `upstream calls` and `misses` both have to be 0.
+
 A drifted observation is a tool result that differs from the recorded one, such as a
-timing, a port or a file time. `cs-vcr` matches exactly on what an agent asked the model
+timing, a port or a file time. A screenshot an agent takes of the page is treated the same
+way, because two renderings of one page differ by a few bytes. `cs-vcr` matches exactly on what an agent asked the model
 and loosely on what its tools printed, so hundreds of these are normal. A request out of
 recorded order is an agent asking for a session title beside its first real question.
 Neither is a fault. A miss is, because it is a request the recording never held.
@@ -549,7 +562,8 @@ your username, git name, git address, hostname and key, and runs the `cs-vcr` sc
 A recording that fails is moved into `.work` for you to read, where git ignores it.
 
 Each recording holds different decisions, so replay a new one twice before you commit
-it. `make check` also runs `make no-identity`, which searches every file git would
+it. `make check` cannot do that for you. It proves that a cassette is whole and that the
+campaign has not changed since, and only a replay proves that a cassette replays. `make check` also runs `make no-identity`, which searches every file git would
 commit for those same values.
 
 ## What this repo commits
