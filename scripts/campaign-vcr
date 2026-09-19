@@ -134,6 +134,14 @@ if [ "$mode" = replay ]; then
 fi
 
 # --- 5. create, and start the proxy the moment the campaign's network exists --------
+# From here on machines exist. A run that fails leaves them up, so that they can be looked
+# at, and it has to say so, because nothing else will.
+leftover() { rc=$?; [ "$rc" -eq 0 ] && return; [ -f "$record" ] || return
+  echo "" >&2
+  echo "The three machines of $name are still running, so that you can look at what happened." >&2
+  echo "  to try again:        make demo-$mode   (it removes them first)" >&2
+  echo "  to remove them:      make demo-destroy   (add FORCE=1 when it says there is no archive)" >&2; }
+trap leftover EXIT
 "$cs" cs-campaign create "$name" --profile "$ws/profile.yaml" >"$vw/create.log" 2>&1 &
 create_pid=$!
 # The network is read from this campaign's own record, never searched for on the host.
@@ -196,11 +204,24 @@ echo "  the proxy's own account of the run:"
 sed -n '/summary$/,$p' "$vw/vcr.log" | grep -E "^(requests|replayed|recorded|upstream calls|misses|rejected|tunnel refused|out of recorded order|drifted observations) " | sed 's/^/    /'
 upstream="$(awk '$1=="upstream" && $2=="calls"{print $3}' "$vw/vcr.log" | tail -1)"
 misses="$(awk '$1=="misses"{print $2}' "$vw/vcr.log" | tail -1)"
+# A miss is a request the recording never held, and the proxy cannot tell who sent it.
+# `cs-sandbox doctor` checks that every lender on the machine reaches its upstream, by
+# asking for the bare address, which here is `/` on this proxy. Anybody who runs it while
+# a replay is going, from any directory, adds one such miss for each member. An agent
+# never asks for `/`, because a model call is a POST to a path under /v1. So those are
+# counted apart and said out loud, and only the rest can fail the replay.
+probes="$(grep -cE 'msg="cassette miss" .* target=/ ' "$vw/vcr.log" || true)"
+if [ "${probes:-0}" -gt 0 ] && [ -n "${misses:-}" ]; then
+  echo "    of those misses, $probes asked for \`/\` and not for a model. No agent sent them:"
+  echo "    they are \`cs-sandbox doctor\`, run somewhere on this machine, checking that the proxy answers."
+  misses=$((misses - probes))
+  echo "    misses that an agent sent         $misses"
+fi
 make --no-print-directory demo-fetch demo-archive demo-dispatch-page demo-trajectories show-app || exit 1
 
 if [ "$mode" = replay ]; then
   if [ "${upstream:-x}" != 0 ] || [ "${misses:-x}" != 0 ]; then
-    echo "FAILED: a replay must show upstream calls 0 and misses 0, and this showed ${upstream:-?} and ${misses:-?}." >&2
+    echo "FAILED: a replay must show upstream calls 0 and no miss that an agent sent, and this showed ${upstream:-?} and ${misses:-?}." >&2
     echo "The proxy log is .work/campaign-vcr/vcr.log, and any missed request is under .work/campaign-vcr/misses" >&2
     exit 1
   fi

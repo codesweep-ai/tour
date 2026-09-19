@@ -54,8 +54,9 @@ make setup
 
 The tools come from two places. `cs-lint`, `cs-ledger` and the `opencode` agent
 come from npm, pinned in `package.json`. The Go tools have no npm package and no tagged
-release, so they come from the Go module proxy into a local `tools` directory. It takes
-a couple of minutes, and it ends by saying what to run next.
+release, so they come from the Go module proxy into a local `tools` directory. The first
+run on a machine takes a couple of minutes, and a later one takes seconds, because npm
+and Go both keep what they fetched. It ends by saying what to run next.
 
 Run `make` on its own at any time to see the tour again.
 
@@ -254,10 +255,16 @@ The step follows the whole loop, which is create, work, fetch and destroy:
   $ cs-sandbox exec tour1234.tour1234 -- bash -lc '...'
   $ cs-sandbox fetch tour1234.tour1234
   $ cs-sandbox destroy tour1234.tour1234 --force
+  $ cs-sandbox group rm tour1234
 ```
 
 The four digits come from the path of your clone, so two clones never collide. A sandbox
 is addressed as its name, a dot, and its group.
+
+The last command is there because of `--group`. A group has a network and a gateway of
+its own, and they keep running after the last sandbox in it is destroyed. The step uses a
+group so that it cannot touch anything else on your machine. A sandbox created without
+`--group` joins the shared `default` group, and a destroy is all it needs.
 
 The sandbox shares one repository with this machine and nothing else. A commit made
 inside comes back with `fetch`. When you have a key at `~/.cs-keys/fireworks`, the step
@@ -313,6 +320,14 @@ and loosely on what its tools printed, so hundreds of these are normal. A reques
 recorded order is an agent asking for a session title beside its first real question.
 Neither is a fault. A miss is, because it is a request the recording never held.
 
+One kind of miss does not come from an agent. `cs-sandbox doctor` checks every lender on
+the machine, and it does that by asking each proxy for `/`. If anybody runs it while your
+replay is going, the proxy counts a miss for each of your three agents. The step names
+those misses, takes them off the count, and fails only on a miss that an agent sent. The
+same `doctor` prints `NO` lines that say the proxy `does not answer`. It did answer, with
+a 400, because `/` is not a model call. Both are harmless, and a replay that ends is the
+proof.
+
 The step is `scripts/campaign-vcr`, and it uses three documented surfaces of the tools.
 The profile's `env:` block gives each member `OPENCODE_BASE_URL`, which aims it at the
 proxy. `cs-vcr` runs as one container on the campaign's own podman network, under the
@@ -332,6 +347,10 @@ A replay reproduces the models' decisions, not the world's facts. If the network
 down and an install fails, a recorded agent still says what it said. So judge a replay
 the way the step does: by the proxy's count, by the fetched commits, and by the page
 answering.
+
+The three machines stay up when the step ends, because the page is served from one of
+them. `make demo-destroy` removes them and keeps the archive. A step that fails leaves
+them up too, and it says so. Running `make demo-replay` again removes them first.
 
 ### 7. cs-campaign, live: the same mission, decided afresh
 

@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # try-sandbox — create one sandbox, work in it, fetch the work out, and destroy it.
 #
+# Every command a person would need is printed, the group's removal included. The quiet
+# cleanup below only clears what a failed or interrupted run left behind.
+#
 # Spends no tokens. The first create on a machine pulls the sandbox image, which is
 # several gigabytes, so that one run takes minutes. After that a create takes seconds.
 # The sandbox is named after this clone's path, so two clones can run this at once.
@@ -51,3 +54,8 @@ git -C "$repo" log --oneline --all | sed 's/^/     /'
 echo ""
 echo "5. Destroy. The sandbox and its data go, and the fetched commit stays."
 "$cs" cs-sandbox destroy "$name" --force || exit 1
+
+echo ""
+echo "6. Remove the group. \`--group\` gave the sandbox a network and a gateway of its own,"
+echo "   and a destroy leaves those running. A sandbox made without \`--group\` needs no such step."
+"$cs" cs-sandbox group rm "$id" || exit 1
