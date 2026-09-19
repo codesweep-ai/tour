@@ -1,0 +1,31 @@
+{
+  "id": "TOUR-018",
+  "title": "Anybody who ran `cs-sandbox doctor` on the machine failed every campaign replay in progress",
+  "type": "defect",
+  "severity": "high",
+  "status": "closed",
+  "foundBy": "three first-time reader agents who replayed at once from three fresh clones, one of whom ran the `doctor` command that step 5 suggests",
+  "opened": "2026-09-19",
+  "resolved": "2026-09-19",
+  "stint": null,
+  "evidence": {
+    "commits": [
+      "0db1e4d",
+      "84e5c87"
+    ],
+    "integrated": [],
+    "verified": "Two of the readers' replays failed with `replayed 157` out of 157 recorded calls, one with `misses 3` and one with `misses 1`. Every miss in both proxy logs had `target=/`, and all were stamped 22:46:38, one second before the third reader's `cs-sandbox doctor` log was written. After the fix, a replay was run in this clone and `scripts/cs cs-sandbox doctor` was run during it. `doctor` printed three `NO` lines that named this campaign's members. The proxy ended with `requests 160`, `replayed 157` and `misses 3`. The step reported 3 of them as asking for `/`, printed `misses that an agent sent 0`, and ended with exit 0. The fetched commit ids were the recording's, and the three replays that no `doctor` touched had passed unchanged."
+  },
+  "resolution": null,
+  "details": "`cs-sandbox doctor` checks that each lender on the machine can reach the upstream its members use. It does that for every group, and not only for the caller's own, by running `curl -f` on the bare upstream address from inside the lender. A replaying campaign's upstream is its `cs-vcr` proxy, and the bare address is `/` under a cassette. The proxy holds no recording of that, so it answers 400 and counts a miss. `curl -f` turns the 400 into a failure, so `doctor` also reports that the proxy does not answer.\n\nThe step's pass condition was `misses 0`. So one person who ran `doctor`, from any directory, failed every replay then running on the host. Step 5 of the README suggests that very command. A single reader hits this too, by looking at the machine in a second terminal while step 6 runs.\n\nThe probe does not move the cassette's position, and both failed runs had served every recorded call in order. An agent never asks for `/`, because a model call is a POST under `/v1`. The step now counts those misses apart, says where they come from, and fails only on a miss that an agent sent. The README explains the same, and says why the `NO` lines are harmless.\n\nThree smaller faults from the same readers were fixed beside it, the last of them in a commit of its own. A failed replay left its three machines up and said nothing, so it now says how to remove them. The README gave `make setup` as a couple of minutes, which is only true of a first run. It gave the replay as about five minutes, and four measured runs took between 6m36s and 7m10s.",
+  "notes": [
+    {
+      "date": "2026-09-19",
+      "text": "The causes sit upstream and are not yet filed there. In `cs-sandbox`, the lender probe uses `curl -f`, so any upstream that answers a bare GET with a 4xx is reported as not answering. In `cs-vcr`, a request for a cassette's root counts as a miss, and the file that `--dump-misses` writes for it is empty. The tour pins released tools, and a new version would make the cassettes stale, so the tolerance here stays until both are fixed and released."
+    }
+  ],
+  "links": [
+    "TOUR-016",
+    "TOUR-009"
+  ]
+}
