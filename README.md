@@ -402,7 +402,10 @@ means the campaign delivered nothing whatever it reported.
 **`make demo-archive`** prints the list of `INCOMPLETE` markers, and that list should
 be empty. Anything it could not collect leaves a marker rather than failing quietly.
 
-**`make show-app`** and **`make show-reports`** print URLs on your Tailscale address.
+**`make show-app`** and **`make show-reports`** print URLs. They are on your Tailscale
+address when Tailscale is up, so that another machine of yours can open them. They are
+on `127.0.0.1` when it is not, and the step says so. Set `BIND_ADDR` to choose an address
+yourself. Nothing here binds to every interface.
 `make show-reports` serves `.work/reports` and nothing else. The archive, the harvested
 application and any page from step 1 stay off the network.
 
@@ -470,7 +473,7 @@ the `--stall` flag of the script changes.
 The application runs inside the orchestrator, and the host reaches it through a
 port forward. The member-side port stays fixed at 5173, because the role briefs
 instruct the developer to use it. The host-side port is whichever one is free at
-the time. Both the Tailscale address and the orchestrator's sandbox name are
+the time. Both the address to serve on and the orchestrator's sandbox name are
 queried when you run the target, so neither is written down anywhere.
 
 ## Starting over

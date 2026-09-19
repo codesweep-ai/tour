@@ -22,6 +22,11 @@ CAMPAIGN_MOD     := https://proxy.golang.org/github.com/codesweep-ai/campaign/@v
 
 # CS runs one pinned tool and prints the command first. CSQ does the same in silence,
 # for the places where a recipe reads the output itself.
+# Where the app and the reports are served. It is your Tailscale address when Tailscale is
+# up, so another machine of yours can open them, and 127.0.0.1 when it is not. Set BIND_ADDR
+# to choose an address yourself. Nothing here ever binds to every interface.
+BIND = a="$${BIND_ADDR:-$$(tailscale ip -4 2>/dev/null | head -1)}"; [ -n "$$a" ] || a=127.0.0.1; echo "$$a"
+
 CS  := $(CURDIR)/scripts/cs
 CSQ := CS_QUIET=1 $(CURDIR)/scripts/cs
 
@@ -363,7 +368,7 @@ demo-watch:
 	  CS_SANDBOX_BIN=$(TOOLSDIR)/cs-sandbox CS_CAMPAIGN_BIN=$(TOOLSDIR)/cs-campaign \
 	  ./scripts/campaign-watch $(CAMPAIGN_NAME)
 
-## show-reports: serve the dispatch page and the trajectories on your Tailscale IP
+## show-reports: serve the dispatch page and the trajectories, on Tailscale or on 127.0.0.1
 ##
 ## Both are self-contained HTML that opens from disk, so this exists only to reach
 ## them from another machine. It serves .work/reports and nothing else. The archive,
@@ -380,8 +385,8 @@ show-reports:
 	  fi; \
 	done
 	@if [ -f $(VIEW_PID) ]; then kill "$$(cat $(VIEW_PID))" 2>/dev/null; rm -f $(VIEW_PID); fi
-	@ts="$$(tailscale ip -4 2>/dev/null | head -1)"; \
-	[ -n "$$ts" ] || { echo "no Tailscale IPv4 address. Is tailscale up? The pages also open from disk, under $(REPORTS)" >&2; exit 1; }; \
+	@ts="$$($(BIND))"; \
+	[ "$$ts" != 127.0.0.1 ] || echo "Tailscale is not up, so the reports are served on this machine only."; \
 	port="$$(python3 -c 'import socket;s=socket.socket();s.bind((str(),0));print(s.getsockname()[1]);s.close()')"; \
 	( cd $(REPORTS) && nohup python3 -m http.server "$$port" --bind "$$ts" >$(WORKDIR)/view.log 2>&1 & echo $$! >$(VIEW_PID) ); \
 	echo ""; \
@@ -391,7 +396,7 @@ show-reports:
 	echo ""; \
 	echo "stop serving with: make demo-stop"
 
-### show-app: publish the running app from the orchestrator, on your Tailscale IP
+### show-app: publish the running app from the orchestrator, on Tailscale or on 127.0.0.1
 ##
 ## The member-side port is fixed, because the role briefs name it. The host side is
 ## whatever is free. The orchestrator's sandbox name comes from the LIVE campaign
@@ -401,8 +406,8 @@ show-app:
 	@mkdir -p $(WORKDIR)
 	@rec="$(RECORD)"; \
 	[ -f "$$rec" ] || { echo "no live campaign $(CAMPAIGN_NAME)" >&2; exit 1; }; \
-	ts="$$(tailscale ip -4 2>/dev/null | head -1)"; \
-	[ -n "$$ts" ] || { echo "no Tailscale IPv4 address. Is tailscale up?" >&2; exit 1; }; \
+	ts="$$($(BIND))"; \
+	[ "$$ts" != 127.0.0.1 ] || echo "Tailscale is not up, so the app is served on this machine only."; \
 	port="$$(python3 -c 'import socket;s=socket.socket();s.bind((str(),0));print(s.getsockname()[1]);s.close()')"; \
 	sbx="$$(python3 -c 'import json,sys;d=json.load(open(sys.argv[1]));print(next(m["sandbox"] for m in d["members"] if m["role"]=="orchestrator"))' "$$rec")"; \
 	grp="$$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1]))["group"])' "$$rec")"; \
