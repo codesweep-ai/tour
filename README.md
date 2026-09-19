@@ -1,21 +1,45 @@
 # tour
 
-> **A hands-on tour of the codesweep tools for AI coding agents: six steps that need no key and
-> spend nothing, ending with a three-agent campaign replayed from a recording, then the same
-> campaign live.**
+> **Six small tools for working with AI coding agents, and a hands-on tour of each one: six
+> steps that need no key and spend nothing, then one that runs three agents live.**
 
 [![CI](https://github.com/codesweep-ai/tour/actions/workflows/ci.yml/badge.svg)](https://github.com/codesweep-ai/tour/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 ![Platforms](https://img.shields.io/badge/platform-Linux-lightgrey)
 
-This repo is a tour of the codesweep tools. It starts with the smallest tool and ends
-with the largest, so that you get a feel for each one before the next one builds on it.
-Every tool is pinned, and every step prints the command it runs.
+The codesweep tools are six small command-line programs for people who work with AI
+coding agents, such as Claude Code, Codex and OpenCode. An agent is a program that
+writes code for you: it reads your files, runs commands and makes changes on its own.
 
-The first six steps need no key and they spend nothing. Step 6 runs three AI agents
-that design, build, verify and serve a small web page, with every model call served
-from a recording. Step 7 runs the same campaign live, and that one needs a Fireworks
-key and about a dollar.
+An agent works fast, and that brings five problems. It needs somewhere safe to run,
+because it executes whatever it decides to. A job too big for one agent needs several,
+and somebody has to coordinate them. An agent leaves a record of what it did that nobody
+can read. Its work costs money to repeat, because every run calls a paid model. And what
+it writes has to be checked, and what is still wrong has to be written down, by something
+other than the agent itself. Each tool below takes one of those problems.
+
+| Tool | What it is for |
+|---|---|
+| `cs-sandbox` | Gives an agent a disposable Linux machine of its own, so it cannot touch your files or see your keys. |
+| `cs-campaign` | Runs a team of agents on one job, each in its own sandbox, and keeps the evidence of what each one did. |
+| `cs-tracer` | Turns the session files an agent leaves behind into one page that a person can read. |
+| `cs-vcr` | Records what passes between an agent and its model, and plays it back later, so a run can be repeated for nothing. |
+| `cs-ledger` | Keeps a project's open problems as small files beside the code, written by agents and read by people. |
+| `cs-lint` | Checks that a project's documents are clearly written, and that what they say is still true. |
+
+The tools are separate programs, and each one is useful alone. They are also built to
+work together. A campaign runs its agents in sandboxes, the tracer reads what those
+agents did, and the recorder lets the whole campaign run again without paying for it.
+
+This repo is a tour of all six. It starts with the smallest tool and ends with the
+largest, so that you get a feel for each one before the next one builds on it. Every
+tool is pinned to a version, and every step prints the command it runs, so you can see
+what you would type in a project of your own.
+
+The tour has seven steps. The first six need no key and they spend nothing. Step 6 runs
+three agents that design, build, check and serve a small web page, with the model's
+answers played back from a recording. Step 7 runs the same job live, and that one needs
+a key for the Fireworks model service and about a dollar.
 
 Steps 1 to 4 run on any machine with node and Go. Steps 5 to 7 boot small virtual
 machines, so they need Linux with podman and a writable `/dev/kvm`.
