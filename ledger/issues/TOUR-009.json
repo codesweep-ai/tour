@@ -3,19 +3,34 @@
   "title": "Replay the whole campaign from cassettes, so the demo costs nothing to run",
   "type": "feature-idea",
   "severity": "med",
-  "status": "open",
+  "status": "closed",
   "foundBy": "user report (host): \"eventually getting to a vcr for the campaign will be gold! that's truly repeatable\"",
   "opened": "2026-09-19",
-  "resolved": null,
+  "resolved": "2026-09-19",
   "stint": null,
   "evidence": {
-    "commits": [],
+    "commits": [
+      "df47227"
+    ],
     "integrated": [],
-    "verified": null
+    "verified": "The committed recording holds 157 model calls. It was replayed three times with `FIREWORKS_API_KEY` removed from the environment, twice by `scripts/campaign-vcr replay` and once by `make demo-replay`. Each run ended with `replayed 157`, `upstream calls 0` and `misses 0`, the served page answered 200, and `git log` in the fetched repository gave the same three commit ids as the recording. An earlier recording passed the same checks four times, once from a fresh clone at another path, where the campaign group differed."
   },
   "resolution": null,
   "details": "`make try-vcr` replays one agent from a committed cassette, with no key and no provider call. The same idea applied to the three member campaign would let a stranger run `make demo` for nothing, and would make a run repeatable enough to test against.\n\nTwo things are in the way. Each member runs in its own sandbox, so each has to reach a `cs-vcr` on the host. The lender that fronts the provider has to sit on the same path. A campaign is also not one ordered script. Three agents run at once, and the orchestrator's prompts carry what the others replied, so the cassettes only match while every member answers as it did when recorded.",
-  "notes": [],
+  "notes": [
+    {
+      "date": "2026-09-19",
+      "text": "Both obstacles in the details were already solved inside campaign's own test harness, which replays its smoke tier this way. A lent member needs only `OPENCODE_BASE_URL` in the profile's `env:` block, because `cs-sandbox` makes that URL the loan's upstream. `cs-vcr` runs as a container on the campaign's network under the alias `vcr`. Each member has a cassette of its own, so three agents running at once is not a problem."
+    },
+    {
+      "date": "2026-09-19",
+      "text": "It took five recordings, because each one holds different decisions and three of them met a case the script did not handle. One agent invented a mail address, which the scrubber refuses. One printed its git configuration, which holds the host's real name and address, and that reached over a hundred files. One made a last call after the mission closed, which a proxy stopped too early never recorded. The script now blanks identity and every mail address, waits for the agents to go quiet, and refuses a recording that still holds anything of the recorder."
+    },
+    {
+      "date": "2026-09-19",
+      "text": "A brief line saying the git identity was already set made things worse. It sent the developer to look at its git configuration, which is how the identity leaked, and the run grew from 143 model calls to 210. The line was reverted."
+    }
+  ],
   "links": [
     "TOUR-007"
   ]
