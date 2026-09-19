@@ -3,19 +3,19 @@
   "updated": "2026-09-19",
   "items": [
     {
-      "id": "STD-009",
+      "id": "TOUR-009",
       "why": "A campaign that replays for nothing is the strongest thing this repository could show."
     },
     {
-      "id": "STD-006",
+      "id": "TOUR-006",
       "why": "The campaign throws away the one runnable check it produces."
     },
     {
-      "id": "STD-008",
+      "id": "TOUR-008",
       "why": "Cheap to try, and it may take a minute off a five minute run."
     },
     {
-      "id": "STD-012",
+      "id": "TOUR-012",
       "why": "Costs nothing until ui 0.3.1 is released, and then the developer brief is wrong."
     }
   ]

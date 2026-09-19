@@ -1,5 +1,5 @@
 {
-  "id": "STD-006",
+  "id": "TOUR-006",
   "title": "The test script that qa writes is lost when the campaign is destroyed",
   "type": "improvement",
   "severity": "med",

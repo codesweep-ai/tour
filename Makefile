@@ -1,4 +1,4 @@
-# simple-tools-demo
+# tour
 #
 # A tour of the codesweep tools, from the smallest to the largest. Every recipe runs
 # its tool through scripts/cs, which prints the command and then runs exactly that, so
@@ -50,7 +50,7 @@ RECORD        := $${CS_CAMPAIGN_STATE_DIR:-$$HOME/.config/cs-campaign/campaigns}
 ## help: the tour, in the order to take it
 help:
 	@echo ""
-	@echo "  simple-tools-demo: a tour of the codesweep tools"
+	@echo "  tour: the codesweep tools, from the smallest to the largest"
 	@echo ""
 	@echo "  first                     make setup"
 	@echo ""

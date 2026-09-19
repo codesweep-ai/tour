@@ -1,5 +1,5 @@
 {
-  "id": "STD-010",
+  "id": "TOUR-010",
   "title": "The command wrapper printed a secret that sat on a command line",
   "type": "defect",
   "severity": "high",

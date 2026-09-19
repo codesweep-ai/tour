@@ -1,9 +1,9 @@
-# simple-tools-demo
+# tour
 
 > **A hands-on tour of the codesweep tools for AI coding agents: five steps that need no key and
 > spend nothing, then a three-agent campaign that builds and serves a small web page.**
 
-[![CI](https://github.com/codesweep-ai/simple-tools-demo/actions/workflows/ci.yml/badge.svg)](https://github.com/codesweep-ai/simple-tools-demo/actions/workflows/ci.yml)
+[![CI](https://github.com/codesweep-ai/tour/actions/workflows/ci.yml/badge.svg)](https://github.com/codesweep-ai/tour/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 ![Platforms](https://img.shields.io/badge/platform-Linux-lightgrey)
 

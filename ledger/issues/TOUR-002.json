@@ -1,5 +1,5 @@
 {
-  "id": "STD-002",
+  "id": "TOUR-002",
   "title": "The trajectory index does not say which member a session belongs to",
   "type": "improvement",
   "severity": "med",

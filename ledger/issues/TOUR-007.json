@@ -1,5 +1,5 @@
 {
-  "id": "STD-007",
+  "id": "TOUR-007",
   "title": "The make targets hide the tool commands from a person reading along",
   "type": "improvement",
   "severity": "med",

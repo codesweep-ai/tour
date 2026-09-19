@@ -1,5 +1,5 @@
 {
-  "id": "STD-005",
+  "id": "TOUR-005",
   "title": "The orchestrator killed its own shell while restarting the served interface",
   "type": "defect",
   "severity": "med",

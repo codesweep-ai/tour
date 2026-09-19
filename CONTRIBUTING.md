@@ -1,4 +1,4 @@
-# Contributing to simple-tools-demo
+# Contributing to tour
 
 These rules apply to **humans and coding agents alike**. If you are an agent working in this repo,
 read this file before you change anything and follow it.

@@ -1,5 +1,5 @@
 {
-  "id": "STD-011",
+  "id": "TOUR-011",
   "title": "The README quoted tool output that the tools do not print",
   "type": "defect",
   "severity": "med",

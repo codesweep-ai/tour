@@ -1,6 +1,6 @@
 {
-  "project": "simple-tools-demo",
-  "idPrefix": "STD",
+  "project": "tour",
+  "idPrefix": "TOUR",
   "schemaVersion": "issue.v1",
   "staleAfterDays": 14,
   "toolVersion": "0.7.0"

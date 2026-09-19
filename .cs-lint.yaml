@@ -18,8 +18,8 @@ docs:
 oss:
   # This repository ships no command of its own. It demonstrates the six that the
   # codesweep tools ship.
-  project: simple-tools-demo
-  githubRepo: codesweep-ai/simple-tools-demo
+  project: tour
+  githubRepo: codesweep-ai/tour
 
   published: false
 
