@@ -246,7 +246,9 @@ again, which calls Fireworks and costs about two cents.
 
 `cs-sandbox` creates an isolated Linux machine with the agent CLIs already installed.
 This step needs podman and a writable `/dev/kvm`, and `scripts/cs cs-sandbox doctor`
-says whether this machine has them. The first create on a machine pulls an image of
+says whether this machine has them. In its output, `ok` is a check that passed and `NO` is
+one that failed. A line that starts with `??` is advice, for example about memory or
+disk space, and nothing in this tour depends on it. The first create on a machine pulls an image of
 several gigabytes. After that a create takes about five seconds.
 
 ```bash
@@ -292,7 +294,9 @@ make demo-replay
 
 Three machines boot, and each agent first passes a readback. A readback is a first
 question to an agent, which has to say back what its brief asks of it before any work is
-handed out. The step prints one `ok  readback` line for each agent.
+handed out. The step prints one `ok  readback` line for each agent. Each line ends with
+`(confirmed by the answering turn)`. That means the model the agent answered
+on is the model that its profile declares.
 
 An orchestrator then writes the design of a small web page, and it commits that design. A
 developer builds it with the `@codesweep-ai/ui` design system, and a qa role checks it in
@@ -303,8 +307,8 @@ page and the trajectories. It ends with the page served on a URL, and
 In a replay, only the agents' decisions come from the recording. Every command that
 they decide to run is executed for real. The installs, the build, the browser check and
 the server all happen on your machine, so the page you open was built here a minute ago.
-The run ends with the proxy's own count of what it served. For the replay to pass, that
-count has to read `upstream calls 0` and `misses 0`:
+The run ends with the proxy's own count of what it served, and then the step says whether
+the replay passed. On a machine where nothing else is going on, the count looks like this:
 
 ```
     requests                          157
@@ -312,28 +316,44 @@ count has to read `upstream calls 0` and `misses 0`:
     recorded                          0
     upstream calls                    0
     misses                            0
+    rejected                          0
     drifted observations              962
     out of recorded order             5
 ```
 
-Your counts will differ from these, apart from three. `replayed` has to equal `requests`,
-and `upstream calls` and `misses` both have to be 0.
+Most of your counts will differ from these. Two of them decide whether the replay passed.
+The first is `upstream calls`, which has to be 0, because it counts the calls that reached
+a real provider. The second is `misses`. A miss is a request that the recording does not
+hold, and the proxy rejects it, so `rejected` moves with it. A miss that an agent sent is
+a fault, and on a quiet machine `misses` has to be 0.
 
-A drifted observation is a tool result that differs from the recorded one, such as a
-timing, a port or a file time. A screenshot an agent takes of the page is treated the same
-way, because two renderings of one page differ by a few bytes. `cs-vcr` matches exactly on what an agent asked the model
-and loosely on what its tools printed, so hundreds of these are normal. A request out of
+There is one kind of miss that no agent sends, and you may well see it. `cs-sandbox
+doctor` checks every lender on the machine, and it does that by asking each proxy for `/`.
+If anybody runs it while your replay is going, the proxy counts one miss for each of your
+agents that is up at that moment. That is three at most for each run of `doctor`, and two
+when the last agent has not booted yet. The step recognises those misses, because a model call never asks for `/`. It
+prints three more lines under the count, and the last of them is the one to read:
+
+```
+    misses                            3
+    of those misses, 3 asked for `/` and not for a model. No agent sent them:
+    they are `cs-sandbox doctor`, run somewhere on this machine, checking that the proxy answers.
+    misses that an agent sent         0
+```
+
+In that case `requests` is larger than `replayed` by the same number, and the replay has
+still passed. The step fails only when `misses that an agent sent` is more than 0. You do
+not have to work any of this out, because the step ends with either `The replay passed`
+or a line that starts with `FAILED`. The same `doctor` also prints `NO` lines that say
+the proxy `does not answer`. The proxy did answer, with a 400, because `/` is not a model
+call, so those lines are harmless too.
+
+The other two counts are not faults. A drifted observation is a tool result that differs
+from the recorded one, such as a timing, a port or a file time. A screenshot that an agent
+takes of the page is treated the same way, because two renderings of one page differ by a
+few bytes. `cs-vcr` matches exactly on what an agent asked the model, and loosely on what
+its tools printed, so hundreds of drifted observations are normal. A request out of
 recorded order is an agent asking for a session title beside its first real question.
-Neither of those is a fault. A miss is a fault, because it means that an agent sent a
-request that the recording does not hold.
-
-One kind of miss does not come from an agent. `cs-sandbox doctor` checks every lender on
-the machine, and it does that by asking each proxy for `/`. If anybody runs it while your
-replay is going, the proxy counts a miss for each of your three agents. The step names
-those misses, takes them off the count, and fails only on a miss that an agent sent. The
-same `doctor` prints `NO` lines that say the proxy `does not answer`. The proxy did
-answer, with a 400, because `/` is not a model call. Both effects are harmless. You can
-tell because the step still ends by saying that no provider was called.
 
 The step is `scripts/campaign-vcr`, and it uses three documented surfaces of the tools.
 The profile's `env:` block gives each member `OPENCODE_BASE_URL`, which aims it at the
