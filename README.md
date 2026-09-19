@@ -112,8 +112,8 @@ The step then copies the ledger into `.work` and works on the copy. A ledger has
 no evidence, and the check fails on purpose:
 
 ```
-  - issues/STD-010.json: status "closed" requires non-empty evidence.verified
-  - issues/STD-010.json: status "closed" requires evidence.commits
+  - issues/<the-new-id>.json: status "closed" requires non-empty evidence.verified
+  - issues/<the-new-id>.json: status "closed" requires evidence.commits
 ```
 
 A closed record has to cite the commit that fixed it, and say how the fix was proved.
