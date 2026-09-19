@@ -3,18 +3,25 @@
   "title": "The make targets hide the tool commands from a person reading along",
   "type": "improvement",
   "severity": "med",
-  "status": "in-progress",
+  "status": "closed",
   "foundBy": "user report (host): \"we haven't really shown the tools to the users themselves. this may be ok if we only expect agents to use the tools, but may be hard if a human is trying to review them for the first time\"",
   "opened": "2026-09-19",
-  "resolved": null,
+  "resolved": "2026-09-19",
   "stint": "tour session of 2026-09-19",
   "evidence": {
-    "commits": [],
+    "commits": [
+      "155047b"
+    ],
     "integrated": [],
-    "verified": null
+    "verified": "With `FIREWORKS_API_KEY` removed from the environment, `make try-tracer`, `make try-lint`, `make try-vcr` and `make try-sandbox` each exited 0, and each printed its tool commands as `  $ <command>` lines. After `eval \"$(make env)\"`, `cs-campaign version` reported the pinned build, where the bare name reported an older, locally built one. `make -n` passed on all 38 targets."
   },
   "resolution": null,
   "details": "Most recipes start with `@`, so the command is silent. The ones that print show a long line of `PATH=` and `CS_SANDBOX_BIN=` settings, with the useful part at the far end. The only demonstration also needs a Fireworks key, a Go toolchain, podman and half an hour.\n\nA reader's own project will not have this Makefile, so the tool commands are what the repository has to teach.",
-  "notes": [],
+  "notes": [
+    {
+      "date": "2026-09-19",
+      "text": "`make try-ledger` failed during this verification, and the failure was right. This record had been edited and the page not yet rendered, so `cs-ledger check` reported `ledger.html: STALE`. It passed once the page was rendered."
+    }
+  ],
   "links": []
 }
