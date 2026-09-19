@@ -60,6 +60,10 @@ release, so they come from the Go module proxy into a local `tools` directory. T
 run on a machine takes a couple of minutes, and a later one takes seconds, because npm
 and Go both keep what they fetched. It ends by saying what to run next.
 
+Part of the way through, `cs-sandbox` prints a line that starts with `next: sign in once
+on the host`. That advice is for people who lend a subscription login to a sandbox. This
+tour lends a key file and never a login, so you can ignore the line.
+
 Run `make` on its own at any time to see the tour again.
 
 ## How to read what a step prints
@@ -129,6 +133,8 @@ The other two read a page with three planted faults, and they fail on purpose:
 PROSE-103 error     49-word sentence (max 30) [README.md:6]
 PROSE-104 error     2 em-dash(es); use a full stop, a comma, or cut the aside [README.md:6]
 
+prose: 2 error(s), 0 warning(s), 0 skipped
+
   $ cs-lint refs --root .work/lint-try --verbose
 
 REF-101  error     docs/setup-guide.md is named here and does not exist [README.md]
@@ -140,7 +146,8 @@ REF-303  skip      no ledger/ledger.json at the root
 refs: 1 error(s), 0 warning(s), 4 skipped
 ```
 
-Each line gives a rule number, what is wrong, and the file. `prose` checks how a page is
+Each line gives a rule number, what is wrong, and the file. Under each `prose` error the
+tool also prints the sentence at fault, which this page leaves out. `prose` checks how a page is
 written, and `refs` checks that what it points at exists. A `skip` is a rule that had
 nothing to read, and `--verbose` says why. The planted page is
 `tour/broken-page.md.txt`, and the step tells you how to edit the copy until both pass.
@@ -248,7 +255,10 @@ again, which calls Fireworks and costs about two cents.
 This step needs podman and a writable `/dev/kvm`, and `scripts/cs cs-sandbox doctor`
 says whether this machine has them. In its output, `ok` is a check that passed and `NO` is
 one that failed. A line that starts with `??` is advice, for example about memory or
-disk space, and nothing in this tour depends on it. The first create on a machine pulls an image of
+disk space, and nothing in this tour depends on it. `doctor` checks every sandbox on the
+machine, including other people's, and it ends with a failure when any of them has a `NO`.
+For this step you only need the lines about podman and KVM to say `ok`. Step 6 explains a
+`NO` that you are likely to see on a shared machine. The first create on a machine pulls an image of
 several gigabytes. After that a create takes about five seconds.
 
 ```bash
@@ -301,7 +311,8 @@ on is the model that its profile declares.
 An orchestrator then writes the design of a small web page, and it commits that design. A
 developer builds it with the `@codesweep-ai/ui` design system, and a qa role checks it in
 a real browser. Then the step fetches the work, archives the run, and builds the dispatch
-page and the trajectories. It ends with the page served on a URL, and
+page and the trajectories. A dispatch is one piece of work that the orchestrator hands to
+another agent, and the dispatch page is the timeline of all of them. It ends with the page served on a URL, and
 `make show-reports` serves the two reports.
 
 In a replay, only the agents' decisions come from the recording. Every command that
@@ -510,9 +521,9 @@ load a member's first turn can miss that bound, and the create then fails naming
 the members.
 
 The demo treats that as a failure and stops. It does not resume the create, even
-though `create` is documented as resumable. A resumed create would show that
-resume works rather than that a clean create works, and the resume path is itself
-suspect. For that reason the demo always destroys a failed campaign and creates a new
+though `create` is documented as resumable. There are two reasons. The demo exists to
+show that a clean create works, and a resumed create would not show that. The resume
+path is also not yet trusted, so the demo does not rely on it. For that reason the demo always destroys a failed campaign and creates a new
 one.
 
 When a readback fails, read the member logs under `~/.cs-opencode-remote-logs`. A
@@ -549,7 +560,8 @@ make demo-watch                  # follow it until the run ends or breaks
 ./scripts/campaign-watch <name> --once   # one report, then exit
 ```
 
-The script prints one line per node on every look, and it follows that with any
+`cs-campaign` calls each member's machine a node, so the two words mean the same thing
+here. The script prints one line per node on every look, and it follows that with any
 new claims. It exits 0 when every dispatch has closed, which means the run
 finished. Three conditions make it exit 1. The first is a node that reports `node-stuck`,
 `node-stopped` or `node-unreachable`. The second is a provider error in a member

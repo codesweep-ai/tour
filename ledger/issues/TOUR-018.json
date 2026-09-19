@@ -22,6 +22,10 @@
     {
       "date": "2026-09-19",
       "text": "The causes sit upstream and are not yet filed there. In `cs-sandbox`, the lender probe uses `curl -f`, so any upstream that answers a bare GET with a 4xx is reported as not answering. In `cs-vcr`, a request for a cassette's root counts as a miss, and the file that `--dump-misses` writes for it is empty. The tour pins released tools, and a new version would make the cassettes stale, so the tolerance here stays until both are fixed and released."
+    },
+    {
+      "date": "2026-09-19",
+      "text": "Two more rounds of three fresh readers each then ran the tour from new clones, two of them on the smallest model. Their six replays ran three at a time, and `cs-sandbox doctor` was run during every one, once by a reader who was following step 5. All six ended with exit 0 and `misses that an agent sent 0`, with between 2 and 6 probe misses each, and all six delivered the recording's four commit ids. Every reader gave the right verdict from the README alone. The second round showed that the README still stated the pass rule without its exception, and the third round read the corrected text and reported it as clear."
     }
   ],
   "links": [
