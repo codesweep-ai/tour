@@ -1,18 +1,12 @@
 {
   "name": "simple-tools-demo",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
+  "description": "A tour of the codesweep tools, from the smallest to the largest.",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@codesweep-ai/ledger": "0.0.0-20260915220605-312c48564629",
     "@codesweep-ai/lint": "0.0.0-20260915220605-2381ff44d94a",
     "opencode-ai": "1.18.31"
-  }
+  },
+  "private": true
 }

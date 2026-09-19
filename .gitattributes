@@ -1,0 +1,15 @@
+# The scripts here carry a `#!/usr/bin/env bash` shebang and are run on Linux
+# and macOS. A checkout on Windows applies core.autocrlf and rewrites every text
+# file to CRLF, after which the shebang reads as `bash\r` and executing one
+# fails with
+#
+#     /usr/bin/env: 'bash\r': No such file or directory
+#
+# which names the interpreter rather than the script.
+#
+# The cassette is the other reason. cs-vcr compares a request with the recorded
+# one byte for byte, and a line ending rewritten on checkout fails the replay for
+# a reason no diff explains.
+#
+# text=auto still lets git detect and leave binaries alone.
+* text=auto eol=lf

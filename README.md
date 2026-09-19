@@ -1,5 +1,12 @@
 # simple-tools-demo
 
+> **A hands-on tour of the codesweep tools for AI coding agents: five steps that need no key and
+> spend nothing, then a three-agent campaign that builds and serves a small web page.**
+
+[![CI](https://github.com/codesweep-ai/simple-tools-demo/actions/workflows/ci.yml/badge.svg)](https://github.com/codesweep-ai/simple-tools-demo/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+![Platforms](https://img.shields.io/badge/platform-Linux-lightgrey)
+
 This repo is a tour of the codesweep tools. It starts with the smallest tool and ends
 with the largest, so that you get a feel for each one before the next one builds on it.
 Every tool is pinned, and every step prints the command it runs.
@@ -438,3 +445,8 @@ The committed files are the campaign, the ledger, one cassette, the two files th
 plants, and the scripts. Everything else is generated. The `tools` directory holds
 binaries, `node_modules` contains packages, and `.work` collects whatever a step writes.
 All three stay out of git, and all three rebuild from what is committed.
+
+## License
+
+This repository is released under the [Apache 2.0 licence](LICENSE), and so is every tool it
+shows. [CONTRIBUTING.md](CONTRIBUTING.md) says how to propose a change.

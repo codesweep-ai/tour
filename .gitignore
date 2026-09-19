@@ -7,3 +7,7 @@ tools/
 
 # Campaign workspace, throwaway app repo, port-forward state.
 .work/
+
+# Local secrets. The campaign key lives in ~/.cs-keys, never in this tree.
+.env
+.env.*

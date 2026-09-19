@@ -1,0 +1,45 @@
+# The knobs cs-lint reads for this repository.
+#
+# The linters carry no project knowledge. Everything that differs between
+# repositories lives here. Run `cs-lint <linter> --explain` to read what each
+# rule wants.
+
+docs:
+  prose:
+    # The terms a reader of this tour cannot infer. Each must be introduced where a
+    # document first uses it.
+    glossary:
+      - cassette
+      - readback
+      - trajectory
+      - orchestrator
+      - lender
+
+oss:
+  # This repository ships no command of its own. It demonstrates the six that the
+  # codesweep tools ship.
+  project: simple-tools-demo
+  githubRepo: codesweep-ai/simple-tools-demo
+
+  published: false
+
+  # A demonstration has a tour and a way to contribute. It has no tool to install,
+  # no command surface to document and no behaviour to specify, so INSTALL.md,
+  # MANUAL.md and SPEC.md have nothing to say here. Each tool carries its own.
+  docSet:
+    - README.md
+    - CONTRIBUTING.md
+    - AGENTS.md
+
+  # `build` is left out because nothing here is built. `make setup` fetches the
+  # pinned tools, and that is a different act from building this repository.
+  requiredTargets: ["help", "test", "check", "lint", "prose", "refs", "oss", "ci", "clean"]
+  expectedTargets: []
+
+  # The cassette is recorded traffic. It holds the agent's own tool descriptions,
+  # whose example paths and addresses are not this repository's to edit.
+  skipPaths:
+    "cassettes/": "recorded agent traffic, which cs-vcr scrubs and verifies with its own gate"
+
+  allow:
+    OSS-407: "a demonstration has no artifact to release; every tool it shows releases from its own repository"

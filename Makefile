@@ -40,7 +40,7 @@ RECORD        := $${CS_CAMPAIGN_STATE_DIR:-$$HOME/.config/cs-campaign/campaigns}
 
 .DEFAULT_GOAL := help
 
-.PHONY: help help-all setup tools doctor env check clean clean-all \
+.PHONY: help help-all setup tools doctor env check test ci prose refs oss actionlint clean clean-all \
         try-tracer try-lint try-ledger try-vcr try-sandbox vcr-record \
         demo demo-start demo-watch demo-stop demo-destroy demo-clean show-reports show-app \
         lint ledger ledger-render cassettes no-local-paths no-session-links \
@@ -173,12 +173,42 @@ vcr-record:
 	@CS_VCR_CASSETTES=$(CURDIR)/cassettes $(CS) cs-vcr cassette scrub hello --from-env FIREWORKS_API_KEY
 
 ## check: everything that must pass before a commit
-check: lint ledger cassettes no-local-paths no-session-links
+check: prose refs oss actionlint ledger cassettes no-local-paths no-session-links
 
-### lint: the two linters that read the tree and nothing else
-lint:
+## test: the tour steps that check themselves and boot no machine
+##
+## Each one fails when the tool stops behaving as the tour says. None needs a key, and
+## `try-vcr` runs a whole agent loop against the committed cassette for nothing.
+test: try-lint try-ledger try-vcr
+
+## ci: every gate the CI workflow runs, in the order it runs them
+##
+## It starts with `setup`, so that the one command is enough on a fresh clone. A second
+## run is quick, because the Go and npm caches already hold every pinned tool.
+ci: setup check test
+
+### lint: the three linters that need no build
+lint: prose refs oss
+
+### prose: how the documents and the ledger records are written
+prose:
 	@$(CS) cs-lint prose
+
+### refs: whether everything the documents point at exists
+refs:
 	@$(CS) cs-lint refs
+
+### oss: whether this repository has what a published one owes a reader
+oss:
+	@$(CS) cs-lint oss
+
+### actionlint: whether the CI workflow is one the forge will accept
+##
+## This repository has no go.mod to pin a Go tool in, so the version is pinned here.
+ACTIONLINT_VERSION ?= v1.7.12
+actionlint:
+	@echo ""; echo "  $$ actionlint"; echo ""
+	@go run github.com/rhysd/actionlint/cmd/actionlint@$(ACTIONLINT_VERSION)
 
 ### ledger: validate the records and prove ledger.html is current
 ledger:
@@ -329,7 +359,9 @@ demo-stop:
 	  kill "$$(cat $(FORWARD_PID))" 2>/dev/null && echo "stopped forwarding the app"; \
 	  rm -f $(FORWARD_PID); \
 	fi
-	@if [ -f "$(RECORD)" ]; then \
+	@if [ -n "$(filter demo-destroy demo-clean demo-reset,$(MAKECMDGOALS))" ]; then \
+	  true; \
+	elif [ -f "$(RECORD)" ]; then \
 	  echo "the members are still running. Drop them with: make demo-destroy"; \
 	else \
 	  echo "nothing is serving, and no campaign is running"; \

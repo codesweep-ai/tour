@@ -1,0 +1,115 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# No job here needs a provider key, and none spends. The sandbox and campaign
+# steps of the tour boot virtual machines, which a hosted runner cannot do, so
+# they stay out of CI. Every `make` target below is one `make ci` reaches, so a
+# green `make ci` on a laptop is a green run here.
+jobs:
+  # The whole gate. `make test` replays a committed cassette through cs-vcr,
+  # which is the point the tour makes: a real agent loop runs in CI with no
+  # credential. The Go tools have no release to download, so `make setup`
+  # builds them from the module proxy at the versions the Makefile pins.
+  tour:
+    name: check and test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # the history rules read the history
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-go@v7
+        with:
+          go-version: "1.27"
+          cache: false
+      - name: make setup
+        run: make setup
+      - name: make check
+        run: make check
+      - name: make test
+        run: make test
+
+  # An invalid workflow file fails the run with zero jobs and no annotation,
+  # which is the least legible failure the forge produces.
+  actionlint:
+    name: workflows
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version: "1.27"
+          cache: false
+      - run: make actionlint
+
+  # A job each for the linters that read the tree and nothing else. They need
+  # only the npm tools, so they answer in seconds, and they answer even when the
+  # larger job is failing.
+  prose:
+    name: docs prose
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: make prose
+
+  refs:
+    name: docs refs
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: make refs
+
+  oss:
+    name: open source readiness
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # the history rules read the history
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: make oss
+
+  ledger:
+    name: cs-ledger check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # a closed record cites a commit, and the check looks it up
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: make ledger
