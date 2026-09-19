@@ -1,0 +1,24 @@
+{
+  "id": "TOUR-016",
+  "title": "The campaign replay failed on a busy machine, over a screenshot that differed by three bytes",
+  "type": "defect",
+  "severity": "high",
+  "status": "closed",
+  "foundBy": "a first-time reader agent, running step 6 from a fresh clone while other campaigns were using the machine",
+  "opened": "2026-09-19",
+  "resolved": "2026-09-19",
+  "stint": null,
+  "evidence": {
+    "commits": [
+      "28c8b12"
+    ],
+    "integrated": [],
+    "verified": "`cs-vcr calibrate` was run on the reader's real missed request. Under the old configuration it reported one path that differed, `messages[].content[].image_url.url`. Under the new one it reported `every paired request already aligns`. A full `make demo-replay` was then run from the reader's own clone, where it had failed twice, with 18 other sandboxes running on the machine. The proxy's count at the end was `replayed 157`, `upstream calls 0` and `misses 0`."
+  },
+  "resolution": null,
+  "details": "`make demo-replay` failed twice in a row for a reader, at the same step of the orchestrator's cassette, with `misses 1`. Every replay before it had passed, five of them, all on a quiet machine.\n\nThe orchestrator checks the developer's work by taking a screenshot of the page and showing it to the model. The picture travels inside a request, so cs-vcr compared it with the recorded one byte for byte. The two pictures look identical, and they differ by three bytes out of about 14,900. Another session was running campaigns on the machine during the reader's runs, and the page was rendered at a slightly different instant.\n\ncs-vcr tolerates a tool's changed text by default, and it says what to do about anything else: declare the path under `normalize.volatile`. A screenshot is an observation of the world, exactly as a tool's printed text is, so the proxy's configuration now declares it.\n\nThis was the failure the step's own pass condition exists to catch, and it was caught by the first reader who ran the step under other load. Five passes on one quiet machine had not shown it. `make check` could not have shown it either, because it proves a cassette is whole and current, and only a replay proves that a cassette replays.",
+  "notes": [],
+  "links": [
+    "TOUR-009"
+  ]
+}
