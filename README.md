@@ -119,7 +119,7 @@ records, and `cs-ledger` checks them and renders one HTML page for people to rea
 make try-ledger
 ```
 
-The step first checks the ledger in `ledger/`. Those nine records are real. They are
+The step first checks the ledger in `ledger/`. Those records are real. They are
 what went wrong while this demo was built, with the commit that fixed each one. Open
 `ledger/ledger.html` to read them.
 
