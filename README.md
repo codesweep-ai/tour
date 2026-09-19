@@ -163,16 +163,19 @@ make try-sandbox
 The step follows the whole loop, which is create, work, fetch and destroy:
 
 ```
-  $ cs-sandbox create tour --group tour --repo .work/sandbox-try/repo:work --lend-api-key fireworks
-  $ cs-sandbox exec tour.tour -- bash -lc '...'
-  $ cs-sandbox fetch tour.tour
-  $ cs-sandbox destroy tour.tour --force
+  $ cs-sandbox create tour1234 --group tour1234 --repo .work/sandbox-try/repo:work --lend-api-key fireworks
+  $ cs-sandbox exec tour1234.tour1234 -- bash -lc '...'
+  $ cs-sandbox fetch tour1234.tour1234
+  $ cs-sandbox destroy tour1234.tour1234 --force
 ```
+
+The four digits come from the path of your clone, so two clones never collide. A sandbox
+is addressed as its name, a dot, and its group.
 
 The sandbox shares one repository with this machine and nothing else. A commit made
 inside comes back with `fetch`. When you have a key at `~/.cs-keys/fireworks`, the step
 also shows how lending works. Inside the sandbox the variable holds a loan token such
-as `loan_tour_...`, and no file in the sandbox holds the real key.
+as `loan_tour1234_...`, and no file in the sandbox holds the real key.
 
 ### 6. cs-campaign: three agents and one mission
 

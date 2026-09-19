@@ -3,10 +3,11 @@
 #
 # Spends no tokens. The first create on a machine pulls the sandbox image, which is
 # several gigabytes, so that one run takes minutes. After that a create takes seconds.
-# Set TOUR_ID to run two of these at once.
+# The sandbox is named after this clone's path, so two clones can run this at once.
+# Set TOUR_ID to choose the name yourself.
 set -uo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"; cs="$root/scripts/cs"; cd "$root"
-id="${TOUR_ID:-tour}"; name="$id.$id"; repo=".work/sandbox-try/repo"
+id="${TOUR_ID:-tour$(printf '%s' "$root" | cksum | cut -c1-4)}"; name="$id.$id"; repo=".work/sandbox-try/repo"
 cleanup() { CS_QUIET=1 "$cs" cs-sandbox group rm "$id" -f >/dev/null 2>&1 || true; }
 trap cleanup EXIT
 cleanup
