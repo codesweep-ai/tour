@@ -20,10 +20,23 @@ export CS_CAMPAIGN_GUEST_BIN="$root/tools/cs-campaign-member"
 [ $# -gt 0 ] || { echo "usage: scripts/cs <tool> [args...]" >&2; exit 2; }
 command -v "$1" >/dev/null 2>&1 || { echo "cs: $1 is not installed. Run: make setup" >&2; exit 127; }
 
+# The printed line hides any secret it can recognise: the value of a provider key in
+# the environment, and the contents of a key file under ~/.cs-keys. The command that
+# runs still gets the real value. Only the echo is changed, because a terminal, a CI
+# log and a scrollback all keep what is printed.
+secrets=()
+for v in FIREWORKS_API_KEY ANTHROPIC_API_KEY OPENAI_API_KEY; do
+  [ -n "${!v:-}" ] && secrets+=("${!v}")
+done
+for f in "$HOME"/.cs-keys/*; do
+  [ -f "$f" ] && [ -r "$f" ] && s="$(tr -d '\r\n' <"$f")" && [ ${#s} -ge 8 ] && secrets+=("$s")
+done
+
 if [ -z "${CS_QUIET:-}" ]; then
   line=""
   for a in "$@"; do
     a="${a//"$root"\//}"
+    for s in "${secrets[@]}"; do a="${a//"$s"/<redacted>}"; done
     case "$a" in
       *\'*) line+=" $(printf '%q' "$a")" ;;
       *[!A-Za-z0-9_./:=@%+,-]*|"") line+=" '$a'" ;;

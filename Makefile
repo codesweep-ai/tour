@@ -56,7 +56,7 @@ help:
 	@echo ""
 	@echo "  five minutes, no key, nothing spent"
 	@echo "    make try-tracer         cs-tracer   draw one of your own agent sessions as a page"
-	@echo "    make try-lint           cs-lint     watch it pass, then catch two planted faults"
+	@echo "    make try-lint           cs-lint     watch it pass, then catch three planted faults"
 	@echo "    make try-ledger         cs-ledger   read this repo's ledger, file and close a record"
 	@echo "    make try-vcr            cs-vcr      replay a recorded agent run, with no key at all"
 	@echo "    make try-sandbox        cs-sandbox  create, work, fetch, destroy   (needs podman and KVM)"
@@ -67,6 +67,7 @@ help:
 	@echo "    make show-reports       read the dispatch page and the trajectories"
 	@echo "    make demo-clean         drop the members and the demo's artefacts"
 	@echo ""
+	@echo "  in any step's output      a line that starts with \$$ is the tool command that step just ran"
 	@echo "  run a tool yourself       eval \"\$$(make env)\"   then type its name"
 	@echo "  every target              make help-all"
 	@echo ""
@@ -146,7 +147,7 @@ env:
 try-tracer:
 	@./scripts/try-tracer
 
-## try-lint: watch cs-lint pass here, then catch two planted faults
+## try-lint: watch cs-lint pass here, then catch three planted faults
 try-lint:
 	@./scripts/try-lint
 

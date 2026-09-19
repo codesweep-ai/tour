@@ -30,9 +30,13 @@ if "$cs" cs-ledger check "$try"; then
   echo "cs-ledger accepted a closed record with no evidence, which was not the plan." >&2; exit 1
 fi
 echo ""
+sha="$(git rev-parse --short HEAD 2>/dev/null || echo abc1234)"
 echo "That failure was the point. A closed record has to cite the commit that fixed it and"
-echo "say how the fix was proved. Open $try/issues/$id.json, set \`evidence.commits\` to a"
-echo "real commit of this repository and \`evidence.verified\` to a sentence, then run:"
+echo "say how the fix was proved. Open $try/issues/$id.json and make its evidence read:"
+echo ""
+echo "  \"evidence\": { \"commits\": [\"$sha\"], \"integrated\": [], \"verified\": \"Opened the page at 360 pixels wide, and the greeting fits on one line.\" },"
+echo ""
+echo "$sha is the latest commit here. A made-up one fails, because the check looks it up. Then run:"
 echo ""
 echo "  scripts/cs cs-ledger render $try && scripts/cs cs-ledger check $try"
 echo ""

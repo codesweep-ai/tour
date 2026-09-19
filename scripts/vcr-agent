@@ -2,10 +2,13 @@
 # vcr-agent — run one small agent task through cs-vcr, recording it or replaying it.
 #
 # usage: scripts/vcr-agent record|replay [cassette]
+#        scripts/vcr-agent agent <port> [cassette]
 #
 # record  calls Fireworks for real, and writes cassettes/<cassette>. It needs
 #         FIREWORKS_API_KEY, and it costs a fraction of a cent.
 # replay  serves that cassette back. It contacts no provider and needs no key.
+# agent   starts no cs-vcr. It runs the agent against one you started yourself on
+#         <port>, which is how you drive the two halves by hand.
 #
 # A cassette replays on another machine only when the agent asks the same question
 # there, so everything around the agent is held still:
@@ -16,14 +19,21 @@
 #   - the agent itself is the opencode pinned in package.json, because another version
 #     sends another prompt.
 set -uo pipefail
-mode="${1:-}"; cassette="${2:-hello}"
-case "$mode" in record|replay) ;; *) echo "usage: scripts/vcr-agent record|replay [cassette]" >&2; exit 2 ;; esac
+mode="${1:-}"
+case "$mode" in
+  record|replay) cassette="${2:-hello}"; port="" ;;
+  agent) port="${2:-}"; cassette="${3:-hello}"
+         [ -n "$port" ] || { echo "usage: scripts/vcr-agent agent <port> [cassette]" >&2; exit 2; } ;;
+  *) echo "usage: scripts/vcr-agent record|replay [cassette]   or   agent <port> [cassette]" >&2; exit 2 ;;
+esac
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cs="$root/scripts/cs"; work="$root/.work/vcr"
 model="${VCR_MODEL:-fireworks-ai/accounts/fireworks/models/kimi-k2p7-code}"
 task="${VCR_TASK:-Create a file called hello.txt that contains exactly the word hello. Then say done.}"
 
-if [ "$mode" = record ]; then
+if [ "$mode" = agent ]; then
+  key="${FIREWORKS_API_KEY:-not-a-real-key}"
+elif [ "$mode" = record ]; then
   [ -n "${FIREWORKS_API_KEY:-}" ] || { echo "record calls Fireworks, so FIREWORKS_API_KEY has to be set" >&2; exit 1; }
   key="$FIREWORKS_API_KEY"; rm -rf "$root/cassettes/$cassette"
 else
@@ -31,7 +41,9 @@ else
   key="not-a-real-key"
 fi
 
-if [ "$mode" = replay ]; then
+if [ "$mode" = agent ]; then
+  echo "Running the agent against the cs-vcr you started on 127.0.0.1:$port."
+elif [ "$mode" = replay ]; then
   echo "1. The cassette, as it is committed under cassettes/$cassette. It holds one agent"
   echo "   session as plain text: each request the agent made, and what the model answered."
   CS_VCR_CASSETTES="$root/cassettes" "$cs" cs-vcr cassette ls "$cassette"
@@ -43,46 +55,58 @@ else
 fi
 
 freeport() { python3 -c 'import socket;s=socket.socket();s.bind(("127.0.0.1",0));print(s.getsockname()[1]);s.close()'; }
-port="$(freeport)"; admin="$(freeport)"
 rm -rf "$work"; mkdir -p "$work/home" "$work/proj" "$work/vcrhome"
 git -C "$work/proj" init -q
-
-extra=(); [ "$mode" = replay ] && extra=(--dump-misses .work/vcr/misses)
 cd "$root"
-env -u CS_VCR_CONFIG CS_VCR_HOME="$work/vcrhome" VCR_ROOT="$root" \
-  "$cs" cs-vcr "$mode" --cassettes cassettes --listen "127.0.0.1:$port" --admin "127.0.0.1:$admin" "${extra[@]}" \
-  >"$work/vcr.log" 2>&1 &
-vcr_pid=$!
-for _ in $(seq 100); do curl -fs "http://127.0.0.1:$admin/healthz" >/dev/null 2>&1 && break; sleep 0.1; done
-curl -fs "http://127.0.0.1:$admin/healthz" >/dev/null 2>&1 || { echo "cs-vcr did not start:" >&2; cat "$work/vcr.log" >&2; exit 1; }
-sed -n '/^  \$/p' "$work/vcr.log" >&2
-echo "  cs-vcr is up on 127.0.0.1:$port, in $mode mode. The agent is pointed at it with:" >&2
-echo "    baseURL  http://127.0.0.1:$port/c/fireworks/$cassette/v1" >&2
-echo "    HTTPS_PROXY=http://127.0.0.1:$port   (so its other calls are refused the same way each run)" >&2
-[ "$mode" = replay ] && echo "    FIREWORKS_API_KEY=$key" >&2
+
+vcr_pid=""
+if [ "$mode" != agent ]; then
+  port="$(freeport)"; admin="$(freeport)"
+  extra=(); [ "$mode" = replay ] && extra=(--dump-misses .work/vcr/misses)
+  env -u CS_VCR_CONFIG CS_VCR_HOME="$work/vcrhome" VCR_ROOT="$root" \
+    "$cs" cs-vcr "$mode" --cassettes cassettes --listen "127.0.0.1:$port" --admin "127.0.0.1:$admin" "${extra[@]}" \
+    >"$work/vcr.log" 2>&1 &
+  vcr_pid=$!
+  for _ in $(seq 100); do curl -fs "http://127.0.0.1:$admin/healthz" >/dev/null 2>&1 && break; sleep 0.1; done
+  curl -fs "http://127.0.0.1:$admin/healthz" >/dev/null 2>&1 || { echo "cs-vcr did not start:" >&2; cat "$work/vcr.log" >&2; exit 1; }
+  sed -n '/^  \$/p' "$work/vcr.log" >&2
+fi
 
 config='{"provider":{"fireworks-ai":{"options":{"baseURL":"http://127.0.0.1:'"$port"'/c/fireworks/'"$cassette"'/v1"}}}}'
-( cd "$work/proj" && env -i PATH="$root/node_modules/.bin:/usr/bin:/bin" HOME="$work/home" TERM=dumb \
-    XDG_CONFIG_HOME="$work/home/.config" XDG_DATA_HOME="$work/home/.local/share" \
-    XDG_CACHE_HOME="$work/home/.cache" XDG_STATE_HOME="$work/home/.local/state" \
-    FIREWORKS_API_KEY="$key" OPENCODE_CONFIG_CONTENT="$config" \
-    HTTP_PROXY="http://127.0.0.1:$port" HTTPS_PROXY="http://127.0.0.1:$port" ALL_PROXY="http://127.0.0.1:$port" \
-    NO_PROXY=127.0.0.1,localhost no_proxy=127.0.0.1,localhost \
-    timeout 180 "$cs" opencode run --model "$model" "$task" </dev/null ) 2>&1 | sed 's/\x1b\[[0-9;]*m//g'
+# Everything the agent is given. Nothing else reaches it, because `env -i` starts it
+# from an empty environment.
+agent_env=(
+  PATH="$root/node_modules/.bin:/usr/bin:/bin" HOME="$work/home" TERM=dumb
+  XDG_CONFIG_HOME="$work/home/.config" XDG_DATA_HOME="$work/home/.local/share"
+  XDG_CACHE_HOME="$work/home/.cache" XDG_STATE_HOME="$work/home/.local/state"
+  FIREWORKS_API_KEY="$key" OPENCODE_CONFIG_CONTENT="$config"
+  HTTP_PROXY="http://127.0.0.1:$port" HTTPS_PROXY="http://127.0.0.1:$port" ALL_PROXY="http://127.0.0.1:$port"
+  NO_PROXY=127.0.0.1,localhost no_proxy=127.0.0.1,localhost
+)
+{
+  echo ""
+  echo "  The agent's command line does not say where its model calls go. Its environment"
+  echo "  does, and these are the settings that matter:"
+  echo ""
+  echo "    OPENCODE_CONFIG_CONTENT='$config'"
+  echo "    HTTPS_PROXY=http://127.0.0.1:$port   (and HTTP_PROXY, ALL_PROXY: its other calls are refused the same way each run)"
+  [ "$mode" = record ] && echo "    FIREWORKS_API_KEY=<your real key>" || echo "    FIREWORKS_API_KEY=$key"
+  echo "    HOME=.work/vcr/home                  (empty, so your own agent settings cannot change the prompt)"
+  echo "    working directory .work/vcr/proj"
+} >&2
+( cd "$work/proj" && env -i "${agent_env[@]}" timeout 180 "$cs" opencode run --model "$model" "$task" </dev/null ) 2>&1 | sed 's/\x1b\[[0-9;]*m//g'
 agent_rc=${PIPESTATUS[0]}
 
-kill -INT "$vcr_pid" 2>/dev/null; wait "$vcr_pid"; vcr_rc=$?
+vcr_rc=0
+if [ -n "$vcr_pid" ]; then kill -INT "$vcr_pid" 2>/dev/null; wait "$vcr_pid"; vcr_rc=$?; fi
 
 # Keep the session the agent just ran, in the form cs-tracer reads. OpenCode holds its
 # sessions in a store of its own, so each one has to be exported before it can be traced.
-agent_env=(env -i PATH="$root/node_modules/.bin:/usr/bin:/bin" HOME="$work/home" TERM=dumb
-  XDG_CONFIG_HOME="$work/home/.config" XDG_DATA_HOME="$work/home/.local/share"
-  XDG_CACHE_HOME="$work/home/.cache" XDG_STATE_HOME="$work/home/.local/state")
 mkdir -p "$work/session"
-sid="$(cd "$work/proj" && "${agent_env[@]}" opencode session list </dev/null 2>/dev/null | grep -oE 'ses_[A-Za-z0-9]+' | head -1)"
-[ -n "$sid" ] && ( cd "$work/proj" && "${agent_env[@]}" opencode export "$sid" </dev/null >"$work/session/$sid.json" 2>/dev/null )
+sid="$(cd "$work/proj" && env -i "${agent_env[@]}" opencode session list </dev/null 2>/dev/null | grep -oE 'ses_[A-Za-z0-9]+' | head -1)"
+[ -n "$sid" ] && ( cd "$work/proj" && env -i "${agent_env[@]}" opencode export "$sid" </dev/null >"$work/session/$sid.json" 2>/dev/null )
 echo ""
-grep -E "^(requests|replayed|recorded|upstream calls|misses) " "$work/vcr.log" | sed 's/^/  /'
+[ -n "$vcr_pid" ] && grep -E "^(requests|replayed|recorded|upstream calls|misses) " "$work/vcr.log" | sed 's/^/  /'
 echo ""
 got="$(cat "$work/proj/hello.txt" 2>/dev/null || true)"
 echo "  the agent wrote .work/vcr/proj/hello.txt: '$got'"

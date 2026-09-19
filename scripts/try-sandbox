@@ -26,11 +26,15 @@ echo "2. Work. It is a Linux machine of its own, with the three agent CLIs alrea
 if [ ${#lend[@]} -gt 0 ]; then
   echo ""
   echo "3. Your Fireworks key was lent, not copied. Inside, the variable holds a loan token,"
-  echo "   and no file anywhere in the sandbox holds the real key."
+  echo "   and the places a key would be written do not hold the real one."
   real="$(cat "$HOME/.cs-keys/fireworks")"
   "$cs" cs-sandbox exec "$name" -- bash -lc 'echo "FIREWORKS_API_KEY=${FIREWORKS_API_KEY:0:10}..."' || exit 1
   n="$(CS_QUIET=1 "$cs" cs-sandbox exec "$name" -- bash -lc "grep -rlF -- '$real' ~ /etc /run 2>/dev/null | wc -l" | tail -1)"
-  echo "   files inside the sandbox that hold the real key: $n"
+  echo "   files under ~, /etc and /run inside the sandbox that hold the real key: $n"
+  echo ""
+  echo "   The sandbox also has no direct route to the provider. A call to it has to go"
+  echo "   through the lender on this machine, so this direct one is refused:"
+  "$cs" cs-sandbox exec "$name" -- bash -lc 'curl -sS -m 10 -o /dev/null https://api.fireworks.ai/ 2>&1 | tail -1; true'
 else
   echo ""
   echo "3. Skipped: no key at ~/.cs-keys/fireworks to lend. With one there, this step shows"

@@ -8,6 +8,9 @@ The first five steps take about five minutes. They need no key and they spend no
 The last step runs three AI agents that design, build, verify and serve a small web
 page, and that one needs a Fireworks key and a few cents.
 
+Steps 1 to 4 run on any machine with node and Go. Steps 5 and 6 boot small virtual
+machines, so they need Linux with podman and a writable `/dev/kvm`.
+
 ## Set up
 
 You need node and npm, and a Go toolchain. Then run one command:
@@ -80,18 +83,32 @@ at still exists.
 make try-lint
 ```
 
-The step runs the linter twice. The first run reads this repository and passes. The
-second run reads a page with two planted faults, and it fails on purpose:
+The step runs the linter three times. The first run reads this repository and passes.
+The other two read a page with three planted faults, and they fail on purpose:
 
 ```
   $ cs-lint prose --root .work/lint-try
 
-PROSE-103 error     49-word sentence (max 30) [README.md:5]
-PROSE-104 error     2 em-dash(es); use a full stop, a comma, or cut the aside [README.md:5]
+PROSE-103 error     49-word sentence (max 30) [README.md:6]
+PROSE-104 error     2 em-dash(es); use a full stop, a comma, or cut the aside [README.md:6]
+
+  $ cs-lint refs --root .work/lint-try --verbose
+
+REF-101  error     docs/setup-guide.md is named here and does not exist [README.md]
+REF-303  skip      no ledger/ledger.json at the root
 ```
 
-Each line gives a rule number, what is wrong, and the file and line. The planted page
-is `tour/broken-page.md.txt`. The step tells you how to edit the copy until it passes.
+Each line gives a rule number, what is wrong, and the file. `prose` checks how a page is
+written, and `refs` checks that what it points at exists. A `skip` is a rule that had
+nothing to read, and `--verbose` says why. The planted page is
+`tour/broken-page.md.txt`, and the step tells you how to edit the copy until both pass.
+
+`refs` caught a real mistake while this tour was written. This README quoted the id of
+a practice record that the ledger does not hold, and rule `REF-303` refused it.
+
+`cs-lint` has two more linters, and neither fits on one page. `cs-lint surface` compares
+the documents with the program a repository builds. `cs-lint oss` checks that a
+repository has what a published project needs.
 
 ### 3. cs-ledger: issue tracking that lives in the repo
 
@@ -112,12 +129,19 @@ The step then copies the ledger into `.work` and works on the copy. A ledger has
 no evidence, and the check fails on purpose:
 
 ```
-  - issues/<the-new-id>.json: status "closed" requires non-empty evidence.verified
-  - issues/<the-new-id>.json: status "closed" requires evidence.commits
+validation errors (3):
+  - issues/<id>.json: status "closed" requires non-empty evidence.verified
+  - issues/<id>.json: status "closed" requires evidence.commits, or links to the closing issues (delegation closure)
+  - ledger.html: STALE — records changed without re-render. Run: cs-ledger render
+check FAILED: 3 error(s), 0 warning(s)
 ```
 
-A closed record has to cite the commit that fixed it, and say how the fix was proved.
-`cs-ledger check` resolves that commit against the repository, so a made-up one fails.
+Your output names the new record where this shows `<id>`. The first two errors say that
+a closed record has to cite the commit that fixed it, and say how the fix was proved.
+`cs-ledger check` looks that commit up in the repository, so a made-up one fails. The
+third error is a separate gate. The page is rendered from the records, so a record that
+changed without a render leaves a page that no longer matches. The step prints the
+exact `evidence` line to write, and the two commands that make the check pass.
 Run `scripts/cs cs-ledger guide` for the practice an agent follows day to day.
 
 ### 4. cs-vcr: replay an agent run for nothing
@@ -144,6 +168,30 @@ The agent is the real `opencode`, and it writes the real file. Its key is the st
 `not-a-real-key`. Look for `upstream calls 0` in the summary, which means no provider
 was called. This is what lets a CI job test an agent with no credential and no cost.
 
+The agent's command line does not say where its model calls go. Its environment does,
+so the step prints those settings too. The one that matters most is a base URL ending
+in `/c/fireworks/hello/v1`. That path tells `cs-vcr` which provider the call is for and
+which cassette it belongs to. `scripts/cs cs-vcr config opencode --cassette hello
+--provider fireworks` prints the settings for any agent. For `opencode` on Fireworks,
+change the provider key it prints to `fireworks-ai`, which is the name `opencode` uses.
+
+To drive the two halves yourself, start the proxy in one terminal and the agent in
+another:
+
+```bash
+eval "$(make env)"
+cs-vcr replay --cassettes cassettes --listen 127.0.0.1:18080    # terminal one
+scripts/vcr-agent agent 18080                                   # terminal two
+```
+
+Stop `cs-vcr` with Ctrl-C, and it prints the same summary.
+
+The proxy log in `.work/vcr/vcr.log` may say `served out of recorded order`. That is
+expected here. `opencode` asks for a session title while it asks its first real question,
+so the two requests can arrive in either order. `cs-vcr` allows for that by matching a
+request against the next few recorded steps. It also says `tunnel refused` for `models.opencode.ai`,
+which is the agent trying to reach a host of its own and being stopped.
+
 A cassette only replays when the agent asks the same question it asked before. The
 script `scripts/vcr-agent` holds still everything that could change the question. The
 agent gets an empty home directory, a working directory inside this repo, and the
@@ -153,8 +201,9 @@ again, which calls Fireworks and costs a fraction of a cent.
 ### 5. cs-sandbox: a disposable machine for an agent
 
 `cs-sandbox` creates an isolated Linux machine with the agent CLIs already installed.
-This step needs podman and a writable `/dev/kvm`. The first create on a machine pulls an
-image of several gigabytes. After that a create takes about five seconds.
+This step needs podman and a writable `/dev/kvm`, and `scripts/cs cs-sandbox doctor`
+says whether this machine has them. The first create on a machine pulls an image of
+several gigabytes. After that a create takes about five seconds.
 
 ```bash
 make try-sandbox
@@ -175,7 +224,10 @@ is addressed as its name, a dot, and its group.
 The sandbox shares one repository with this machine and nothing else. A commit made
 inside comes back with `fetch`. When you have a key at `~/.cs-keys/fireworks`, the step
 also shows how lending works. Inside the sandbox the variable holds a loan token such
-as `loan_tour1234_...`, and no file in the sandbox holds the real key.
+as `loan_tour1234_...`. The step searches `~`, `/etc` and `/run` inside the sandbox for
+the real key and finds it in no file. It then calls the provider directly from inside,
+and that call is refused with a 403. A model call has to go through the lender on this
+machine, which is where the loan token is exchanged for the real key.
 
 ### 6. cs-campaign: three agents and one mission
 
@@ -219,6 +271,32 @@ member.
 Do not trust the outcome line on its own. Open a member's trajectory and read what it
 did. Every defect recorded in `ledger/` was found that way.
 
+## Using the tools in a project of your own
+
+Every tool here is open source under the Apache-2.0 licence, and each one is a single
+program that runs on your machine. None of them calls a hosted service. The only money
+spent is what your own model provider charges, and only `cs-campaign` and a `cs-vcr`
+recording ever call one.
+
+The two npm tools install as dev dependencies, and the Go tools install with `go install`:
+
+```bash
+npm install --save-dev @codesweep-ai/lint @codesweep-ai/ledger
+go install github.com/codesweep-ai/tracer/cmd/cs-tracer@latest
+go install github.com/codesweep-ai/vcr/cmd/cs-vcr@latest
+go install github.com/codesweep-ai/sandbox/cmd/cs-sandbox@latest
+go install github.com/codesweep-ai/campaign/cmd/cs-campaign@latest
+```
+
+`cs-ledger init --project NAME --prefix ABC` starts a ledger in a repository, and
+`cs-campaign init <name>` writes a first profile, mission and set of briefs. Each tool
+carries its own manual, which `<tool> manual` prints.
+
+The tools' own READMEs list Linux and macOS as platforms, and `cs-sandbox` adds Windows
+under WSL2. `cs-sandbox` has two engines. The Firecracker engine needs Linux and KVM,
+and it is the one this demo uses. The podman engine needs no KVM. This demo has only
+been run on Linux with KVM, so the other routes are untested here.
+
 ## How the versions chain together
 
 You choose one version, `CAMPAIGN_VERSION`, and the `Makefile` derives the rest.
@@ -240,7 +318,9 @@ doctor` reports those as informational.
 `make demo-start`, `make demo-wait`, `make demo-fetch`, `make demo-archive`,
 `make demo-dispatch-page`, `make demo-trajectories` and `make show-app`.
 
-**`make demo-start`** boots three members and then runs the readback. It prints one
+**`make demo-start`** boots three members and then runs the readback. A readback is a
+first question to each member, which has to say back what its brief asks of it before
+any work is dispatched. It prints one
 line per member, and each one ends with `(confirmed by the answering turn)`. That
 phrase matters: it means the model each member answered on is the model
 the profile declared. This is where the run spends first.
@@ -312,8 +392,8 @@ The script prints one line per node on every look, and it follows that with any
 new claims. It exits 0 when every dispatch has closed, which means the run
 finished. Three conditions make it exit 1. The first is a node that reports `node-stuck`,
 `node-stopped` or `node-unreachable`. The second is a provider error in a member
-log. The third is an orchestrator that stops making claims for `WATCH_STALL`
-seconds.
+log. The third is an open dispatch with no activity at all for 1800 seconds, which
+the `--stall` flag of the script changes.
 
 ### Serving the app
 

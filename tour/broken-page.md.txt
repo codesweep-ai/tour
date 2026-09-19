@@ -1,5 +1,6 @@
-# A page with two problems
+# A page with three problems
 
-This sentence is fine, and the linter has nothing to say about it.
+This sentence is fine, and the linter has nothing to say about it. The steps a reader
+needs are in `docs/setup-guide.md`.
 
 The tool — which is new — keeps a record of every run that it has started, and of every run those runs started in turn, and it goes on doing so for as long as anybody leaves it alone, which in practice is a very long time indeed.

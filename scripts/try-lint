@@ -1,20 +1,34 @@
 #!/usr/bin/env bash
-# try-lint — watch cs-lint pass on this repository, then catch two planted faults.
+# try-lint — watch cs-lint pass on this repository, then catch three planted faults.
 set -uo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"; cs="$root/scripts/cs"; cd "$root"
 echo "1. The documents in this repository, as they are committed. This passes."
 "$cs" cs-lint prose || { echo "cs-lint found a fault in the committed documents, which was not the plan." >&2; exit 1; }
 echo ""
-echo "2. A page with two faults, copied from tour/broken-page.md.txt. This fails, on purpose."
-rm -rf .work/lint-try; mkdir -p .work/lint-try
+echo "2. A page with planted faults, copied from tour/broken-page.md.txt. It sits in a git"
+echo "   repository of its own under .work, because the linters read the files git tracks."
+echo "   \`prose\` checks how it is written. This fails, on purpose."
+rm -rf .work/lint-try; mkdir -p .work/lint-try/docs
 cp tour/broken-page.md.txt .work/lint-try/README.md
+echo "# Notes" > .work/lint-try/docs/notes.md
+git -C .work/lint-try init -q && git -C .work/lint-try add -A
 if "$cs" cs-lint prose --root .work/lint-try; then
-  echo "cs-lint passed a page that holds two faults, which was not the plan." >&2; exit 1
+  echo "cs-lint passed a page that holds two prose faults, which was not the plan." >&2; exit 1
 fi
 echo ""
-echo "That failure was the point. Each line gives a rule number, what is wrong, and the"
-echo "file and line. Edit .work/lint-try/README.md until this passes:"
+echo "3. \`refs\` checks that what the page points at exists. The page names a file that"
+echo "   does not, so this fails too. \`--verbose\` adds the rules it skipped and why: a"
+echo "   skip means the rule had nothing to read here, such as a ledger this page lacks."
+if "$cs" cs-lint refs --root .work/lint-try --verbose; then
+  echo "cs-lint passed a page that names a missing file, which was not the plan." >&2; exit 1
+fi
+echo ""
+echo "Those failures were the point. Each line gives a rule number, what is wrong, and the"
+echo "file. Edit .work/lint-try/README.md until both of these pass:"
 echo ""
 echo "  scripts/cs cs-lint prose --root .work/lint-try"
+echo "  scripts/cs cs-lint refs --root .work/lint-try"
 echo ""
-echo "The other three linters are \`cs-lint refs\`, \`cs-lint surface\` and \`cs-lint oss\`."
+echo "The other two linters need more than a page. \`cs-lint surface\` compares the documents"
+echo "with the program a repository builds, and \`cs-lint oss\` checks that a repository has"
+echo "what a published project needs. \`scripts/cs cs-lint manual\` lists every rule."
