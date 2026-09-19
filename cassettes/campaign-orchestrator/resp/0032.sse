@@ -1,0 +1,14 @@
+data: {"id":"chatcmpl-b97cb471fd774a5b834114e3ba33769b","object":"chat.completion.chunk","created":1789849211,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Server returns 200. Now I need to visually verify. I can fetch the HTML and maybe take a screenshot. But I don't have a browser. Let me check if I can use curl to see the content. Also, I need to check if the font-size issue is real. Let me fetch the page HTML and CSS to inspect."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849211,"id":"chatcmpl-b97cb471fd774a5b834114e3ba33769b","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"curl -s http://127.0.0.1:5173/ | head -40\", \"workdir\": \"/home/<USER:1>/hello-app\"}","name":"bash"},"id":"bash_50","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849211,"id":"chatcmpl-b97cb471fd774a5b834114e3ba33769b","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"curl -s http://127.0.0.1:5173/src/App.jsx | head -80\", \"workdir\": \"/home/<USER:1>/hello-app\"}","name":"bash"},"id":"bash_51","index":1,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849211,"id":"chatcmpl-b97cb471fd774a5b834114e3ba33769b","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-b97cb471fd774a5b834114e3ba33769b","object":"chat.completion.chunk","created":1789849211,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-b97cb471fd774a5b834114e3ba33769b","object":"chat.completion.chunk","created":1789849211,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":52928,"total_tokens":53090,"completion_tokens":162,"prompt_tokens_details":{"cached_tokens":52805},"completion_tokens_details":{"reasoning_tokens":68},"output_tokens_details":{"reasoning_tokens":68}}}
+
+data: [DONE]
+

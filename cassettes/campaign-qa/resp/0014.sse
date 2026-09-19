@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-c661ff90ef9b49faa9e21853ed91000b","object":"chat.completion.chunk","created":1789849373,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"I need to read the source files too. Let me explore the structure and read the source."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849373,"id":"chatcmpl-c661ff90ef9b49faa9e21853ed91000b","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"pattern\": \"**/*\", \"path\": \"/home/<USER:1>/hello-app\"}","name":"glob"},"id":"glob_9","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849373,"id":"chatcmpl-c661ff90ef9b49faa9e21853ed91000b","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-c661ff90ef9b49faa9e21853ed91000b","object":"chat.completion.chunk","created":1789849373,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c661ff90ef9b49faa9e21853ed91000b","object":"chat.completion.chunk","created":1789849373,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":11044,"total_tokens":11090,"completion_tokens":46,"prompt_tokens_details":{"cached_tokens":9238},"completion_tokens_details":{"reasoning_tokens":19},"output_tokens_details":{"reasoning_tokens":19}}}
+
+data: [DONE]
+

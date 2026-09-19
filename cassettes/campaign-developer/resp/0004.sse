@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-d5d9eefaf1f84261bc0f21ac12274de2","object":"chat.completion.chunk","created":1789848954,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Now I understand. This is dispatch d001, which is a confirmation step. I need to:\n1. Run `cs-campaign-member check-inputs`\n2. Read the files (already done)\n3. Write /tmp/readback.json with the exact JSON format\n4. Reply with it\n\nI should NOT do the actual work yet - just confirm the briefing.\n\nLet me run check-inputs first."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789848954,"id":"chatcmpl-d5d9eefaf1f84261bc0f21ac12274de2","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"cs-campaign-member check-inputs\", \"workdir\": \"/home/<USER:1>\"}","name":"bash"},"id":"bash_4","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789848954,"id":"chatcmpl-d5d9eefaf1f84261bc0f21ac12274de2","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-d5d9eefaf1f84261bc0f21ac12274de2","object":"chat.completion.chunk","created":1789848954,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-d5d9eefaf1f84261bc0f21ac12274de2","object":"chat.completion.chunk","created":1789848954,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":9277,"total_tokens":9393,"completion_tokens":116,"prompt_tokens_details":{"cached_tokens":7413},"completion_tokens_details":{"reasoning_tokens":83},"output_tokens_details":{"reasoning_tokens":83}}}
+
+data: [DONE]
+

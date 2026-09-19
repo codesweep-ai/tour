@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-6cbc1c72990c4a7b90cbcdffe9c23af0","object":"chat.completion.chunk","created":1789849110,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Good. The package exports AppShell, Header, Footer, Button from the main index. Now let me check the dist/index to see what's exported. Actually I can use the components directly from the package. Let me now create all the source files.\n\nI need to check what core.css defines. Let me check the styles directory."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849110,"id":"chatcmpl-6cbc1c72990c4a7b90cbcdffe9c23af0","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"ls node_modules/@codesweep-ai/ui/dist/styles\", \"workdir\": \"/home/<USER:1>/hello-app\"}","name":"bash"},"id":"bash_24","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849110,"id":"chatcmpl-6cbc1c72990c4a7b90cbcdffe9c23af0","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-6cbc1c72990c4a7b90cbcdffe9c23af0","object":"chat.completion.chunk","created":1789849110,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-6cbc1c72990c4a7b90cbcdffe9c23af0","object":"chat.completion.chunk","created":1789849110,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":31890,"total_tokens":31994,"completion_tokens":104,"prompt_tokens_details":{"cached_tokens":30420},"completion_tokens_details":{"reasoning_tokens":66},"output_tokens_details":{"reasoning_tokens":66}}}
+
+data: [DONE]
+

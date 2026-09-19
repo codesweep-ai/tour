@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-351505b5a44340cc9cb223c47a52ea83","object":"chat.completion.chunk","created":1789849052,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Now I need to implement the app. Let me check if Node and npm are available."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849052,"id":"chatcmpl-351505b5a44340cc9cb223c47a52ea83","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"node --version \u0026\u0026 npm --version\", \"workdir\": \"/home/<USER:1>/hello-app\"}","name":"bash"},"id":"bash_10","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849052,"id":"chatcmpl-351505b5a44340cc9cb223c47a52ea83","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-351505b5a44340cc9cb223c47a52ea83","object":"chat.completion.chunk","created":1789849052,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-351505b5a44340cc9cb223c47a52ea83","object":"chat.completion.chunk","created":1789849052,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":11356,"total_tokens":11409,"completion_tokens":53,"prompt_tokens_details":{"cached_tokens":10183},"completion_tokens_details":{"reasoning_tokens":18},"output_tokens_details":{"reasoning_tokens":18}}}
+
+data: [DONE]
+

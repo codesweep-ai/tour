@@ -1,0 +1,16 @@
+data: {"id":"chatcmpl-4fef715edde84342bec003b2fe32abac","object":"chat.completion.chunk","created":1789848952,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"I need to read the input files listed: ORIENTATION.md and developer.md, then d001.md. Let me read all of these."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789848952,"id":"chatcmpl-4fef715edde84342bec003b2fe32abac","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/.local/share/cs-campaign/input/ORIENTATION.md\"}","name":"read"},"id":"read_1","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789848952,"id":"chatcmpl-4fef715edde84342bec003b2fe32abac","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/.local/share/cs-campaign/input/developer.md\"}","name":"read"},"id":"read_2","index":1,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789848952,"id":"chatcmpl-4fef715edde84342bec003b2fe32abac","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/.local/share/cs-campaign/input/d001.md\"}","name":"read"},"id":"read_3","index":2,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789848952,"id":"chatcmpl-4fef715edde84342bec003b2fe32abac","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-4fef715edde84342bec003b2fe32abac","object":"chat.completion.chunk","created":1789848952,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-4fef715edde84342bec003b2fe32abac","object":"chat.completion.chunk","created":1789848952,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":7414,"total_tokens":7523,"completion_tokens":109,"prompt_tokens_details":{"cached_tokens":6973},"completion_tokens_details":{"reasoning_tokens":28},"output_tokens_details":{"reasoning_tokens":28}}}
+
+data: [DONE]
+

@@ -1,0 +1,14 @@
+data: {"id":"chatcmpl-6278d24fa1d4479e8d21653ba7b40fb9","object":"chat.completion.chunk","created":1789849093,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"I see the catalog lists components but no \"Header\" or \"Footer\" components. They belong to AppShell as noted. Let me read the AppShell and Button d.ts files."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849093,"id":"chatcmpl-6278d24fa1d4479e8d21653ba7b40fb9","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/hello-app/node_modules/@codesweep-ai/ui/dist/components/AppShell.d.ts\"}","name":"read"},"id":"read_21","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849093,"id":"chatcmpl-6278d24fa1d4479e8d21653ba7b40fb9","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/hello-app/node_modules/@codesweep-ai/ui/dist/components/Button.d.ts\"}","name":"read"},"id":"read_22","index":1,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849093,"id":"chatcmpl-6278d24fa1d4479e8d21653ba7b40fb9","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-6278d24fa1d4479e8d21653ba7b40fb9","object":"chat.completion.chunk","created":1789849093,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-6278d24fa1d4479e8d21653ba7b40fb9","object":"chat.completion.chunk","created":1789849093,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":29765,"total_tokens":29867,"completion_tokens":102,"prompt_tokens_details":{"cached_tokens":13305},"completion_tokens_details":{"reasoning_tokens":37},"output_tokens_details":{"reasoning_tokens":37}}}
+
+data: [DONE]
+

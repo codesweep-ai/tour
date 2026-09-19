@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-50db40f843054bada153da8e9460ad99","object":"chat.completion.chunk","created":1789848951,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"The user wants me to read a campaign context and follow instructions. Let me start by reading the member.json file and the input files it lists. Then I'll read d001.md and follow the instructions."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789848951,"id":"chatcmpl-50db40f843054bada153da8e9460ad99","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/.config/cs-campaign/member.json\"}","name":"read"},"id":"read_0","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789848951,"id":"chatcmpl-50db40f843054bada153da8e9460ad99","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-50db40f843054bada153da8e9460ad99","object":"chat.completion.chunk","created":1789848951,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-50db40f843054bada153da8e9460ad99","object":"chat.completion.chunk","created":1789848951,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":6974,"total_tokens":7042,"completion_tokens":68,"prompt_tokens_details":{"cached_tokens":6918},"completion_tokens_details":{"reasoning_tokens":40},"output_tokens_details":{"reasoning_tokens":40}}}
+
+data: [DONE]
+

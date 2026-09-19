@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-6669b42f11444a03bc71590d8f104cfc","object":"chat.completion.chunk","created":1789849640,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"The dispatch is closed. I should finish my turn. Let me provide a brief summary to the user."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849640,"id":"chatcmpl-6669b42f11444a03bc71590d8f104cfc","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"content":"QA verification for dispatch `d002` is complete and the reply has been sent.\n\n- Checked out `refs/campaign/orchestrator` (`1d41903`) in `~/hello-app`.\n- Ran `npm install`, `npm run build`, and `npm run serve` on `0.0.0.0:5173`.\n- Inspected the source files (`package.json`, `src/App.jsx`, `src/main.jsx`, `vite.config.js`) against `DESIGN.md`.\n- Used headless Chromium + a `puppeteer-core` script to verify the rendered DOM and button colour changes.\n\n**Result:** All requirements pass. The app builds, serves, and behaves exactly as designed. Header title, footer text, greeting text, default teal colour, the four colour buttons, and the design-system usage (`data-component` attributes and CSS custom-property tokens) all match `DESIGN.md`.\n\n**Artifacts:**\n- Report written to `~/.local/share/cs-campaign/output/d002-report.md`.\n- Report committed to branch `cs-sandbox/<QA:1>.<GROUP:1>`.\n- Dispatch closed with `cs-campaign-member reply`."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849640,"id":"chatcmpl-6669b42f11444a03bc71590d8f104cfc","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-6669b42f11444a03bc71590d8f104cfc","object":"chat.completion.chunk","created":1789849640,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"stop","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-6669b42f11444a03bc71590d8f104cfc","object":"chat.completion.chunk","created":1789849640,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":22619,"total_tokens":22883,"completion_tokens":264,"prompt_tokens_details":{"cached_tokens":12818},"completion_tokens_details":{"reasoning_tokens":21},"output_tokens_details":{"reasoning_tokens":21}}}
+
+data: [DONE]
+

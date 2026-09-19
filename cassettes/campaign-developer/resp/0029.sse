@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-91cd472e40b64f4597041c26badedc63","object":"chat.completion.chunk","created":1789849117,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"I need to install @vitejs/plugin-react. Let me install it now."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849117,"id":"chatcmpl-91cd472e40b64f4597041c26badedc63","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"npm install -D @vitejs/plugin-react\", \"workdir\": \"/home/<USER:1>/hello-app\", \"timeout\": 120000}","name":"bash"},"id":"bash_26","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849117,"id":"chatcmpl-91cd472e40b64f4597041c26badedc63","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-91cd472e40b64f4597041c26badedc63","object":"chat.completion.chunk","created":1789849117,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-91cd472e40b64f4597041c26badedc63","object":"chat.completion.chunk","created":1789849117,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":32219,"total_tokens":32279,"completion_tokens":60,"prompt_tokens_details":{"cached_tokens":32040},"completion_tokens_details":{"reasoning_tokens":16},"output_tokens_details":{"reasoning_tokens":16}}}
+
+data: [DONE]
+

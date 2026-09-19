@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-5509dabdd90d4066aa9cac6faabc5afa","object":"chat.completion.chunk","created":1789849635,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Now I should also commit this report to my branch, as the orientation requires. Let me checkout my branch and add the report."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849635,"id":"chatcmpl-5509dabdd90d4066aa9cac6faabc5afa","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"git checkout cs-sandbox/<QA:1>.<GROUP:1> \u0026\u0026 git status\", \"workdir\": \"/home/<USER:1>/hello-app\"}","name":"bash"},"id":"bash_38","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849635,"id":"chatcmpl-5509dabdd90d4066aa9cac6faabc5afa","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-5509dabdd90d4066aa9cac6faabc5afa","object":"chat.completion.chunk","created":1789849635,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-5509dabdd90d4066aa9cac6faabc5afa","object":"chat.completion.chunk","created":1789849635,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":21971,"total_tokens":22047,"completion_tokens":76,"prompt_tokens_details":{"cached_tokens":20962},"completion_tokens_details":{"reasoning_tokens":26},"output_tokens_details":{"reasoning_tokens":26}}}
+
+data: [DONE]
+

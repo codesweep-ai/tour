@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-6137105dd09b4233b441f7546f4e93d7","object":"chat.completion.chunk","created":1789849054,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Good. Now I need to:\n1. Create .gitignore\n2. Create package.json\n3. Create vite.config.js\n4. Create index.html\n5. Create src/main.jsx\n6. Create src/App.jsx\n7. Create README.md\n8. Install dependencies\n9. Build/serve to verify\n10. Commit\n\nLet me first create the .gitignore before installing any dependencies."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849054,"id":"chatcmpl-6137105dd09b4233b441f7546f4e93d7","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"content\": \"node_modules/\\ndist/\\n\", \"filePath\": \"/home/<USER:1>/hello-app/.gitignore\"}","name":"write"},"id":"write_11","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849054,"id":"chatcmpl-6137105dd09b4233b441f7546f4e93d7","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-6137105dd09b4233b441f7546f4e93d7","object":"chat.completion.chunk","created":1789849054,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-6137105dd09b4233b441f7546f4e93d7","object":"chat.completion.chunk","created":1789849054,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":11439,"total_tokens":11557,"completion_tokens":118,"prompt_tokens_details":{"cached_tokens":11355},"completion_tokens_details":{"reasoning_tokens":82},"output_tokens_details":{"reasoning_tokens":82}}}
+
+data: [DONE]
+

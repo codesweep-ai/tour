@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-5279c539c7a34f9aa0e0e4641232f609","object":"chat.completion.chunk","created":1789849636,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Good. Now I need to add the report. I'll copy it from output dir to repo, add, and commit. I should also make sure .gitignore already ignores node_modules and dist. It does. So I don't need to commit those. But the untracked files are there from the build. I'll just add the report."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849636,"id":"chatcmpl-5279c539c7a34f9aa0e0e4641232f609","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"cp ~/.local/share/cs-campaign/output/d002-report.md ./d002-report.md \u0026\u0026 git add d002-report.md \u0026\u0026 git status\", \"workdir\": \"/home/<USER:1>/hello-app\"}","name":"bash"},"id":"bash_39","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849636,"id":"chatcmpl-5279c539c7a34f9aa0e0e4641232f609","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-5279c539c7a34f9aa0e0e4641232f609","object":"chat.completion.chunk","created":1789849636,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-5279c539c7a34f9aa0e0e4641232f609","object":"chat.completion.chunk","created":1789849636,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":22179,"total_tokens":22302,"completion_tokens":123,"prompt_tokens_details":{"cached_tokens":21970},"completion_tokens_details":{"reasoning_tokens":68},"output_tokens_details":{"reasoning_tokens":68}}}
+
+data: [DONE]
+

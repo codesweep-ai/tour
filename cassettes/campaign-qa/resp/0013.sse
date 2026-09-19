@@ -1,0 +1,16 @@
+data: {"id":"chatcmpl-328345b89c3a41779eefa56eafd1e5a1","object":"chat.completion.chunk","created":1789849371,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Good. Now let me read DESIGN.md and README.md."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849371,"id":"chatcmpl-328345b89c3a41779eefa56eafd1e5a1","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/hello-app/DESIGN.md\"}","name":"read"},"id":"read_6","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849371,"id":"chatcmpl-328345b89c3a41779eefa56eafd1e5a1","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/hello-app/README.md\"}","name":"read"},"id":"read_7","index":1,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849371,"id":"chatcmpl-328345b89c3a41779eefa56eafd1e5a1","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/hello-app/package.json\"}","name":"read"},"id":"read_8","index":2,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849371,"id":"chatcmpl-328345b89c3a41779eefa56eafd1e5a1","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-328345b89c3a41779eefa56eafd1e5a1","object":"chat.completion.chunk","created":1789849371,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-328345b89c3a41779eefa56eafd1e5a1","object":"chat.completion.chunk","created":1789849371,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":9622,"total_tokens":9700,"completion_tokens":78,"prompt_tokens_details":{"cached_tokens":9402},"completion_tokens_details":{"reasoning_tokens":12},"output_tokens_details":{"reasoning_tokens":12}}}
+
+data: [DONE]
+

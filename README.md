@@ -1,7 +1,8 @@
 # tour
 
-> **A hands-on tour of the codesweep tools for AI coding agents: five steps that need no key and
-> spend nothing, then a three-agent campaign that builds and serves a small web page.**
+> **A hands-on tour of the codesweep tools for AI coding agents: six steps that need no key and
+> spend nothing, ending with a three-agent campaign replayed from a recording, then the same
+> campaign live.**
 
 [![CI](https://github.com/codesweep-ai/tour/actions/workflows/ci.yml/badge.svg)](https://github.com/codesweep-ai/tour/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
@@ -11,11 +12,12 @@ This repo is a tour of the codesweep tools. It starts with the smallest tool and
 with the largest, so that you get a feel for each one before the next one builds on it.
 Every tool is pinned, and every step prints the command it runs.
 
-The first five steps take about five minutes. They need no key and they spend nothing.
-The last step runs three AI agents that design, build, verify and serve a small web
-page, and that one needs a Fireworks key and a few cents.
+The first six steps need no key and they spend nothing. Step 6 runs three AI agents
+that design, build, verify and serve a small web page, with every model call served
+from a recording. Step 7 runs the same campaign live, and that one needs a Fireworks
+key and a few cents.
 
-Steps 1 to 4 run on any machine with node and Go. Steps 5 and 6 boot small virtual
+Steps 1 to 4 run on any machine with node and Go. Steps 5 to 7 boot small virtual
 machines, so they need Linux with podman and a writable `/dev/kvm`.
 
 ## Set up
@@ -236,11 +238,56 @@ the real key and finds it in no file. It then calls the provider directly from i
 and that call is refused with a 403. A model call has to go through the lender on this
 machine, which is where the loan token is exchanged for the real key.
 
-### 6. cs-campaign: three agents and one mission
+### 6. cs-campaign, replayed: the whole campaign for nothing
 
 `cs-campaign` runs a fleet of agents, each in a sandbox of its own, against one mission.
-This is the only step that spends. It needs podman and KVM as step 5 does, and it needs
-a Fireworks key in two places. Export `FIREWORKS_API_KEY`, and write the same key to
+This step runs a real campaign with no key, because `cs-vcr` from step 4 serves every
+model call from a recording. It needs podman and KVM as step 5 does, and it takes about
+five minutes.
+
+```bash
+make demo-replay
+```
+
+Three machines boot. An orchestrator designs a small web page and commits the design, a
+developer builds it with the `@codesweep-ai/ui` design system, and a qa role checks it in
+a real browser. Then the step fetches the work, archives the run, and builds the dispatch
+page and the trajectories. It ends with the page served on a URL, and
+`make show-reports` serves the two reports.
+
+The agents' decisions are a recording, and everything they run is real. The installs,
+the build, the browser check and the server all happen on your machine, so the page you
+open was built here a minute ago. The proxy's own count ends the run, and it has to read
+`upstream calls 0` and `misses 0`:
+
+```
+    requests                          157
+    replayed                          157
+    upstream calls                    0
+    misses                            0
+```
+
+The step is `scripts/campaign-vcr`, and it uses three documented surfaces of the tools.
+The profile's `env:` block gives each member `OPENCODE_BASE_URL`, which aims it at the
+proxy. `cs-vcr` runs as one container on the campaign's own podman network, under the
+alias `vcr`. `CS_SANDBOX_AGENT_HOME` moves where the credential lender reads a key, so
+the key it lends is a file holding the words `not-a-real-key`.
+
+A replay gives the same result every time, and that is deliberate. The cassette pins
+what the models said. `NPM_CONFIG_BEFORE` makes npm resolve every package as it stood on
+the recording date. Every commit carries one fixed author and date, so the commit ids in
+the delivered repository are the same on every run and on every machine.
+
+A replay reproduces the models' decisions, not the world's facts. If the network is
+down and an install fails, a recorded agent still says what it said. So judge a replay
+the way the step does: by the proxy's count, by the fetched commits, and by the page
+answering.
+
+### 7. cs-campaign, live: the same mission, decided afresh
+
+This is the only step that spends. It runs the campaign from step 6 against the real
+model, so the agents make their own decisions and the design comes out different each
+time. It needs podman and KVM, and it needs a Fireworks key in two places. Export `FIREWORKS_API_KEY`, and write the same key to
 `~/.cs-keys/fireworks` with mode `0600`. The campaign lends the key to its members, and
 the lender reads a host file, so an environment variable alone is not enough.
 `make setup` prints the three commands that write the file.
@@ -439,9 +486,32 @@ ran the session, it is useless to everybody else, and it cannot be taken out onc
 history is public. `make check` refuses one, so the rule holds without anybody
 remembering it.
 
+## Recording the campaign again
+
+The campaign's cassettes are bound to what the agents were asked. An edit to the
+mission, a brief, the profile or `CAMPAIGN_VERSION` changes the prompts, and the
+recording stops matching. `make check` compares a hash of those files with the one the
+recording stored, and says when the cassettes are stale.
+
+```bash
+make demo-record     # calls Fireworks, for what a live run costs
+make demo-replay     # then replay it, twice
+```
+
+A recording is kept only when it holds nothing of yours. A member carries the host's
+username and a copy of the host's git identity, and an agent may print either one. The
+proxy blanks those values, and every mail address, as it records. It puts this
+machine's values back for whoever replays. The step then searches the recording for
+your username, git name, git address, hostname and key, and runs the `cs-vcr` scrubber.
+A recording that fails is moved into `.work` for you to read, where git ignores it.
+
+Each recording holds different decisions, so replay a new one twice before you commit
+it. `make check` also runs `make no-identity`, which searches every file git would
+commit for those same values.
+
 ## What this repo commits
 
-The committed files are the campaign, the ledger, one cassette, the two files the tour
+The committed files are the campaign, the ledger, four cassettes, the two files the tour
 plants, and the scripts. Everything else is generated. The `tools` directory holds
 binaries, `node_modules` contains packages, and `.work` collects whatever a step writes.
 All three stay out of git, and all three rebuild from what is committed.

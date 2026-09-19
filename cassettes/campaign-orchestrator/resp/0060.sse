@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-2e35b11dd43045d4bfc91f80391d788a","object":"chat.completion.chunk","created":1789849696,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Now reply to m1. The m1 dispatch said to run the reply as a command of its own, not chained."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849696,"id":"chatcmpl-2e35b11dd43045d4bfc91f80391d788a","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"cs-campaign-member reply --file /home/<USER:1>/.local/share/cs-campaign/output/final-report.md --outcome campaign-met\", \"workdir\": \"/home/<USER:1>\"}","name":"bash"},"id":"bash_86","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849696,"id":"chatcmpl-2e35b11dd43045d4bfc91f80391d788a","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-2e35b11dd43045d4bfc91f80391d788a","object":"chat.completion.chunk","created":1789849696,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-2e35b11dd43045d4bfc91f80391d788a","object":"chat.completion.chunk","created":1789849696,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":69169,"total_tokens":69247,"completion_tokens":78,"prompt_tokens_details":{"cached_tokens":67806},"completion_tokens_details":{"reasoning_tokens":25},"output_tokens_details":{"reasoning_tokens":25}}}
+
+data: [DONE]
+

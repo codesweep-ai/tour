@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-ffc217293c25490697aad3eca6ccd655","object":"chat.completion.chunk","created":1789849446,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"puppeteer-core version doesn't have waitForTimeout? Let me check. I can use setTimeout or page.evaluate with a delay. Let me fix by using a simple sleep."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849446,"id":"chatcmpl-ffc217293c25490697aad3eca6ccd655","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/tmp/verify-hello/verify.js\", \"oldString\": \"      await node.click();\\n      await page.waitForTimeout(100); // allow React state update\\n      const color = await getGreetingColor();\", \"newString\": \"      await node.click();\\n      await new Promise((r) =\u003e setTimeout(r, 150)); // allow React state update\\n      const color = await getGreetingColor();\"}","name":"edit"},"id":"edit_29","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849446,"id":"chatcmpl-ffc217293c25490697aad3eca6ccd655","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-ffc217293c25490697aad3eca6ccd655","object":"chat.completion.chunk","created":1789849446,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-ffc217293c25490697aad3eca6ccd655","object":"chat.completion.chunk","created":1789849446,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":18431,"total_tokens":18572,"completion_tokens":141,"prompt_tokens_details":{"cached_tokens":18306},"completion_tokens_details":{"reasoning_tokens":36},"output_tokens_details":{"reasoning_tokens":36}}}
+
+data: [DONE]
+

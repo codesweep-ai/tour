@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-1d587eba20d8483ba7d6173b78987dbe","object":"chat.completion.chunk","created":1789849245,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"I need to fix the greeting font size in src/App.jsx from var(--font-size-3xl) to var(--font-size-prose-h1), then commit and reply. Let me read the file first."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849245,"id":"chatcmpl-1d587eba20d8483ba7d6173b78987dbe","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/hello-app/src/App.jsx\"}","name":"read"},"id":"read_43","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849245,"id":"chatcmpl-1d587eba20d8483ba7d6173b78987dbe","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-1d587eba20d8483ba7d6173b78987dbe","object":"chat.completion.chunk","created":1789849245,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-1d587eba20d8483ba7d6173b78987dbe","object":"chat.completion.chunk","created":1789849245,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":38613,"total_tokens":38681,"completion_tokens":68,"prompt_tokens_details":{"cached_tokens":38164},"completion_tokens_details":{"reasoning_tokens":43},"output_tokens_details":{"reasoning_tokens":43}}}
+
+data: [DONE]
+

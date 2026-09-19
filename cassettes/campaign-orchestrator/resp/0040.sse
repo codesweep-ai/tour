@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-104e79a9b312424abd1b5e9318a79917","object":"chat.completion.chunk","created":1789849299,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Now verify App.jsx has the fix."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849299,"id":"chatcmpl-104e79a9b312424abd1b5e9318a79917","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/hello-app/src/App.jsx\"}","name":"read"},"id":"read_60","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849299,"id":"chatcmpl-104e79a9b312424abd1b5e9318a79917","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-104e79a9b312424abd1b5e9318a79917","object":"chat.completion.chunk","created":1789849299,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-104e79a9b312424abd1b5e9318a79917","object":"chat.completion.chunk","created":1789849299,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":57699,"total_tokens":57732,"completion_tokens":33,"prompt_tokens_details":{"cached_tokens":57592},"completion_tokens_details":{"reasoning_tokens":8},"output_tokens_details":{"reasoning_tokens":8}}}
+
+data: [DONE]
+

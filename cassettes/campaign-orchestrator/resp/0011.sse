@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-ec98db39b86640d0a2555178d10d3bcf","object":"chat.completion.chunk","created":1789848998,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Interesting - the styles directory doesn't exist? Let me check the package structure more carefully. Also I need to see the tokens and the d.ts for AppShell, Button, etc."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789848998,"id":"chatcmpl-ec98db39b86640d0a2555178d10d3bcf","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"find /tmp/ui-inspect/node_modules/@codesweep-ai/ui -maxdepth 3 -type f | sort\", \"workdir\": \"/home/<USER:1>\"}","name":"bash"},"id":"bash_18","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789848998,"id":"chatcmpl-ec98db39b86640d0a2555178d10d3bcf","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-ec98db39b86640d0a2555178d10d3bcf","object":"chat.completion.chunk","created":1789848998,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-ec98db39b86640d0a2555178d10d3bcf","object":"chat.completion.chunk","created":1789848998,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":31741,"total_tokens":31826,"completion_tokens":85,"prompt_tokens_details":{"cached_tokens":15171},"completion_tokens_details":{"reasoning_tokens":36},"output_tokens_details":{"reasoning_tokens":36}}}
+
+data: [DONE]
+

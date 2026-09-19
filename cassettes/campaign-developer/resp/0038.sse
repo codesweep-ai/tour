@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-b74ceaf0c7184504a4d2d3985f5b2578","object":"chat.completion.chunk","created":1789849142,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Build succeeded. Now I should also test the dev server or at least verify no runtime errors. But the dev server would block. I can start it in background and check if it serves. But first, let me check if the optional peer dependencies were left out. Yes, they are not in package.json. Good.\n\nNow let me start the dev server in the background and check if it responds."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849142,"id":"chatcmpl-b74ceaf0c7184504a4d2d3985f5b2578","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"timeout 10 bash -c 'npm run dev \u003e /tmp/vite-dev.log 2\u003e\u00261 \u0026 PID=$!; sleep 5; curl -s -o /dev/null -w \\\"%{http_code}\\\" http://localhost:5173; kill $PID 2\u003e/dev/null; wait $PID 2\u003e/dev/null; echo \\\"\\\"'\", \"workdir\": \"/home/<USER:1>/hello-app\", \"timeout\": 30000}","name":"bash"},"id":"bash_35","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849142,"id":"chatcmpl-b74ceaf0c7184504a4d2d3985f5b2578","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-b74ceaf0c7184504a4d2d3985f5b2578","object":"chat.completion.chunk","created":1789849142,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-b74ceaf0c7184504a4d2d3985f5b2578","object":"chat.completion.chunk","created":1789849142,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":36529,"total_tokens":36715,"completion_tokens":186,"prompt_tokens_details":{"cached_tokens":36327},"completion_tokens_details":{"reasoning_tokens":80},"output_tokens_details":{"reasoning_tokens":80}}}
+
+data: [DONE]
+

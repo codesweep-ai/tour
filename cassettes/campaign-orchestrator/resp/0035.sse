@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-40872de657654d4abfe737f9d3a6e5a5","object":"chat.completion.chunk","created":1789849230,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Now send the rework to the developer."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849230,"id":"chatcmpl-40872de657654d4abfe737f9d3a6e5a5","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"cs-campaign-member send developer --file /tmp/dispatch-developer-rework.md\", \"workdir\": \"/home/<USER:1>\"}","name":"bash"},"id":"bash_54","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849230,"id":"chatcmpl-40872de657654d4abfe737f9d3a6e5a5","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-40872de657654d4abfe737f9d3a6e5a5","object":"chat.completion.chunk","created":1789849230,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-40872de657654d4abfe737f9d3a6e5a5","object":"chat.completion.chunk","created":1789849230,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":56331,"total_tokens":56382,"completion_tokens":51,"prompt_tokens_details":{"cached_tokens":55383},"completion_tokens_details":{"reasoning_tokens":8},"output_tokens_details":{"reasoning_tokens":8}}}
+
+data: [DONE]
+

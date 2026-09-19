@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-14fb9a5565ed45e782a0c4a9af026c0f","object":"chat.completion.chunk","created":1789849175,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Now I need to merge the developer's work into my branch. Let me check git status and merge."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849175,"id":"chatcmpl-14fb9a5565ed45e782a0c4a9af026c0f","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"cd ~/hello-app \u0026\u0026 git status \u0026\u0026 git log --oneline -3\", \"workdir\": \"/home/<USER:1>\"}","name":"bash"},"id":"bash_39","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849175,"id":"chatcmpl-14fb9a5565ed45e782a0c4a9af026c0f","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-14fb9a5565ed45e782a0c4a9af026c0f","object":"chat.completion.chunk","created":1789849175,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-14fb9a5565ed45e782a0c4a9af026c0f","object":"chat.completion.chunk","created":1789849175,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":49845,"total_tokens":49907,"completion_tokens":62,"prompt_tokens_details":{"cached_tokens":49118},"completion_tokens_details":{"reasoning_tokens":21},"output_tokens_details":{"reasoning_tokens":21}}}
+
+data: [DONE]
+

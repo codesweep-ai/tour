@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-9c643e00e3cb4f94940d50d46dd3a072","object":"chat.completion.chunk","created":1789849047,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Now I need to read the dispatch file d002.md."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849047,"id":"chatcmpl-9c643e00e3cb4f94940d50d46dd3a072","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/.local/share/cs-campaign/input/d002.md\"}","name":"read"},"id":"read_3","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849047,"id":"chatcmpl-9c643e00e3cb4f94940d50d46dd3a072","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-9c643e00e3cb4f94940d50d46dd3a072","object":"chat.completion.chunk","created":1789849047,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-9c643e00e3cb4f94940d50d46dd3a072","object":"chat.completion.chunk","created":1789849047,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":8904,"total_tokens":8946,"completion_tokens":42,"prompt_tokens_details":{"cached_tokens":6918},"completion_tokens_details":{"reasoning_tokens":12},"output_tokens_details":{"reasoning_tokens":12}}}
+
+data: [DONE]
+

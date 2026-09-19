@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-cf7f8051b0044e4f9abdefa0fa1d6b12","object":"chat.completion.chunk","created":1789849618,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"The pkill command timed out, probably because it was waiting. Let me just kill the specific process and not wait."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849618,"id":"chatcmpl-cf7f8051b0044e4f9abdefa0fa1d6b12","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"kill -9 16252 2\u003e/dev/null || true; pgrep -f \\\"vite\\\" || echo \\\"no vite process\\\"\", \"workdir\": \"/home/<USER:1>/hello-app\", \"timeout\": 5000}","name":"bash"},"id":"bash_33","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849618,"id":"chatcmpl-cf7f8051b0044e4f9abdefa0fa1d6b12","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-cf7f8051b0044e4f9abdefa0fa1d6b12","object":"chat.completion.chunk","created":1789849618,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-cf7f8051b0044e4f9abdefa0fa1d6b12","object":"chat.completion.chunk","created":1789849618,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":20594,"total_tokens":20680,"completion_tokens":86,"prompt_tokens_details":{"cached_tokens":20439},"completion_tokens_details":{"reasoning_tokens":24},"output_tokens_details":{"reasoning_tokens":24}}}
+
+data: [DONE]
+

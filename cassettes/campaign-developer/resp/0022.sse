@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-bbf2c0adc7b848e1a415ca8fca7d97a6","object":"chat.completion.chunk","created":1789849073,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Typo. The package is @codesweep-ai/ui. Let me run it again."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849073,"id":"chatcmpl-bbf2c0adc7b848e1a415ca8fca7d97a6","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"npm install @codesweep-ai/ui\", \"workdir\": \"/home/<USER:1>/hello-app\", \"timeout\": 120000}","name":"bash"},"id":"bash_16","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849073,"id":"chatcmpl-bbf2c0adc7b848e1a415ca8fca7d97a6","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-bbf2c0adc7b848e1a415ca8fca7d97a6","object":"chat.completion.chunk","created":1789849073,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-bbf2c0adc7b848e1a415ca8fca7d97a6","object":"chat.completion.chunk","created":1789849073,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":12778,"total_tokens":12838,"completion_tokens":60,"prompt_tokens_details":{"cached_tokens":12626},"completion_tokens_details":{"reasoning_tokens":18},"output_tokens_details":{"reasoning_tokens":18}}}
+
+data: [DONE]
+

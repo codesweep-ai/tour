@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-05be4127e12f4542b14f32e331abd591","object":"chat.completion.chunk","created":1789849119,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"It says up to date, so @vitejs/plugin-react was already installed? Wait, package.json shows it as devDependency. But I only installed react and react-dom and @codesweep-ai/ui. Actually it seems npm may have installed the plugin from the package.json I had? No, the second package.json didn't have @vitejs/plugin-react. Hmm, actually the first package.json had it. When I overwrote, maybe npm still had it? Wait, it says up to date so maybe I did install it previously. Let me check node_modules."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849119,"id":"chatcmpl-05be4127e12f4542b14f32e331abd591","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"ls node_modules/@vitejs\", \"workdir\": \"/home/<USER:1>/hello-app\"}","name":"bash"},"id":"bash_27","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849119,"id":"chatcmpl-05be4127e12f4542b14f32e331abd591","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-05be4127e12f4542b14f32e331abd591","object":"chat.completion.chunk","created":1789849119,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-05be4127e12f4542b14f32e331abd591","object":"chat.completion.chunk","created":1789849119,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":32402,"total_tokens":32550,"completion_tokens":148,"prompt_tokens_details":{"cached_tokens":32218},"completion_tokens_details":{"reasoning_tokens":114},"output_tokens_details":{"reasoning_tokens":114}}}
+
+data: [DONE]
+

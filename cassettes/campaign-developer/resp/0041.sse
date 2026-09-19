@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-badf5ebd3e7f4aec814dfef1f0a507fc","object":"chat.completion.chunk","created":1789849156,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Committed. Now I need to write a summary to a file and reply using cs-campaign-member reply. Let me create the summary file in ~/.local/share/cs-campaign/output."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849156,"id":"chatcmpl-badf5ebd3e7f4aec814dfef1f0a507fc","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"mkdir -p /home/<USER:1>/.local/share/cs-campaign/output\", \"workdir\": \"/home/<USER:1>\"}","name":"bash"},"id":"bash_39","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849156,"id":"chatcmpl-badf5ebd3e7f4aec814dfef1f0a507fc","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-badf5ebd3e7f4aec814dfef1f0a507fc","object":"chat.completion.chunk","created":1789849156,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-badf5ebd3e7f4aec814dfef1f0a507fc","object":"chat.completion.chunk","created":1789849156,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":37310,"total_tokens":37386,"completion_tokens":76,"prompt_tokens_details":{"cached_tokens":37018},"completion_tokens_details":{"reasoning_tokens":36},"output_tokens_details":{"reasoning_tokens":36}}}
+
+data: [DONE]
+

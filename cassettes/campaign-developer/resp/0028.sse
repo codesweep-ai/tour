@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-71e1ad0137094f4b83258d62d063a210","object":"chat.completion.chunk","created":1789849115,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Good, the styles exist. Now let me create all the files.\n\nFiles to create:\n- vite.config.js\n- index.html\n- src/main.jsx\n- src/App.jsx\n- README.md\n\nAnd I already have .gitignore and package.json.\n\nLet me create vite.config.js."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849115,"id":"chatcmpl-71e1ad0137094f4b83258d62d063a210","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"content\": \"import { defineConfig } from 'vite'\\nimport react from '@vitejs/plugin-react'\\n\\nexport default defineConfig({\\n  plugins: [react()],\\n  server: {\\n    host: '0.0.0.0',\\n    port: 5173,\\n  },\\n})\\n\", \"filePath\": \"/home/<USER:1>/hello-app/vite.config.js\"}","name":"write"},"id":"write_25","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849115,"id":"chatcmpl-71e1ad0137094f4b83258d62d063a210","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-71e1ad0137094f4b83258d62d063a210","object":"chat.completion.chunk","created":1789849115,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-71e1ad0137094f4b83258d62d063a210","object":"chat.completion.chunk","created":1789849115,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":32041,"total_tokens":32198,"completion_tokens":157,"prompt_tokens_details":{"cached_tokens":31889},"completion_tokens_details":{"reasoning_tokens":59},"output_tokens_details":{"reasoning_tokens":59}}}
+
+data: [DONE]
+

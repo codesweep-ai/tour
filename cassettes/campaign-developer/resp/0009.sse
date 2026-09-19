@@ -1,0 +1,14 @@
+data: {"id":"chatcmpl-e47f03500e844742b00b87d3f09cc934","object":"chat.completion.chunk","created":1789849046,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Now I need to read the inputs: ORIENTATION.md and developer.md."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849046,"id":"chatcmpl-e47f03500e844742b00b87d3f09cc934","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/.local/share/cs-campaign/input/ORIENTATION.md\"}","name":"read"},"id":"read_1","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849046,"id":"chatcmpl-e47f03500e844742b00b87d3f09cc934","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/.local/share/cs-campaign/input/developer.md\"}","name":"read"},"id":"read_2","index":1,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849046,"id":"chatcmpl-e47f03500e844742b00b87d3f09cc934","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-e47f03500e844742b00b87d3f09cc934","object":"chat.completion.chunk","created":1789849046,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-e47f03500e844742b00b87d3f09cc934","object":"chat.completion.chunk","created":1789849046,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":7385,"total_tokens":7455,"completion_tokens":70,"prompt_tokens_details":{"cached_tokens":6973},"completion_tokens_details":{"reasoning_tokens":15},"output_tokens_details":{"reasoning_tokens":15}}}
+
+data: [DONE]
+

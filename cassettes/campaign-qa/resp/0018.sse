@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-196405c3526a41e5b44cfba903834424","object":"chat.completion.chunk","created":1789849383,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Chromium browser is available. I can use puppeteer or playwright. Let me install dependencies and then use a script to verify. First, npm install."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849383,"id":"chatcmpl-196405c3526a41e5b44cfba903834424","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"npm install\", \"workdir\": \"/home/<USER:1>/hello-app\", \"timeout\": 120000}","name":"bash"},"id":"bash_17","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849383,"id":"chatcmpl-196405c3526a41e5b44cfba903834424","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-196405c3526a41e5b44cfba903834424","object":"chat.completion.chunk","created":1789849383,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-196405c3526a41e5b44cfba903834424","object":"chat.completion.chunk","created":1789849383,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":13520,"total_tokens":13588,"completion_tokens":68,"prompt_tokens_details":{"cached_tokens":12423},"completion_tokens_details":{"reasoning_tokens":31},"output_tokens_details":{"reasoning_tokens":31}}}
+
+data: [DONE]
+

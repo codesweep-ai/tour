@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-f5b4be7c4bab454393213ecf784753d7","object":"chat.completion.chunk","created":1789848977,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Now I need to read m1.md and follow it. This is the mission dispatch. Let me read it."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789848977,"id":"chatcmpl-f5b4be7c4bab454393213ecf784753d7","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/.local/share/cs-campaign/input/m1.md\"}","name":"read"},"id":"read_10","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789848977,"id":"chatcmpl-f5b4be7c4bab454393213ecf784753d7","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-f5b4be7c4bab454393213ecf784753d7","object":"chat.completion.chunk","created":1789848977,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-f5b4be7c4bab454393213ecf784753d7","object":"chat.completion.chunk","created":1789848977,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":12886,"total_tokens":12939,"completion_tokens":53,"prompt_tokens_details":{"cached_tokens":12662},"completion_tokens_details":{"reasoning_tokens":23},"output_tokens_details":{"reasoning_tokens":23}}}
+
+data: [DONE]
+

@@ -1,0 +1,228 @@
+#!/usr/bin/env bash
+# campaign-vcr — run the hello campaign with every model call recorded or replayed.
+#
+# usage: scripts/campaign-vcr record|replay
+#
+# record  runs the campaign for real, through a cs-vcr that writes cassettes/campaign-*.
+#         It needs the Fireworks key, and it costs what a live run costs.
+# replay  runs the same campaign against those cassettes. It boots the same three
+#         machines and runs every command the agents ran, and it calls no provider.
+#         It needs no key.
+#
+# Everything here is a documented surface of the tools, used from outside:
+#   - the profile's `env:` block aims each member at the proxy, by OPENCODE_BASE_URL;
+#   - cs-vcr runs as one container on the campaign's own podman network, under the
+#     alias `vcr`, so the members and the credential lender both reach it by name;
+#   - CS_SANDBOX_AGENT_HOME moves where the lender reads a key from, so a replay can
+#     lend a key that is not a key.
+#
+# A replay reproduces the model's decisions, not the world's facts. So the world is held
+# still where it can be. npm resolves every package as it stood on the recording date, and
+# every commit carries one fixed identity and date, so commit ids come out the same.
+set -uo pipefail
+mode="${1:-}"
+case "$mode" in record|replay) ;; *) echo "usage: scripts/campaign-vcr record|replay" >&2; exit 2 ;; esac
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"; cs="$root/scripts/cs"; cd "$root"
+name="${CAMPAIGN_NAME:-hello}"
+work="$root/.work"; ws="$work/$name"; vw="$work/campaign-vcr"
+store="$root/cassettes"; meta="$store/campaign.json"
+model="${FW_MODEL:-fireworks-ai/accounts/fireworks/models/kimi-k2p7-code}"
+image="gcr.io/distroless/static-debian12:nonroot"
+static="$root/tools/static/cs-vcr"
+members=(orchestrator developer qa)
+
+[ -x "$static" ] || { echo "no static cs-vcr at tools/static/cs-vcr. Run: make tools" >&2; exit 1; }
+if [ "$mode" = record ]; then
+  [ -s "$HOME/.cs-keys/fireworks" ] || { echo "record lends the real key, so ~/.cs-keys/fireworks has to exist" >&2; exit 1; }
+  before="$(date -u +%Y-%m-%dT00:00:00Z)"
+else
+  [ -f "$meta" ] || { echo "no recorded campaign under cassettes/. Record one with: make demo-record" >&2; exit 1; }
+  before="$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1]))["npm_before"])' "$meta")"
+fi
+
+# --- 1. start clean ---------------------------------------------------------------
+make --no-print-directory demo-reset || exit 1
+podman rm -f $(podman ps -aq --filter "name=^cs-vcr-$name-") >/dev/null 2>&1 || true
+rm -rf "$vw"; mkdir -p "$vw" "$ws/roles"
+if [ "$mode" = record ]; then for m in "${members[@]}"; do rm -rf "$store/campaign-$m"; done; rm -f "$meta"; fi
+
+# --- 2. render the profile, with an env block for each member ---------------------
+cp campaign/hello/mission.md "$ws/mission.md"; cp campaign/hello/roles/*.md "$ws/roles/"
+python3 - "$ws/profile.yaml" "$work/hello-app" "$model" "$before" <<'PY'
+import sys,re
+out,repo,model,before=sys.argv[1:5]
+src=open("campaign/hello/profile.yaml.in").read().replace("@REPO@",repo).replace("@MODEL@",model)
+def env(member,indent):
+    pairs=[("OPENCODE_BASE_URL",f"http://vcr:8080/c/fireworks/campaign-{member}"),
+           ("NPM_CONFIG_BEFORE",before),
+           ("GIT_AUTHOR_NAME","Campaign Agent"),("GIT_AUTHOR_EMAIL","agent@example.invalid"),
+           ("GIT_COMMITTER_NAME","Campaign Agent"),("GIT_COMMITTER_EMAIL","agent@example.invalid"),
+           ("GIT_AUTHOR_DATE","2026-01-01T00:00:00Z"),("GIT_COMMITTER_DATE","2026-01-01T00:00:00Z")]
+    pad=" "*indent
+    return pad+"env:\n"+"".join(f"{pad}  - {k}={v}\n" for k,v in pairs)
+lines=src.split("\n"); res=[]; member=None
+for ln in lines:
+    res.append(ln)
+    m=re.match(r"^(orchestrator):\s*$",ln) or re.match(r"^  (developer|qa):\s*$",ln)
+    if m: member=m.group(1)
+    if member and re.match(r"^\s+auth:",ln):
+        res.append(env(member,len(ln)-len(ln.lstrip())).rstrip("\n")); member=None
+open(out,"w").write("\n".join(res))
+PY
+"$cs" cs-campaign validate "$ws/profile.yaml" || exit 1
+
+# --- 3. the proxy's configuration --------------------------------------------------
+# The capture rules blank what differs between one run and the next, and cs-vcr puts
+# this run's value back into each response. They are what let a cassette recorded by one
+# person, in one clone, replay for another person in another.
+#
+# The identity rules come first, and they hold this machine's own values. cs-sandbox gives
+# each member the host's username and a copy of the host's git identity, so an agent that
+# prints its git configuration puts a real name and address into a tool result. Nothing can
+# stop a model looking, so whatever it finds is blanked here. The address goes before the
+# username, which it contains.
+#
+# Every other mail address is blanked too. A tool prints them freely, in a package's
+# metadata or a licence, and they belong to people who never agreed to be in a cassette.
+# The pattern wants a letter-only last label, so `react@18.3.1` is left alone.
+me="$(id -un)"; host="$(hostname)"
+gname="$(git config --global user.name 2>/dev/null || true)"; gmail="$(git config --global user.email 2>/dev/null || true)"
+# A single-quoted YAML string takes a regular expression as it is written. The only
+# character to double is a single quote, which a name may hold.
+q() { python3 -c 'import re,sys;print(re.escape(sys.argv[1]).replace(chr(39),chr(39)*2))' "$1"; }
+ident=""
+[ -n "$gmail" ] && ident+="      - {pattern: '($(q "$gmail"))', as: '<GIT_EMAIL>'}"$'\n'
+[ -n "$gname" ] && ident+="      - {pattern: '($(q "$gname"))', as: '<GIT_NAME>'}"$'\n'
+[ -n "$host" ]  && ident+="      - {pattern: '\b($(q "$host"))\b', as: '<HOST>'}"$'\n'
+cat > "$vw/vcr-config.yaml" <<EOF
+listen: 0.0.0.0:8080
+admin: 127.0.0.1:8081
+cassettes: /cassettes
+lookahead: 8
+providers:
+  fireworks:
+    base_url: https://api.fireworks.ai/inference
+normalize:
+  extend:
+    capture:
+$ident      - {pattern: '([A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,})', as: '<EMAIL>'}
+      - {pattern: '$name-[0-9a-f]{16}', as: '<CAMPAIGN_ID>'}
+      - {pattern: 'orchestrator-[0-9a-f]{8}', as: '<ORCHESTRATOR>'}
+      - {pattern: 'developer-[0-9a-f]{8}', as: '<DEVELOPER>'}
+      - {pattern: 'qa-[0-9a-f]{8}', as: '<QA>'}
+      - {pattern: '$name-[0-9a-f]{8}', as: '<GROUP>'}
+      - {pattern: '($(q "$me") $(q "$me"))', as: '<USER_GROUP>'}
+      - {pattern: '\b($(q "$me"))\b', as: '<USER>'}
+EOF
+
+# --- 4. a key that is not a key, for a replay ---------------------------------------
+if [ "$mode" = replay ]; then
+  fake="$vw/agent-home"; mkdir -p "$fake/.cs-keys"; chmod 700 "$fake" "$fake/.cs-keys"
+  printf 'not-a-real-key' > "$fake/.cs-keys/fireworks"; chmod 600 "$fake/.cs-keys/fireworks"
+  export CS_SANDBOX_AGENT_HOME="$fake"
+  echo "  lending the key in $fake/.cs-keys/fireworks, which holds the words not-a-real-key"
+fi
+
+# --- 5. create, and start the proxy the moment the campaign's network exists --------
+"$cs" cs-campaign create "$name" --profile "$ws/profile.yaml" >"$vw/create.log" 2>&1 &
+create_pid=$!
+network=""
+for _ in $(seq 240); do
+  network="$(podman network ls --format '{{.Name}}' | grep -E "^cs-sandbox-$name-[0-9a-f]{8}$" | head -1)"
+  [ -n "$network" ] && break
+  kill -0 "$create_pid" 2>/dev/null || break
+  sleep 0.5
+done
+[ -n "$network" ] || { echo "the campaign's network never appeared:" >&2; cat "$vw/create.log" >&2; exit 1; }
+# create runs in the background, so its command line is shown from its log, now that the
+# log holds it.
+echo ""; sed -n '/^  \$ /p' "$vw/create.log"
+group="${network#cs-sandbox-}"; proxy="cs-vcr-$group"
+extra=(); args=("$mode" --config /vcr-config.yaml)
+if [ "$mode" = replay ]; then mkdir -p "$vw/misses"; extra=(-v "$vw/misses:/misses:Z"); args+=(--dump-misses /misses); fi
+CS_QUIET= "$cs" podman run -d --name "$proxy" --network "$network:alias=vcr" \
+  --userns=keep-id --user "$(id -u):$(id -g)" --read-only --cap-drop ALL --security-opt no-new-privileges \
+  -v "$static:/usr/local/bin/cs-vcr:ro,Z" -v "$store:/cassettes:Z" -v "$vw/vcr-config.yaml:/vcr-config.yaml:ro,Z" \
+  "${extra[@]}" -e CS_VCR_CASSETTES=/cassettes -e VCR_LISTEN=0.0.0.0:8080 -e VCR_ADMIN=127.0.0.1:8081 \
+  "$image" /usr/local/bin/cs-vcr "${args[@]}" >/dev/null || { echo "cs-vcr did not start" >&2; exit 1; }
+sleep 2
+[ "$(podman inspect "$proxy" --format '{{.State.Running}}' 2>/dev/null)" = true ] \
+  || { echo "cs-vcr did not stay up:" >&2; podman logs "$proxy" >&2; exit 1; }
+echo "  cs-vcr is up on $network as \`vcr\`, in $mode mode"
+
+wait "$create_pid"; create_rc=$?
+sed 's/\x1b\[[0-9;]*m//g' "$vw/create.log" | grep -E "^ok  readback|^created |lent:|error|Error" | sed 's/^/  /'
+stop_proxy() {
+  podman kill --signal INT "$proxy" >/dev/null 2>&1
+  for _ in $(seq 60); do [ "$(podman inspect "$proxy" --format '{{.State.Running}}' 2>/dev/null)" = true ] || break; sleep 0.5; done
+  podman logs "$proxy" >"$vw/vcr.log" 2>&1; podman rm -f "$proxy" >/dev/null 2>&1
+}
+if [ "$create_rc" -ne 0 ]; then
+  echo "create failed (exit $create_rc). The whole log is .work/campaign-vcr/create.log" >&2
+  stop_proxy; tail -5 "$vw/vcr.log" >&2; exit 1
+fi
+
+# --- 6. the rest of the cycle is the live one -----------------------------------------
+make --no-print-directory demo-wait || { stop_proxy; exit 1; }
+# The mission closes when the orchestrator runs its reply command, and its turn is not
+# over at that moment. The model still gets the command's result, and it may tidy up with
+# a call or two more. A proxy stopped here records a session one request short, and every
+# replay of it then misses at the very end. So wait until the agents have gone quiet: no
+# new recorded step and no new line in the proxy's log for 20 seconds.
+echo "  the mission is closed. Waiting for the agents to finish their last turns ..."
+quiet=0; last=""
+for _ in $(seq 90); do
+  now="$(cat "$store"/campaign-*/index.jsonl 2>/dev/null | wc -l)/$(podman logs "$proxy" 2>&1 | wc -c)"
+  if [ "$now" = "$last" ]; then quiet=$((quiet + 2)); else quiet=0; last="$now"; fi
+  [ "$quiet" -ge 20 ] && break
+  sleep 2
+done
+stop_proxy
+echo ""
+echo "  the proxy's own account of the run:"
+sed -n '/summary$/,$p' "$vw/vcr.log" | grep -E "^(requests|replayed|recorded|upstream calls|misses|rejected|tunnel refused|out of recorded order|drifted observations) " | sed 's/^/    /'
+upstream="$(awk '$1=="upstream" && $2=="calls"{print $3}' "$vw/vcr.log" | tail -1)"
+misses="$(awk '$1=="misses"{print $2}' "$vw/vcr.log" | tail -1)"
+make --no-print-directory demo-fetch demo-archive demo-dispatch-page demo-trajectories show-app || exit 1
+
+if [ "$mode" = replay ]; then
+  if [ "${upstream:-x}" != 0 ] || [ "${misses:-x}" != 0 ]; then
+    echo "FAILED: a replay must show upstream calls 0 and misses 0, and this showed ${upstream:-?} and ${misses:-?}." >&2
+    echo "The proxy log is .work/campaign-vcr/vcr.log, and any missed request is under .work/campaign-vcr/misses" >&2
+    exit 1
+  fi
+  echo ""
+  echo "  \`upstream calls 0\` is the point: three agents ran a whole campaign, and no provider was called."
+else
+  # A recording is only kept when it holds nothing of the person who made it. The values
+  # are this machine's own, so the search is exact, and it reports counts and never values.
+  echo ""
+  echo "  checking the recording for anything of yours:"
+  leak=0
+  check() { local label="$1" val="$2" n; [ -n "$val" ] || return 0
+    n="$(grep -rlF -- "$val" "$store"/campaign-* 2>/dev/null | wc -l)"
+    printf '    %-14s files holding it: %s\n' "$label" "$n"; [ "$n" -eq 0 ] || leak=1; }
+  check "username" "$me"; check "git name" "$gname"; check "git email" "$gmail"; check "hostname" "$host"
+  check "tailscale ip" "$(tailscale ip -4 2>/dev/null | head -1)"
+  check "provider key" "$(tr -d '\r\n' < "$HOME/.cs-keys/fireworks")"
+  CS_VCR_CASSETTES="$store" "$cs" cs-vcr cassette scrub campaign-orchestrator campaign-developer campaign-qa --from-env FIREWORKS_API_KEY || leak=1
+  if [ "$leak" -ne 0 ]; then
+    # Moved aside, not deleted, so that what tripped the gate can be read. .work is
+    # ignored by git, so a refused recording cannot be committed from there.
+    rm -rf "$vw/refused"; mkdir -p "$vw/refused"
+    for m in "${members[@]}"; do mv "$store/campaign-$m" "$vw/refused/" 2>/dev/null; done
+    echo "REFUSED: the recording held something it should not, so it is not kept." >&2
+    echo "It was moved to .work/campaign-vcr/refused for you to read. Record again." >&2
+    exit 1
+  fi
+  python3 - "$meta" "$before" <<'PY'
+import json,sys,subprocess,datetime
+def v(*a):
+    try: return subprocess.run(a,capture_output=True,text=True).stdout.strip().split("\n")[0]
+    except Exception: return ""
+json.dump({"recorded":datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),"npm_before":sys.argv[2],
+  "campaign_digest":v("scripts/campaign-digest"),
+  "cs_campaign":v("tools/cs-campaign","version"),"cs_vcr":v("tools/static/cs-vcr","version")},open(sys.argv[1],"w"),indent=2)
+open(sys.argv[1],"a").write("\n")
+PY
+fi

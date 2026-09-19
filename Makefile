@@ -42,6 +42,7 @@ RECORD        := $${CS_CAMPAIGN_STATE_DIR:-$$HOME/.config/cs-campaign/campaigns}
 
 .PHONY: help help-all setup tools doctor env check test ci prose refs oss actionlint clean clean-all \
         try-tracer try-lint try-ledger try-vcr try-sandbox vcr-record \
+        demo-replay demo-record no-identity \
         demo demo-start demo-watch demo-stop demo-destroy demo-clean show-reports show-app \
         lint ledger ledger-render cassettes no-local-paths no-session-links \
         demo-preflight demo-profile demo-validate demo-reset demo-wait \
@@ -61,9 +62,12 @@ help:
 	@echo "    make try-vcr            cs-vcr      replay a recorded agent run, with no key at all"
 	@echo "    make try-sandbox        cs-sandbox  create, work, fetch, destroy   (needs podman and KVM)"
 	@echo ""
+	@echo "  five more minutes, still no key, still nothing spent"
+	@echo "    make demo-replay        cs-campaign three real agents run a whole campaign, from a recording"
+	@echo ""
 	@echo "  about ten minutes, a Fireworks key on disk, a few cents"
 	@echo "    make demo-validate      cs-campaign check the campaign before it costs anything"
-	@echo "    make demo               run three agents end to end   (follow: make demo-watch)"
+	@echo "    make demo               the same campaign live, with the agents deciding afresh"
 	@echo "    make show-reports       read the dispatch page and the trajectories"
 	@echo "    make demo-clean         drop the members and the demo's artefacts"
 	@echo ""
@@ -127,6 +131,10 @@ tools:
 	  echo "cs-$$t $$v"; \
 	  GOBIN=$(TOOLSDIR) go install github.com/codesweep-ai/$$t/cmd/cs-$$t@$$v; \
 	done
+	@# The campaign replay runs cs-vcr in a container built from nothing but a static
+	@# base, so that copy is linked without cgo. It is the same pinned version.
+	@v="$$(curl -fsS $(CAMPAIGN_MOD) | awk '$$1=="github.com/codesweep-ai/vcr"{print $$2}')"; \
+	CGO_ENABLED=0 GOBIN=$(TOOLSDIR)/static go install github.com/codesweep-ai/vcr/cmd/cs-vcr@$$v
 	$(CS) cs-sandbox install-agent-tools $(TOOLSDIR)
 
 ## doctor: prove cs-campaign and the sandbox it needs agree with the pins
@@ -173,7 +181,7 @@ vcr-record:
 	@CS_VCR_CASSETTES=$(CURDIR)/cassettes $(CS) cs-vcr cassette scrub hello --from-env FIREWORKS_API_KEY
 
 ## check: everything that must pass before a commit
-check: prose refs oss actionlint ledger cassettes no-local-paths no-session-links
+check: prose refs oss actionlint ledger cassettes no-local-paths no-identity no-session-links
 
 ## test: the tour steps that check themselves and boot no machine
 ##
@@ -219,9 +227,48 @@ ledger-render:
 	@$(CS) cs-ledger render ledger
 	@$(CS) cs-ledger check ledger
 
-### cassettes: prove every committed cassette still matches this cs-vcr
+### cassettes: prove every committed cassette still matches this cs-vcr, and this campaign
+##
+## A cassette is keyed by cs-vcr's ruleset, which `verify` checks. The campaign's cassettes
+## are also bound to what the agents were asked. An edit to the mission, a brief, the
+## profile or the pinned version changes the prompts, and the recording stops matching.
+## The recording stores a hash of those, and this compares it.
 cassettes:
 	@CS_VCR_CASSETTES=$(CURDIR)/cassettes $(CS) cs-vcr cassette verify
+	@if [ -f cassettes/campaign.json ]; then \
+	  want="$$(python3 -c 'import json;print(json.load(open("cassettes/campaign.json"))["campaign_digest"])')"; \
+	  have="$$(./scripts/campaign-digest)"; \
+	  if [ "$$want" != "$$have" ]; then \
+	    echo "the campaign cassettes are stale: the mission, a brief, the profile or the pinned" >&2; \
+	    echo "version changed after they were recorded. Record them again with: make demo-record" >&2; \
+	    exit 1; \
+	  fi; \
+	  echo "the campaign cassettes match the campaign they were recorded from"; \
+	fi
+
+### no-identity: refuse anything of yours in a file git would commit
+##
+## It looks for this machine's own username, git name, git address and hostname, as whole
+## words, in every tracked and untracked file that is not ignored. A cassette is the file
+## most likely to hold one, because a member carries a copy of the host's git identity.
+## It prints file names and never the values.
+##
+## A generic account name is skipped, because `runner`, `dev` or `ubuntu` is also an
+## ordinary word that these documents use. CI is skipped for the same reason: the account
+## there belongs to nobody.
+no-identity:
+	@if [ -n "$$CI" ]; then echo "no-identity: skipped on CI, where the account belongs to nobody"; exit 0; fi; \
+	bad=""; for v in "$$(id -un)" "$$(git config --global user.name)" "$$(git config --global user.email)" "$$(hostname)"; do \
+	  [ -n "$$v" ] || continue; \
+	  case "$$v" in root|user|admin|ubuntu|debian|fedora|runner|dev|developer|test|vagrant|codespace|ec2-user|localhost) continue ;; esac; \
+	  hit="$$(git ls-files --cached --others --exclude-standard | grep -vE '^(node_modules|tools|\.work)/' | xargs -r grep -lwF -- "$$v" 2>/dev/null | head -5)"; \
+	  [ -n "$$hit" ] && bad="$$bad$$hit\n"; \
+	done; \
+	if [ -n "$$bad" ]; then \
+	  echo "these files hold your username, your git identity or this machine's name:" >&2; \
+	  printf "$$bad" | sort -u >&2; exit 1; \
+	fi; \
+	echo "nothing of yours in committable files"
 
 ### no-session-links: refuse an agent session link in any commit message
 ##
@@ -257,6 +304,26 @@ no-local-paths:
 	  echo "$$bad" >&2; exit 1; \
 	fi; \
 	echo "no local paths in committable files"
+
+## demo-replay: three real agents run the whole campaign from a recording. No key, no spend.
+##
+## It boots the same three machines as `make demo`, and the agents run every command they
+## ran when it was recorded: the installs, the build, the browser check and the server. Only
+## the model is a recording, served by cs-vcr, so the page you open was built here a minute
+## ago. It ends the way the live run does, with the app, the dispatch page and the
+## trajectories.
+demo-replay:
+	@./scripts/campaign-vcr replay
+
+### demo-record: record the campaign again. Calls Fireworks, for what a live run costs.
+##
+## Do this after any change to the mission, a brief, the profile or CAMPAIGN_VERSION, which
+## `make check` reports as stale cassettes. A recording is kept only when it holds nothing
+## of yours: the step searches it for your username, git identity, hostname and key, runs
+## the cs-vcr scrubber, and moves a recording that fails into .work. Replay it twice
+## before you commit it, because each recording holds different decisions.
+demo-record:
+	@./scripts/campaign-vcr record
 
 ## demo-validate: check the profile, the mission and the briefs, spending nothing
 demo-validate: demo-profile

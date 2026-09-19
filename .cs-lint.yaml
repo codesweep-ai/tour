@@ -36,10 +36,5 @@ oss:
   requiredTargets: ["help", "test", "check", "lint", "prose", "refs", "oss", "ci", "clean"]
   expectedTargets: []
 
-  # The cassette is recorded traffic. It holds the agent's own tool descriptions,
-  # whose example paths and addresses are not this repository's to edit.
-  skipPaths:
-    "cassettes/": "recorded agent traffic, which cs-vcr scrubs and verifies with its own gate"
-
   allow:
     OSS-407: "a demonstration has no artifact to release; every tool it shows releases from its own repository"

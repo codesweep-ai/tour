@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-fed3d8eb6b1f4b689794338dba36a7b4","object":"chat.completion.chunk","created":1789849334,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Run the verification script."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849334,"id":"chatcmpl-fed3d8eb6b1f4b689794338dba36a7b4","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"cd /tmp \u0026\u0026 node verify-page.mjs\", \"workdir\": \"/home/<USER:1>\", \"timeout\": 120000}","name":"bash"},"id":"bash_65","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849334,"id":"chatcmpl-fed3d8eb6b1f4b689794338dba36a7b4","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-fed3d8eb6b1f4b689794338dba36a7b4","object":"chat.completion.chunk","created":1789849334,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-fed3d8eb6b1f4b689794338dba36a7b4","object":"chat.completion.chunk","created":1789849334,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":59877,"total_tokens":59924,"completion_tokens":47,"prompt_tokens_details":{"cached_tokens":59362},"completion_tokens_details":{"reasoning_tokens":5},"output_tokens_details":{"reasoning_tokens":5}}}
+
+data: [DONE]
+

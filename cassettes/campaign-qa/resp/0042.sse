@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-ef4d29eac2c4458b820428e2fe7181f2","object":"chat.completion.chunk","created":1789849639,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Good. Now I need to run the reply command."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849639,"id":"chatcmpl-ef4d29eac2c4458b820428e2fe7181f2","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"cs-campaign-member reply --file ~/.local/share/cs-campaign/output/d002-report.md\", \"workdir\": \"/home/<USER:1>/hello-app\", \"timeout\": 30000}","name":"bash"},"id":"bash_41","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849639,"id":"chatcmpl-ef4d29eac2c4458b820428e2fe7181f2","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-ef4d29eac2c4458b820428e2fe7181f2","object":"chat.completion.chunk","created":1789849639,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-ef4d29eac2c4458b820428e2fe7181f2","object":"chat.completion.chunk","created":1789849639,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":22521,"total_tokens":22585,"completion_tokens":64,"prompt_tokens_details":{"cached_tokens":22398},"completion_tokens_details":{"reasoning_tokens":11},"output_tokens_details":{"reasoning_tokens":11}}}
+
+data: [DONE]
+

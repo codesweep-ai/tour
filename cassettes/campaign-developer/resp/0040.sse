@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-242a0425b89747b59c14f8146eace61e","object":"chat.completion.chunk","created":1789849153,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"I have untracked files including package-lock.json. The dist/ directory was created but ignored by .gitignore. The node_modules/ is also ignored. I should commit all the relevant files. Should I commit package-lock.json? It's common practice. The instructions don't explicitly say, but I should include it. Let me add all and commit.\n\nBefore commit, let me make sure package.json doesn't have \"latest\" word. It has \"^0.3.0\", good. \n\nNow commit."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849153,"id":"chatcmpl-242a0425b89747b59c14f8146eace61e","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"git add .gitignore README.md index.html package-lock.json package.json src/ vite.config.js \u0026\u0026 git commit -m \\\"Implement Hello greeting app per DESIGN.md\\\"\", \"workdir\": \"/home/<USER:1>/hello-app\"}","name":"bash"},"id":"bash_38","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849153,"id":"chatcmpl-242a0425b89747b59c14f8146eace61e","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-242a0425b89747b59c14f8146eace61e","object":"chat.completion.chunk","created":1789849153,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-242a0425b89747b59c14f8146eace61e","object":"chat.completion.chunk","created":1789849153,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":37019,"total_tokens":37180,"completion_tokens":161,"prompt_tokens_details":{"cached_tokens":36733},"completion_tokens_details":{"reasoning_tokens":101},"output_tokens_details":{"reasoning_tokens":101}}}
+
+data: [DONE]
+

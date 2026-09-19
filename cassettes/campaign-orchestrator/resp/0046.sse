@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-3694dac711f1456490866666d4323587","object":"chat.completion.chunk","created":1789849337,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"waitForTimeout is not available in this puppeteer version. Let me use a sleep function."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849337,"id":"chatcmpl-3694dac711f1456490866666d4323587","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/tmp/verify-page.mjs\", \"oldString\": \"  await page.waitForTimeout(1000);\\n\\n  const header\", \"newString\": \"  await new Promise(r =\u003e setTimeout(r, 1000));\\n\\n  const header\"}","name":"edit"},"id":"edit_66","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849337,"id":"chatcmpl-3694dac711f1456490866666d4323587","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-3694dac711f1456490866666d4323587","object":"chat.completion.chunk","created":1789849337,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-3694dac711f1456490866666d4323587","object":"chat.completion.chunk","created":1789849337,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":60001,"total_tokens":60089,"completion_tokens":88,"prompt_tokens_details":{"cached_tokens":59876},"completion_tokens_details":{"reasoning_tokens":19},"output_tokens_details":{"reasoning_tokens":19}}}
+
+data: [DONE]
+

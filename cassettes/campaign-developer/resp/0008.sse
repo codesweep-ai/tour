@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-fb6942b285f945a09d1c43cf12a2aba6","object":"chat.completion.chunk","created":1789849045,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Let me start by reading the standing context as instructed."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849045,"id":"chatcmpl-fb6942b285f945a09d1c43cf12a2aba6","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/.config/cs-campaign/member.json\"}","name":"read"},"id":"read_0","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849045,"id":"chatcmpl-fb6942b285f945a09d1c43cf12a2aba6","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-fb6942b285f945a09d1c43cf12a2aba6","object":"chat.completion.chunk","created":1789849045,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-fb6942b285f945a09d1c43cf12a2aba6","object":"chat.completion.chunk","created":1789849045,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":6974,"total_tokens":7013,"completion_tokens":39,"prompt_tokens_details":{"cached_tokens":6918},"completion_tokens_details":{"reasoning_tokens":11},"output_tokens_details":{"reasoning_tokens":11}}}
+
+data: [DONE]
+

@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-59509fc99089433ab63933a9e9050328","object":"chat.completion.chunk","created":1789849048,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Now the developer is still working. I should call wait again."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849048,"id":"chatcmpl-59509fc99089433ab63933a9e9050328","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"cs-campaign-member wait\", \"workdir\": \"/home/<USER:1>\", \"timeout\": 900000}","name":"bash"},"id":"bash_35","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849048,"id":"chatcmpl-59509fc99089433ab63933a9e9050328","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-59509fc99089433ab63933a9e9050328","object":"chat.completion.chunk","created":1789849048,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-59509fc99089433ab63933a9e9050328","object":"chat.completion.chunk","created":1789849048,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":48478,"total_tokens":48529,"completion_tokens":51,"prompt_tokens_details":{"cached_tokens":48278},"completion_tokens_details":{"reasoning_tokens":13},"output_tokens_details":{"reasoning_tokens":13}}}
+
+data: [DONE]
+

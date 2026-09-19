@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-080a47a606524582a0b431f4b84c9480","object":"chat.completion.chunk","created":1789849287,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Done. Provide summary."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849287,"id":"chatcmpl-080a47a606524582a0b431f4b84c9480","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"content":"d003 closed.\n\n- **Change:** Replaced the undefined `var(--font-size-3xl)` greeting font size with the real design-system token `var(--font-size-prose-h1)` in `src/App.jsx`.\n- **Branch:** `cs-sandbox/<DEVELOPER:1>.<GROUP:1>`\n- **Commit:** `1d41903`\n- **Verification:** `npm run build` passed. Summary written to `~/.local/share/cs-campaign/output/d003-summary.md` and reply sent."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849287,"id":"chatcmpl-080a47a606524582a0b431f4b84c9480","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-080a47a606524582a0b431f4b84c9480","object":"chat.completion.chunk","created":1789849287,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"stop","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-080a47a606524582a0b431f4b84c9480","object":"chat.completion.chunk","created":1789849287,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":40014,"total_tokens":40131,"completion_tokens":117,"prompt_tokens_details":{"cached_tokens":39920},"completion_tokens_details":{"reasoning_tokens":5},"output_tokens_details":{"reasoning_tokens":5}}}
+
+data: [DONE]
+

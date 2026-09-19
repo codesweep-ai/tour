@@ -1,0 +1,28 @@
+data: {"id":"chatcmpl-945d2f6f8e1a4a1285cd375289c3a330","object":"chat.completion.chunk","created":1789848950,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"The user wants a title for a conversation. The conversation content is about reading campaign config files, reading d001.md input, following instructions, and replying via cs-campaign-member. This is a campaign task dispatch. Need to generate a brief title ≤50 chars, same language (English), grammatically correct, no tool names, focus on main topic. \n\nKey elements: campaign context, dispatch ID d001, reading member.json and inputs, following d001.md. A good title could be: \"Campaign d001 task dispatch\" or \"d001 campaign task execution\" or \"Follow d001 campaign instructions\". \n\nNeed to keep exact technical terms/numbers: d001. Remove articles. Title should be natural. Maybe \"Campaign task d001 dispatch and execution\". Let's count: \"Campaign task d001 dispatch and execution\" = 38 chars. Good. Or \"Execute d001 campaign task from member context\". That's 43. Good. Or \"d001 campaign task: read context and follow input\". 45. \n\nLet's pick concise. \"d001 campaign task execution\" = 28. But maybe include context. \"Campaign d001: read context and follow input\" = 41. Good. \n\nNo tool names. No \"summarizing\". Single line. ≤50. English. \n\nI'll output: \"Campaign d001: read context and follow input\"."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789848950,"id":"chatcmpl-945d2f6f8e1a4a1285cd375289c3a330","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-945d2f6f8e1a4a1285cd375289c3a330","object":"chat.completion.chunk","created":1789848950,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"content":"Campaign"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-945d2f6f8e1a4a1285cd375289c3a330","object":"chat.completion.chunk","created":1789848950,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"content":" d"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-945d2f6f8e1a4a1285cd375289c3a330","object":"chat.completion.chunk","created":1789848950,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"content":"001"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-945d2f6f8e1a4a1285cd375289c3a330","object":"chat.completion.chunk","created":1789848950,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"content":":"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-945d2f6f8e1a4a1285cd375289c3a330","object":"chat.completion.chunk","created":1789848950,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"content":" read"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-945d2f6f8e1a4a1285cd375289c3a330","object":"chat.completion.chunk","created":1789848950,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"content":" context"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-945d2f6f8e1a4a1285cd375289c3a330","object":"chat.completion.chunk","created":1789848950,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"content":" and"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-945d2f6f8e1a4a1285cd375289c3a330","object":"chat.completion.chunk","created":1789848950,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"content":" follow"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-945d2f6f8e1a4a1285cd375289c3a330","object":"chat.completion.chunk","created":1789848950,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"content":" input"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-945d2f6f8e1a4a1285cd375289c3a330","object":"chat.completion.chunk","created":1789848950,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"stop","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-945d2f6f8e1a4a1285cd375289c3a330","object":"chat.completion.chunk","created":1789848950,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":611,"total_tokens":901,"completion_tokens":290,"prompt_tokens_details":{"cached_tokens":0},"completion_tokens_details":{"reasoning_tokens":279},"output_tokens_details":{"reasoning_tokens":279}}}
+
+data: [DONE]
+

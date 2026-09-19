@@ -1,0 +1,20 @@
+data: {"id":"chatcmpl-9ef7b76cfc9a4e3ca918efa21cfdedce","object":"chat.completion.chunk","created":1789849001,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Interesting - the styles are in dist/styles/ not styles/. The developer brief mentioned:\n```js\nimport \"@codesweep-ai/ui/styles/core.css\";\nimport \"@codesweep-ai/ui/styles/components/app-shell.css\";\nimport \"@codesweep-ai/ui/styles/components/button.css\";\n```\n\nBut the actual package has:\n- dist/styles/core.css\n- dist/styles/components.css (maybe contains all components?)\n- dist/styles/tokens.css\n- dist/styles/base.css\n- dist/styles/utilities.css\n\nLet me check what's in components.css and tokens.css. Also check AppShell.d.ts and Button.d.ts to understand props."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849001,"id":"chatcmpl-9ef7b76cfc9a4e3ca918efa21cfdedce","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/tmp/ui-inspect/node_modules/@codesweep-ai/ui/dist/styles/tokens.css\"}","name":"read"},"id":"read_19","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849001,"id":"chatcmpl-9ef7b76cfc9a4e3ca918efa21cfdedce","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/tmp/ui-inspect/node_modules/@codesweep-ai/ui/dist/styles/components.css\"}","name":"read"},"id":"read_20","index":1,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849001,"id":"chatcmpl-9ef7b76cfc9a4e3ca918efa21cfdedce","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/tmp/ui-inspect/node_modules/@codesweep-ai/ui/dist/components/AppShell.d.ts\"}","name":"read"},"id":"read_21","index":2,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849001,"id":"chatcmpl-9ef7b76cfc9a4e3ca918efa21cfdedce","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/tmp/ui-inspect/node_modules/@codesweep-ai/ui/dist/components/Button.d.ts\"}","name":"read"},"id":"read_22","index":3,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849001,"id":"chatcmpl-9ef7b76cfc9a4e3ca918efa21cfdedce","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/tmp/ui-inspect/node_modules/@codesweep-ai/ui/package.json\"}","name":"read"},"id":"read_23","index":4,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849001,"id":"chatcmpl-9ef7b76cfc9a4e3ca918efa21cfdedce","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-9ef7b76cfc9a4e3ca918efa21cfdedce","object":"chat.completion.chunk","created":1789849001,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-9ef7b76cfc9a4e3ca918efa21cfdedce","object":"chat.completion.chunk","created":1789849001,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":35370,"total_tokens":35638,"completion_tokens":268,"prompt_tokens_details":{"cached_tokens":31740},"completion_tokens_details":{"reasoning_tokens":122},"output_tokens_details":{"reasoning_tokens":122}}}
+
+data: [DONE]
+

@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-84595df38335438bbce6b7b9def4ca83","object":"chat.completion.chunk","created":1789849121,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Good. Now create index.html."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849121,"id":"chatcmpl-84595df38335438bbce6b7b9def4ca83","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"content\": \"\u003c!doctype html\u003e\\n\u003chtml lang=\\\"en\\\"\u003e\\n  \u003chead\u003e\\n    \u003cmeta charset=\\\"UTF-8\\\" /\u003e\\n    \u003cmeta name=\\\"viewport\\\" content=\\\"width=device-width, initial-scale=1.0\\\" /\u003e\\n    \u003ctitle\u003eHello\u003c/title\u003e\\n  \u003c/head\u003e\\n  \u003cbody\u003e\\n    \u003cdiv id=\\\"root\\\"\u003e\u003c/div\u003e\\n    \u003cscript type=\\\"module\\\" src=\\\"/src/main.jsx\\\"\u003e\u003c/script\u003e\\n  \u003c/body\u003e\\n\u003c/html\u003e\\n\", \"filePath\": \"/home/<USER:1>/hello-app/index.html\"}","name":"write"},"id":"write_28","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849121,"id":"chatcmpl-84595df38335438bbce6b7b9def4ca83","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-84595df38335438bbce6b7b9def4ca83","object":"chat.completion.chunk","created":1789849121,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-84595df38335438bbce6b7b9def4ca83","object":"chat.completion.chunk","created":1789849121,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":32570,"total_tokens":32711,"completion_tokens":141,"prompt_tokens_details":{"cached_tokens":32401},"completion_tokens_details":{"reasoning_tokens":7},"output_tokens_details":{"reasoning_tokens":7}}}
+
+data: [DONE]
+

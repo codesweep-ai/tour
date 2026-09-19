@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-cd06288baa244d2fbbd8d193bf054fdf","object":"chat.completion.chunk","created":1789849297,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Now I need to fetch the updated developer work, merge it, build, and verify. The dev server is still running, but it's serving the old code. I'll need to merge and then Vite will reload.\n\nFirst, fetch."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849297,"id":"chatcmpl-cd06288baa244d2fbbd8d193bf054fdf","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"cs-campaign-member fetch developer\", \"workdir\": \"/home/<USER:1>\"}","name":"bash"},"id":"bash_58","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849297,"id":"chatcmpl-cd06288baa244d2fbbd8d193bf054fdf","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-cd06288baa244d2fbbd8d193bf054fdf","object":"chat.completion.chunk","created":1789849297,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-cd06288baa244d2fbbd8d193bf054fdf","object":"chat.completion.chunk","created":1789849297,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":57479,"total_tokens":57558,"completion_tokens":79,"prompt_tokens_details":{"cached_tokens":57162},"completion_tokens_details":{"reasoning_tokens":47},"output_tokens_details":{"reasoning_tokens":47}}}
+
+data: [DONE]
+

@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-fa8dd1a8d0ad41bb9f2d2c13e3b7c42a","object":"chat.completion.chunk","created":1789849409,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Only 13 lines? Let me read the dumped DOM."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849409,"id":"chatcmpl-fa8dd1a8d0ad41bb9f2d2c13e3b7c42a","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/tmp/hello-dom.html\"}","name":"read"},"id":"read_23","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849409,"id":"chatcmpl-fa8dd1a8d0ad41bb9f2d2c13e3b7c42a","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-fa8dd1a8d0ad41bb9f2d2c13e3b7c42a","object":"chat.completion.chunk","created":1789849409,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-fa8dd1a8d0ad41bb9f2d2c13e3b7c42a","object":"chat.completion.chunk","created":1789849409,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":15131,"total_tokens":15164,"completion_tokens":33,"prompt_tokens_details":{"cached_tokens":14996},"completion_tokens_details":{"reasoning_tokens":12},"output_tokens_details":{"reasoning_tokens":12}}}
+
+data: [DONE]
+

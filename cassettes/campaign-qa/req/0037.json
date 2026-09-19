@@ -1,0 +1,1057 @@
+{
+  "max_tokens": 32000,
+  "messages": [
+    {
+      "content": "You are OpenCode, an interactive general AI agent running on a user's computer.\n\nYour primary goal is to help users with software engineering tasks by taking action — use the tools available to you to make real changes on the user's system. You should also answer questions when asked. Always adhere strictly to the following system instructions and the user's requirements.\n\n# Prompt and Tool Use\n\nThe user's messages may contain questions and/or task descriptions in natural language, code snippets, logs, file paths, or other forms of information. Read them, understand them and do what the user requested. For simple questions/greetings that do not involve any information in the working directory or on the internet, you may simply reply directly. For anything else, default to taking action with tools. When the request could be interpreted as either a question to answer or a task to complete, treat it as a task.\n\nWhen handling the user's request, if it involves creating, modifying, or running code or files, you MUST use the appropriate tools to make actual changes — do not just describe the solution in text. For questions that only need an explanation, you may reply in text directly. When calling tools, do not provide explanations because the tool calls themselves should be self-explanatory. You MUST follow the description of each tool and its parameters when calling tools.\n\nIf the `task` tool is available, you can use it to delegate a focused subtask to a subagent instance. When delegating, provide a complete prompt with all necessary context because a newly created subagent does not automatically see your current context.\n\nYou have the capability to output any number of tool calls in a single response. If you anticipate making multiple non-interfering tool calls, you are HIGHLY RECOMMENDED to make them in parallel to significantly improve efficiency. This is very important to your performance.\n\nThe results of the tool calls will be returned to you in a tool message. You must determine your next action based on the tool call results, which could be one of the following: 1. Continue working on the task, 2. Inform the user that the task is completed or has failed, or 3. Ask the user for more information.\n\nTool results and user messages may include `<system-reminder>` tags. These are authoritative system directives that you MUST follow. They bear no direct relation to the specific tool results or user messages in which they appear. Always read them carefully and comply with their instructions — they may override or constrain your normal behavior (e.g., restricting you to read-only actions during plan mode).\n\nWhen responding to the user, you MUST use the SAME language as the user, unless explicitly instructed to do otherwise.\n\n# General Guidelines for Coding\n\nWhen building something from scratch, you should:\n\n- Understand the user's requirements.\n- Ask the user for clarification if there is anything unclear.\n- Design the architecture and make a plan for the implementation.\n- Write the code in a modular and maintainable way.\n\nAlways use tools to implement your code changes:\n\n- Use `write`/`edit` to create or modify source files. Code that only appears in your text response is NOT saved to the file system and will not take effect.\n- Use `bash` to run and test your code after writing it.\n- Iterate: if tests fail, read the error, fix the code with `write`/`edit`, and re-test with `bash`.\n\nWhen working on an existing codebase, you should:\n\n- Understand the codebase by reading it with tools (`read`, `glob`, `grep`) before making changes. Identify the ultimate goal and the most important criteria to achieve the goal.\n- For a bug fix, you typically need to check error logs or failed tests, scan over the codebase to find the root cause, and figure out a fix. If user mentioned any failed tests, you should make sure they pass after the changes.\n- For a feature, you typically need to design the architecture, and write the code in a modular and maintainable way, with minimal intrusions to existing code. Add new tests if the project already has tests.\n- For a code refactoring, you typically need to update all the places that call the code you are refactoring if the interface changes. DO NOT change any existing logic especially in tests, focus only on fixing any errors caused by the interface changes.\n- Make MINIMAL changes to achieve the goal. This is very important to your performance.\n- Follow the coding style of existing code in the project.\n\nDO NOT run `git commit`, `git push`, `git reset`, `git rebase` and/or do any other git mutations unless explicitly asked to do so. Ask for confirmation each time when you need to do git mutations, even if the user has confirmed in earlier conversations.\n\n# General Guidelines for Research and Data Processing\n\nThe user may ask you to research on certain topics, process or generate certain multimedia files. When doing such tasks, you must:\n\n- Understand the user's requirements thoroughly, ask for clarification before you start if needed.\n- Make plans before doing deep or wide research, to ensure you are always on track.\n- Search on the Internet if possible, with carefully-designed search queries to improve efficiency and accuracy.\n- Use proper tools or shell commands or Python packages to process or generate images, videos, PDFs, docs, spreadsheets, presentations, or other multimedia files. Detect if there are already such tools in the environment. If you have to install third-party tools/packages, you MUST ensure that they are installed in a virtual/isolated environment.\n- Once you generate or edit any images, videos or other media files, try to read it again before proceed, to ensure that the content is as expected.\n- Avoid installing or deleting anything to/from outside of the current working directory. If you have to do so, ask the user for confirmation.\n\n# Working Environment\n\n## Operating System\n\nThe operating environment is not in a sandbox. Any actions you do will immediately affect the user's system. So you MUST be extremely cautious. Unless being explicitly instructed to do so, you should never access (read/write/execute) files outside of the working directory.\n\n## Working Directory\n\nThe working directory should be considered as the project root if you are instructed to perform tasks on the project. Every file system operation will be relative to the working directory if you do not explicitly specify the absolute path. Tools may require absolute paths for some parameters, IF SO, YOU MUST use absolute paths for these parameters.\n\n# Project Information\n\nMarkdown files named `AGENTS.md` usually contain the background, structure, coding styles, user preferences and other relevant information about the project. You should use this information to understand the project and the user's preferences. `AGENTS.md` files may exist at different locations in the project, but typically there is one in the project root.\n\n> Why `AGENTS.md`?\n>\n> `README.md` files are for humans: quick starts, project descriptions, and contribution guidelines. `AGENTS.md` complements this by containing the extra, sometimes detailed context coding agents need: build steps, tests, and conventions that might clutter a README or aren’t relevant to human contributors.\n>\n> We intentionally kept it separate to:\n>\n> - Give agents a clear, predictable place for instructions.\n> - Keep `README`s concise and focused on human contributors.\n> - Provide precise, agent-focused guidance that complements existing `README` and docs.\nIf the `AGENTS.md` is empty or insufficient, you may check `README`/`README.md` files or `AGENTS.md` files in subdirectories for more information about specific parts of the project.\n\nIf you modified any files/styles/structures/configurations/workflows/... mentioned in `AGENTS.md` files, you MUST update the corresponding `AGENTS.md` files to keep them up-to-date.\n\n# Ultimate Reminders\n\nAt any time, you should be HELPFUL, CONCISE, and ACCURATE. Be thorough in your actions — test what you build, verify what you change — not in your explanations.\n\n- Never diverge from the requirements and the goals of the task you work on. Stay on track.\n- Never give the user more than what they want.\n- Try your best to avoid any hallucination. Do fact checking before providing any factual information.\n- Think about the best approach, then take action decisively.\n- Do not give up too early.\n- ALWAYS, keep it stupidly simple. Do not overcomplicate things.\n- When the task requires creating or modifying files, always use tools to do so. Never treat displaying code in your response as a substitute for actually writing it to the file system.\n\nYou are powered by the model named accounts/fireworks/models/kimi-k2p7-code. The exact model ID is fireworks-ai/accounts/fireworks/models/kimi-k2p7-code\nHere is some useful information about the environment you are running in:\n<env>\n  Working directory: /home/<USER:1>\n  Workspace root folder: /\n  Is directory a git repo: no\n  Platform: <PLATFORM>\n  Today's date: <DATE>\n</env>\nInstructions from: /home/<USER:1>/.cs-opencode/AGENTS.md\n# OpenCode sandbox profile\n\nYou're running as OpenCode inside an isolated cs-sandbox dev instance (container or microVM).\n\nThis file routes; it holds no knowledge of its own. Each doc sits in `~/.local/bin` beside the\ntool it describes, and is authoritative for it. Read the one you need before your first call\nrather than guessing a command surface. When nothing covers it, say so instead of guessing.\n\n- `CS_OPENCODE_REMOTE.md` (+ `_STATUS`, `_OUTPUT`, `_SESSIONS`, `_FORGET`) · `cs-opencode-remote` —\n  start or resume an OpenCode session on another host over SSH, kept warm between turns.\n- `CS_CLAUDE_REMOTE.md` / `CS_CODEX_REMOTE.md` (+ the same companions) · the Claude and Codex\n  equivalents, same shape.\n- `CS_SANDBOX.md` · `cs-sandbox` — this sandbox carries the CLI too, so it can drive a peer:\n  create one, `ls` what is running, `fetch` a branch back.\n- `MDTOHTML.md` · `mdtohtml` / `mdview` — render a Markdown deliverable to standalone HTML.\n\nDelegating a task to another host means one of the `cs-*-remote` families. Pick the one the user\nnames (\"codex remote …\" → `cs-codex-remote`); unnamed, default to your own\nkind, `cs-opencode-remote`.\n\nSkills provide specialized instructions and workflows for specific tasks.\nUse the skill tool to load a skill when a task matches its description.\n<available_skills>\n  <skill>\n    <name>customize-opencode</name>\n    <description>Use ONLY when the user is editing or creating opencode's own configuration: opencode.json, opencode.jsonc, files under .opencode/, or files under ~/.config/opencode/. Also use when creating or fixing opencode agents, subagents, skills, plugins, MCP servers, or permission rules. Do not use for the user's own application code, or for any project that is not configuring opencode itself.</description>\n    <location>&lt;built-in&gt;</location>\n  </skill>\n</available_skills>",
+      "role": "system"
+    },
+    {
+      "content": "\"Read ~/.config/cs-campaign/member.json and then every file it lists under \\\"inputs\\\" — that is your standing context for this campaign. Then read ~/.local/share/cs-campaign/input/d002.md and follow it. Dispatch ID: d002. When the work is concluded, run `cs-campaign-member reply --file <path-to-your-summary>`. Ending your turn without a reply reads as stopped, and you will be continued.\"",
+      "role": "user"
+    },
+    {
+      "content": "",
+      "reasoning_content": "Let me start by reading the member.json file and the input file as instructed.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"filePath\":\"/home/<USER:1>/.config/cs-campaign/member.json\"}",
+            "name": "read"
+          },
+          "id": "read_0",
+          "type": "function"
+        },
+        {
+          "function": {
+            "arguments": "{\"filePath\":\"/home/<USER:1>/.local/share/cs-campaign/input/d002.md\"}",
+            "name": "read"
+          },
+          "id": "read_1",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "<path>/home/<USER:1>/.config/cs-campaign/member.json</path>\n<type>file</type>\n<content>\n1: {\n2:   \"campaign\": \"hello\",\n3:   \"member\": \"qa\",\n4:   \"role\": \"agent\",\n5:   \"network\": \"cs-sandbox-<GROUP:1>\",\n6:   \"branch\": \"cs-sandbox/<QA:1>.<GROUP:1>\",\n7:   \"repos\": [\n8:     {\n9:       \"name\": \"hello-app\",\n10:       \"base\": \"4f159b9e055a7c408ae19c219223f41513bba263\"\n11:     }\n12:   ],\n13:   \"inputs\": [\n14:     \"ORIENTATION.md\",\n15:     \"qa.md\"\n16:   ],\n17:   \"inputDir\": \".local/share/cs-campaign/input\",\n18:   \"outputDir\": \".local/share/cs-campaign/output\",\n19:   \"orientation\": \".local/share/cs-campaign/input/ORIENTATION.md\",\n20:   \"policy\": {\n21:     \"continueAttempts\": 2,\n22:     \"restarts\": 1,\n23:     \"elapsedSeconds\": 7200,\n24:     \"blindProbes\": 10,\n25:     \"pollSeconds\": 30,\n26:     \"settlingSeconds\": 300,\n27:     \"stallSeconds\": 180\n28:   },\n29:   \"deadline\": \"2026-09-19T22:15:24.344084239Z\"\n30: }\n\n(End of file - total 30 lines)\n</content>",
+      "role": "tool",
+      "tool_call_id": "read_0"
+    },
+    {
+      "content": "<path>/home/<USER:1>/.local/share/cs-campaign/input/d002.md</path>\n<type>file</type>\n<content>\n1: # QA dispatch: verify the Hello greeting app\n2: \n3: ## Your task\n4: \n5: Verify the developer's implementation against `DESIGN.md`. Both files are in the commit pushed to your clone at `refs/campaign/orchestrator`. Do not modify any code; report your observations.\n6: \n7: ## Getting the work\n8: \n9: Run these commands in your repository:\n10: \n11: ```sh\n12: git checkout refs/campaign/orchestrator\n13: ```\n14: \n15: This puts you in a detached HEAD, which is fine because you commit nothing.\n16: \n17: If `refs/campaign/orchestrator` is missing, stop and report it immediately.\n18: \n19: ## What to verify\n20: \n21: 1. Read `DESIGN.md` at the repository root.\n22: 2. Run the build command documented in `README.md`.\n23: 3. Run the serve command documented in `README.md`.\n24: 4. Check the served interface against `DESIGN.md`:\n25:    - Header title is \"Hello\".\n26:    - Footer text is \"Built with @codesweep-ai/ui\".\n27:    - Greeting text is \"Hello, world!\" and is large and bold.\n28:    - Default greeting colour is teal (`--color-cat-2`).\n29:    - Four buttons are present, labelled Teal, Amber, Rose, Sky.\n30:    - Clicking each button changes the greeting colour to the matching token.\n31: 5. Confirm the app uses the design system:\n32:    - `package.json` lists `@codesweep-ai/ui` as a dependency.\n33:    - The rendered page contains elements with `data-component=\"Header\"`, `data-component=\"Footer\"`, and `data-component=\"Button\"` (these are rendered by the package components).\n34:    - The greeting colour is applied via CSS custom properties such as `var(--color-cat-2)`, not hard-coded hex values.\n35: \n36: ## Reply\n37: \n38: Report what you ran, what you observed, and how you measured it. If any requirement fails, say so plainly and provide the evidence. If everything passes, state that the app meets the design.\n\n(End of file - total 38 lines)\n</content>",
+      "role": "tool",
+      "tool_call_id": "read_1"
+    },
+    {
+      "content": "",
+      "reasoning_content": "Now I need to read the inputs listed in member.json: ORIENTATION.md and qa.md.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"filePath\":\"/home/<USER:1>/.local/share/cs-campaign/input/ORIENTATION.md\"}",
+            "name": "read"
+          },
+          "id": "read_2",
+          "type": "function"
+        },
+        {
+          "function": {
+            "arguments": "{\"filePath\":\"/home/<USER:1>/.local/share/cs-campaign/input/qa.md\"}",
+            "name": "read"
+          },
+          "id": "read_3",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "<path>/home/<USER:1>/.local/share/cs-campaign/input/ORIENTATION.md</path>\n<type>file</type>\n<content>\n1: # Campaign member orientation\n2: \n3: You are `qa`, running as the **agent** of campaign `hello`.\n4: \n5: This file is written by the harness at creation. It describes your environment and\n6: the one rule everything runs on. It does not describe the work — that is in the\n7: files listed below.\n8: \n9: ## What you have\n10: \n11: - **`~/hello-app`** — your own clone of the repository, on branch `cs-sandbox/<QA:1>.<GROUP:1>`.\n12:   Nobody else commits to that branch.\n13: \n14: Files placed in `~/.local/share/cs-campaign/input` for you:\n15: \n16: - `qa.md`\n17: \n18: **Read all of them before you begin.** They are the only statement of what you are\n19: here to do.\n20: \n21: ## The one rule\n22: \n23: Work reaches you as **dispatches** — read your current one with\n24: `cs-campaign-member inbox`. A dispatch stays open until you close it:\n25: \n26:     cs-campaign-member reply --file <path-to-your-summary>\n27: \n28: **Do not stop until you have replied.** If you end your turn without a reply, the\n29: work is not done in anyone's eyes but yours: you will simply be prodded to reply,\n30: and your unsaved reasoning may be gone. Reply, then stop.\n31: \n32: Two more obligations, both irreversible if skipped:\n33: \n34: - **Commit your work to your own branch.** Your machine is destroyed at the end of\n35:   the campaign; a commit on your branch is the only way anything survives. Your\n36:   reply automatically records whether your branch really differs from its base —\n37:   an empty branch under a confident reply speaks for itself.\n38: - **Write durable results to `~/.local/share/cs-campaign/output`** — reports, findings, anything\n39:   that should outlive the run and is not source code.\n40: \n41: ## Reporting\n42: \n43: You have no route to the orchestrator or to any other member. You cannot ask\n44: questions, and nothing you write travels on its own. The orchestrator sees three\n45: things — make all three count:\n46: \n47: - **Your branch** — it fetches and inspects your commits. The real record.\n48: - **Your reply** — what you did, what you changed, whether your tests passed, and\n49:   anything you could not do. This is the only message it receives from you.\n50: - **`~/.local/share/cs-campaign/output`** — files you leave there, readable on request.\n51: \n52: If you are blocked or believe your task is wrong, say so plainly **in a reply**\n53: (`cs-campaign-member reply --needs-input --file …`) and stop. Do not expand your\n54: scope to work around it, and do not guess at what was meant.\n\n(End of file - total 54 lines)\n</content>",
+      "role": "tool",
+      "tool_call_id": "read_2"
+    },
+    {
+      "content": "<path>/home/<USER:1>/.local/share/cs-campaign/input/qa.md</path>\n<type>file</type>\n<content>\n1: # QA\n2: \n3: Verify the developer's work against the orchestrator's design, in your own clone.\n4: \n5: The orchestrator delivers the work to you. It pushes its own HEAD into your clone at\n6: `refs/campaign/orchestrator`, and that commit holds both `DESIGN.md` and the\n7: developer's application. Check it out with `git checkout refs/campaign/orchestrator`.\n8: A detached HEAD is fine, because you commit nothing.\n9: \n10: You have no route to the developer or to the orchestrator. `fetch` and `push` are\n11: orchestrator commands, and an agent that runs one is refused. Where the ref is\n12: missing, report that at once and stop. Do not hunt for the work anywhere else.\n13: \n14: Read `DESIGN.md` first, so you know what the interface is meant to be. Then run the\n15: documented build command, and run the documented serve command.\n16: \n17: Check the interface against the design. Confirm the greeting, confirm that each\n18: button changes the colour as the design says, and confirm the layout.\n19: \n20: Confirm that the application really uses the design system. Its `package.json` lists\n21: `@codesweep-ai/ui`, and the rendered page shows that package's `Header`, `Footer` and\n22: `Button` rather than plain elements styled by hand. Each of its components renders a\n23: `data-component` attribute naming it, so look for that in the served page. Confirm the\n24: greeting colours come from its tokens.\n25: \n26: Report what you ran and what you observed, and name how you measured it. Where a\n27: requirement fails, say so plainly and name the evidence. Do not fix the\n28: application yourself, because the developer owns that work.\n29: \n30: Verify everything in one pass and report once. Do not wait for a corrected build,\n31: because the orchestrator decides what happens next.\n\n(End of file - total 31 lines)\n</content>",
+      "role": "tool",
+      "tool_call_id": "read_3"
+    },
+    {
+      "content": "",
+      "reasoning_content": "I need to verify the Hello greeting app. Let me start by exploring the repository and checking out the orchestrator ref. First, let me check the current state of ~/hello-app.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"command\":\"git status && git log --oneline -5 && git show-ref | grep campaign\",\"workdir\":\"/home/<USER:1>/hello-app\"}",
+            "name": "bash"
+          },
+          "id": "bash_4",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "On branch cs-sandbox/<QA:1>.<GROUP:1>\nnothing to commit, working tree clean\n4f159b9 Initial empty campaign repository\n1d41903e4f78f86db774829668949e0dac831186 refs/campaign/orchestrator\n",
+      "role": "tool",
+      "tool_call_id": "bash_4"
+    },
+    {
+      "content": "",
+      "reasoning_content": "Good, the orchestrator ref exists. Let me check it out.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"command\":\"git checkout refs/campaign/orchestrator\",\"workdir\":\"/home/<USER:1>/hello-app\"}",
+            "name": "bash"
+          },
+          "id": "bash_5",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "Note: switching to 'refs/campaign/orchestrator'.\n\nYou are in 'detached HEAD' state. You can look around, make experimental\nchanges and commit them, and you can discard any commits you make in this\nstate without impacting any branches by switching back to a branch.\n\nIf you want to create a new branch to retain commits you create, you may\ndo so (now or later) by using -c with the switch command. Example:\n\n  git switch -c <new-branch-name>\n\nOr undo this operation with:\n\n  git switch -\n\nTurn off this advice by setting config variable advice.detachedHead to false\n\nHEAD is now at 1d41903 Use real design-system token --font-size-prose-h1 for greeting\n",
+      "role": "tool",
+      "tool_call_id": "bash_5"
+    },
+    {
+      "content": "",
+      "reasoning_content": "Good. Now let me read DESIGN.md and README.md.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"filePath\":\"/home/<USER:1>/hello-app/DESIGN.md\"}",
+            "name": "read"
+          },
+          "id": "read_6",
+          "type": "function"
+        },
+        {
+          "function": {
+            "arguments": "{\"filePath\":\"/home/<USER:1>/hello-app/README.md\"}",
+            "name": "read"
+          },
+          "id": "read_7",
+          "type": "function"
+        },
+        {
+          "function": {
+            "arguments": "{\"filePath\":\"/home/<USER:1>/hello-app/package.json\"}",
+            "name": "read"
+          },
+          "id": "read_8",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "<path>/home/<USER:1>/hello-app/DESIGN.md</path>\n<type>file</type>\n<content>\n1: # Design: Hello Campaign Greeting App\n2: \n3: ## Overview\n4: \n5: A single-page React + Vite application that greets the viewer and lets them change the greeting's colour by clicking one of four buttons.\n6: \n7: ## Layout\n8: \n9: The page is wrapped in the `@codesweep-ai/ui` `AppShell`, which supplies the global chrome:\n10: \n11: - **Header**: sticky dark bar at the top. Title reads **\"Hello\"** on the left. No navigation items, no actions.\n12: - **Footer**: dark bar at the bottom. Centered text reads **\"Built with @codesweep-ai/ui\"**.\n13: - **Main content area**: sits between Header and Footer, fills the remaining viewport height, and centers its content both vertically and horizontally.\n14: \n15: Inside the main content area:\n16: \n17: - A single large greeting line, centered.\n18: - Below it, a horizontal row of four colour buttons, centered, with equal spacing between them.\n19: \n20: ## Greeting\n21: \n22: The greeting text is:\n23: \n24: > **Hello, world!**\n25: \n26: Rendered in a large, bold type size. The default colour on first load is **teal** (`--color-cat-2`).\n27: \n28: ## Colour buttons\n29: \n30: Four `Button` components from `@codesweep-ai/ui`, arranged left to right, each labelled with its colour name:\n31: \n32: | Label | Token applied to greeting | Button variant |\n33: |-------|---------------------------|----------------|\n34: | Teal  | `--color-cat-2`           | `secondary`    |\n35: | Amber | `--color-cat-3`           | `warning`      |\n36: | Rose  | `--color-cat-4`           | `danger`       |\n37: | Sky   | `--color-cat-9`           | `primary`      |\n38: \n39: Clicking a button immediately changes the greeting text colour to the corresponding token. The colour must be applied via the CSS custom property (e.g. `style={{ color: 'var(--color-cat-2)' }}`), not by resolving the hex value in JavaScript.\n40: \n41: ## Design system usage\n42: \n43: The following come from `@codesweep-ai/ui`:\n44: \n45: - `AppShell`, `Header`, `Footer` — layout chrome.\n46: - `Button` — the four colour-change buttons.\n47: - `--color-cat-2`, `--color-cat-3`, `--color-cat-4`, `--color-cat-9` — greeting colours.\n48: \n49: Import the design-system styles in the entry file:\n50: \n51: ```js\n52: import \"@codesweep-ai/ui/styles/core.css\";\n53: import \"@codesweep-ai/ui/styles/components/app-shell.css\";\n54: import \"@codesweep-ai/ui/styles/components/button.css\";\n55: ```\n56: \n57: No additional components from the catalog are required.\n58: \n59: ## State\n60: \n61: Hold the active greeting colour token string with React `useState`, initialised to `\"var(--color-cat-2)\"`. Each button's `onClick` updates that state to its own token.\n62: \n63: ## Server\n64: \n65: Bind the Vite development server to `0.0.0.0` on port `5173` so the host can forward the page.\n66: \n67: ## Deliverables\n68: \n69: - `package.json` with `@codesweep-ai/ui` as a dependency and scripts for building and serving.\n70: - `vite.config.js` bound to `0.0.0.0:5173`.\n71: - `README.md` documenting the build and serve commands.\n72: - `.gitignore` ignoring `node_modules/` and `dist/`.\n73: - Source files (`index.html`, `src/main.jsx`, `src/App.jsx`, etc.) implementing the design above.\n\n(End of file - total 73 lines)\n</content>",
+      "role": "tool",
+      "tool_call_id": "read_6"
+    },
+    {
+      "content": "<path>/home/<USER:1>/hello-app/README.md</path>\n<type>file</type>\n<content>\n1: # Hello App\n2: \n3: A single-page React + Vite greeting application built with `@codesweep-ai/ui`.\n4: \n5: ## Commands\n6: \n7: - **Build:** `npm run build`\n8: - **Serve (production preview):** `npm run serve`\n9: - **Development:** `npm run dev` (bound to `0.0.0.0:5173`)\n10: \n11: The Vite dev server is configured to listen on `0.0.0.0:5173` so the host can forward the page.\n\n(End of file - total 11 lines)\n</content>",
+      "role": "tool",
+      "tool_call_id": "read_7"
+    },
+    {
+      "content": "<path>/home/<USER:1>/hello-app/package.json</path>\n<type>file</type>\n<content>\n1: {\n2:   \"name\": \"hello-app\",\n3:   \"private\": true,\n4:   \"version\": \"0.0.0\",\n5:   \"type\": \"module\",\n6:   \"scripts\": {\n7:     \"dev\": \"vite\",\n8:     \"build\": \"vite build\",\n9:     \"serve\": \"vite preview --host 0.0.0.0 --port 5173\"\n10:   },\n11:   \"dependencies\": {\n12:     \"@codesweep-ai/ui\": \"^0.3.0\",\n13:     \"react\": \"^19.0.0\",\n14:     \"react-dom\": \"^19.0.0\"\n15:   },\n16:   \"devDependencies\": {\n17:     \"@vitejs/plugin-react\": \"^4.7.0\",\n18:     \"vite\": \"^6.0.0\"\n19:   }\n20: }\n\n(End of file - total 20 lines)\n</content>",
+      "role": "tool",
+      "tool_call_id": "read_8"
+    },
+    {
+      "content": "",
+      "reasoning_content": "I need to read the source files too. Let me explore the structure and read the source.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"pattern\":\"**/*\",\"path\":\"/home/<USER:1>/hello-app\"}",
+            "name": "glob"
+          },
+          "id": "glob_9",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "/home/<USER:1>/hello-app/index.html\n/home/<USER:1>/hello-app/README.md\n/home/<USER:1>/hello-app/.gitignore\n/home/<USER:1>/hello-app/DESIGN.md\n/home/<USER:1>/hello-app/package.json\n/home/<USER:1>/hello-app/vite.config.js\n/home/<USER:1>/hello-app/package-lock.json\n/home/<USER:1>/hello-app/src/main.jsx\n/home/<USER:1>/hello-app/src/App.jsx",
+      "role": "tool",
+      "tool_call_id": "glob_9"
+    },
+    {
+      "content": "",
+      "reasoning_content": "I accidentally used a glob that returned the path prefix. Let me read the source files to understand the implementation.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"filePath\":\"/home/<USER:1>/hello-app/src/App.jsx\"}",
+            "name": "read"
+          },
+          "id": "read_10",
+          "type": "function"
+        },
+        {
+          "function": {
+            "arguments": "{\"filePath\":\"/home/<USER:1>/hello-app/src/main.jsx\"}",
+            "name": "read"
+          },
+          "id": "read_11",
+          "type": "function"
+        },
+        {
+          "function": {
+            "arguments": "{\"filePath\":\"/home/<USER:1>/hello-app/vite.config.js\"}",
+            "name": "read"
+          },
+          "id": "read_12",
+          "type": "function"
+        },
+        {
+          "function": {
+            "arguments": "{\"filePath\":\"/home/<USER:1>/hello-app/index.html\"}",
+            "name": "read"
+          },
+          "id": "read_13",
+          "type": "function"
+        },
+        {
+          "function": {
+            "arguments": "{\"filePath\":\"/home/<USER:1>/hello-app/.gitignore\"}",
+            "name": "read"
+          },
+          "id": "read_14",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "<path>/home/<USER:1>/hello-app/src/App.jsx</path>\n<type>file</type>\n<content>\n1: import { useState } from 'react'\n2: import { AppShell, Header, Footer, Button } from '@codesweep-ai/ui'\n3: \n4: const COLOURS = [\n5:   { label: 'Teal', token: 'var(--color-cat-2)', variant: 'secondary' },\n6:   { label: 'Amber', token: 'var(--color-cat-3)', variant: 'warning' },\n7:   { label: 'Rose', token: 'var(--color-cat-4)', variant: 'danger' },\n8:   { label: 'Sky', token: 'var(--color-cat-9)', variant: 'primary' },\n9: ]\n10: \n11: function App() {\n12:   const [greetingColour, setGreetingColour] = useState('var(--color-cat-2)')\n13: \n14:   return (\n15:     <AppShell>\n16:       <Header title=\"Hello\" />\n17:       <main\n18:         style={{\n19:           display: 'flex',\n20:           flexDirection: 'column',\n21:           alignItems: 'center',\n22:           justifyContent: 'center',\n23:           gap: 'var(--space-4)',\n24:           width: '100%',\n25:           height: '100%',\n26:         }}\n27:       >\n28:         <h1\n29:           style={{\n30:             color: greetingColour,\n31:             fontSize: 'var(--font-size-prose-h1)',\n32:             fontWeight: 'var(--font-weight-bold)',\n33:             margin: 0,\n34:           }}\n35:         >\n36:           Hello, world!\n37:         </h1>\n38:         <div\n39:           style={{\n40:             display: 'flex',\n41:             flexDirection: 'row',\n42:             justifyContent: 'center',\n43:             gap: 'var(--space-4)',\n44:           }}\n45:         >\n46:           {COLOURS.map(({ label, token, variant }) => (\n47:             <Button\n48:               key={label}\n49:               variant={variant}\n50:               onClick={() => setGreetingColour(token)}\n51:             >\n52:               {label}\n53:             </Button>\n54:           ))}\n55:         </div>\n56:       </main>\n57:       <Footer>Built with @codesweep-ai/ui</Footer>\n58:     </AppShell>\n59:   )\n60: }\n61: \n62: export default App\n\n(End of file - total 62 lines)\n</content>",
+      "role": "tool",
+      "tool_call_id": "read_10"
+    },
+    {
+      "content": "<path>/home/<USER:1>/hello-app/src/main.jsx</path>\n<type>file</type>\n<content>\n1: import React from 'react'\n2: import ReactDOM from 'react-dom/client'\n3: import App from './App'\n4: \n5: import \"@codesweep-ai/ui/styles/core.css\";\n6: import \"@codesweep-ai/ui/styles/components/app-shell.css\";\n7: import \"@codesweep-ai/ui/styles/components/button.css\";\n8: \n9: ReactDOM.createRoot(document.getElementById('root')).render(\n10:   <React.StrictMode>\n11:     <App />\n12:   </React.StrictMode>,\n13: )\n\n(End of file - total 13 lines)\n</content>",
+      "role": "tool",
+      "tool_call_id": "read_11"
+    },
+    {
+      "content": "<path>/home/<USER:1>/hello-app/vite.config.js</path>\n<type>file</type>\n<content>\n1: import { defineConfig } from 'vite'\n2: import react from '@vitejs/plugin-react'\n3: \n4: export default defineConfig({\n5:   plugins: [react()],\n6:   server: {\n7:     host: '0.0.0.0',\n8:     port: 5173,\n9:   },\n10: })\n\n(End of file - total 10 lines)\n</content>",
+      "role": "tool",
+      "tool_call_id": "read_12"
+    },
+    {
+      "content": "<path>/home/<USER:1>/hello-app/index.html</path>\n<type>file</type>\n<content>\n1: <!doctype html>\n2: <html lang=\"en\">\n3:   <head>\n4:     <meta charset=\"UTF-8\" />\n5:     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n6:     <title>Hello</title>\n7:   </head>\n8:   <body>\n9:     <div id=\"root\"></div>\n10:     <script type=\"module\" src=\"/src/main.jsx\"></script>\n11:   </body>\n12: </html>\n\n(End of file - total 12 lines)\n</content>",
+      "role": "tool",
+      "tool_call_id": "read_13"
+    },
+    {
+      "content": "<path>/home/<USER:1>/hello-app/.gitignore</path>\n<type>file</type>\n<content>\n1: node_modules/\n2: dist/\n\n(End of file - total 2 lines)\n</content>",
+      "role": "tool",
+      "tool_call_id": "read_14"
+    },
+    {
+      "content": "",
+      "reasoning_content": "Now I need to run the build and serve commands. But first, I need to install dependencies. Let me check if node_modules exists.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"command\":\"ls -la | head -20 && test -d node_modules && echo \\\"node_modules exists\\\" || echo \\\"node_modules missing\\\"\",\"workdir\":\"/home/<USER:1>/hello-app\"}",
+            "name": "bash"
+          },
+          "id": "bash_15",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "total 176\ndrwxr-xr-x  4 <USER_GROUP:1>   4096 Sep 19 20:22 .\ndrwxr-xr-x 11 <USER_GROUP:1>   4096 Sep 19 20:15 ..\ndrwxr-xr-x  7 <USER_GROUP:1>   4096 Sep 19 20:22 .git\n-rw-r--r--  1 <USER_GROUP:1>     20 Sep 19 20:22 .gitignore\n-rw-r--r--  1 <USER_GROUP:1>   2873 Sep 19 20:22 DESIGN.md\n-rw-r--r--  1 <USER_GROUP:1>    341 Sep 19 20:22 README.md\n-rw-r--r--  1 <USER_GROUP:1>    292 Sep 19 20:22 index.html\n-rw-r--r--  1 <USER_GROUP:1> 139091 Sep 19 20:22 package-lock.json\n-rw-r--r--  1 <USER_GROUP:1>    405 Sep 19 20:22 package.json\ndrwxr-xr-x  2 <USER_GROUP:1>   4096 Sep 19 20:22 src\n-rw-r--r--  1 <USER_GROUP:1>    187 Sep 19 20:22 vite.config.js\nnode_modules missing\n",
+      "role": "tool",
+      "tool_call_id": "bash_15"
+    },
+    {
+      "content": "",
+      "reasoning_content": "I need to run npm install. Let me do that, then build and serve. Since the task needs me to verify the served interface, I'll need to run the dev server and then fetch/curl it or use a headless browser. Let me think about how to check the rendered page.\n\nI can install dependencies and build. Then run the serve command. To check the rendered interface, I can use curl or wget to fetch the HTML and maybe use a headless browser like puppeteer/playwright if installed. But that might be overkill. I can:\n1. npm install\n2. npm run build\n3. npm run serve (in background)\n4. curl the page to get HTML\n5. Check the source includes the expected elements\n\nBut the requirement says \"the rendered page contains elements with data-component=Header, data-component=Footer, and data-component=Button\". These are rendered by React client-side, so the initial HTML may not contain them. I might need to use a headless browser or check the JavaScript bundles. \n\nActually, since React 19 renders client-side, the `data-component` attributes will be in the DOM after hydration but not necessarily in the initial HTML response. I can use a tool like `curl` with JavaScript execution, or use `puppeteer`/`playwright` if available, or even use `node` with a headless browser.\n\nLet me first install dependencies and build. Then think about the verification method. I can use `npx playwright` or install it. Actually, simpler: I can use `curl` to fetch the page and the JS bundle, and grep for the data-component patterns in the bundle. But the task specifically says \"the rendered page contains elements with data-component=...\" which implies runtime DOM check.\n\nLet me check what's available. Maybe I can use Node with jsdom, or use a browser via puppeteer. Let me see if chromium/playwright is installed.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"command\":\"which chromium chromium-browser google-chrome node npm python3 && node --version && npm --version\",\"workdir\":\"/home/<USER:1>/hello-app\"}",
+            "name": "bash"
+          },
+          "id": "bash_16",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "which: no chromium in (/opt/opencode/bin:/opt/codex/bin:/opt/claude/bin:/opt/maven/bin:/opt/java/bin:/home/<USER:1>/go/bin:/opt/go/bin:/opt/nvm/versions/node/v24.19.0/bin:/opt/pyenv/plugins/pyenv-virtualenv/shims:/opt/pyenv/shims:/opt/pyenv/bin:/home/<USER:1>/.local/bin:/home/<USER:1>/bin:/usr/local/bin:/usr/bin)\nwhich: no google-chrome in (/opt/opencode/bin:/opt/codex/bin:/opt/claude/bin:/opt/maven/bin:/opt/java/bin:/home/<USER:1>/go/bin:/opt/go/bin:/opt/nvm/versions/node/v24.19.0/bin:/opt/pyenv/plugins/pyenv-virtualenv/shims:/opt/pyenv/shims:/opt/pyenv/bin:/home/<USER:1>/.local/bin:/home/<USER:1>/bin:/usr/local/bin:/usr/bin)\n/usr/bin/chromium-browser\n/opt/nvm/versions/node/v24.19.0/bin/node\n/opt/nvm/versions/node/v24.19.0/bin/npm\n/opt/pyenv/shims/python3\n",
+      "role": "tool",
+      "tool_call_id": "bash_16"
+    },
+    {
+      "content": "",
+      "reasoning_content": "Chromium browser is available. I can use puppeteer or playwright. Let me install dependencies and then use a script to verify. First, npm install.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"command\":\"npm install\",\"workdir\":\"/home/<USER:1>/hello-app\",\"timeout\":120000}",
+            "name": "bash"
+          },
+          "id": "bash_17",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "\nadded 205 packages, and audited 206 packages in 4s\n\n117 packages are looking for funding\n  run `npm fund` for details\n\nfound 0 vulnerabilities\nnpm warn allow-scripts 1 package has install scripts not yet covered by allowScripts:\nnpm warn allow-scripts   esbuild@0.25.12 (postinstall: node install.js)\nnpm warn allow-scripts\nnpm warn allow-scripts Run `npm approve-scripts --allow-scripts-pending` to review, or `npm approve-scripts <pkg>` to allow.\nnpm notice\nnpm notice New major version of npm available! 11.17.0 -> 12.0.2\nnpm notice Changelog: https://github.com/npm/cli/releases/tag/v12.0.2\nnpm notice To update run: npm install -g npm@12.0.2\nnpm notice\n",
+      "role": "tool",
+      "tool_call_id": "bash_17"
+    },
+    {
+      "content": "",
+      "reasoning_content": "Good. Now let me build.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"command\":\"npm run build\",\"workdir\":\"/home/<USER:1>/hello-app\",\"timeout\":120000}",
+            "name": "bash"
+          },
+          "id": "bash_18",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "\n> hello-app@0.0.0 build\n> vite build\n\nvite v6.4.3 building for production...\ntransforming...\n✓ 1759 modules transformed.\nrendering chunks...\ncomputing gzip size...\ndist/index.html                   0.39 kB │ gzip:  0.26 kB\ndist/assets/index-Ok1rtjnu.css   16.74 kB │ gzip:  4.40 kB\ndist/assets/index-CIr4WkoW.js   229.71 kB │ gzip: 71.72 kB\n✓ built in 1.39s\n",
+      "role": "tool",
+      "tool_call_id": "bash_18"
+    },
+    {
+      "content": "",
+      "reasoning_content": "Build succeeded. Now I need to serve and verify. Let me start the serve command in the background. Actually, since the task says \"run the serve command documented in README.md\", I should run `npm run serve`. But the dev server with `npm run dev` is bound to 0.0.0.0:5173. The serve command `vite preview --host 0.0.0.0 --port 5173` is also on 5173. I can run either. The README documents serve as \"production preview\". Let me run `npm run serve`.\n\nBut I also need to verify the rendered interface. I'll run the server in the background, then use curl or a headless browser. Since I have chromium-browser, I can use a Node script with puppeteer. But puppeteer may not be installed. Let me check if puppeteer or playwright are available.\n\nAlternatively, I can use `curl` to fetch the page and then check the JS bundle source. But data-component attributes are in the React components from @codesweep-ai/ui. The package's JS bundle will contain those. However, the requirement says \"rendered page contains elements with data-component...\" - runtime DOM check is ideal.\n\nI can use a simple approach: use `npx playwright` or install it. Or use Python with selenium. Or use Node with puppeteer-core and the installed chromium.\n\nLet me check if there's a simpler headless option. Actually, I can write a small Node script using `puppeteer-core` if installed, or use Python with Playwright if installed. Let me check.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"command\":\"npm ls puppeteer puppeteer-core playwright playwright-core 2>/dev/null || true; python3 -c \\\"import selenium; print('selenium available')\\\" 2>/dev/null || true; python3 -c \\\"import playwright; print('playwright python available')\\\" 2>/dev/null || true\",\"workdir\":\"/home/<USER:1>/hello-app\"}",
+            "name": "bash"
+          },
+          "id": "bash_19",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "hello-app@0.0.0 /home/<USER:1>/hello-app\n└── (empty)\n\n",
+      "role": "tool",
+      "tool_call_id": "bash_19"
+    },
+    {
+      "content": "",
+      "reasoning_content": "No browser automation libraries installed. I can install puppeteer-core, but that may be heavy. Alternatively, I can use curl to fetch the page and examine the HTML plus JS bundles. But the data-component attributes will be rendered by React at runtime. However, the source code of @codesweep-ai/ui components will contain `data-component=\"Header\"` etc. in the JS bundle. So I can grep the bundle.\n\nBut for the greeting color and button functionality, I can verify by:\n1. Checking App.jsx source code directly - it has the correct logic.\n2. Checking the rendered HTML won't show the dynamic content without JS execution.\n\nBetter approach: Use the installed chromium-browser directly via a small shell script or use Node with a headless browser. I can install `puppeteer-core` quickly. Let me try installing it globally or locally in the project? The instructions say don't modify code, but installing a dev dependency for verification is okay... Actually, I should avoid modifying package.json if possible. I can install it in a temp directory or use npx.\n\nWait, I can use `npx puppeteer` but that would install. Better: use `npx playwright-core`? Let me just use Python with requests and BeautifulSoup? No, that won't execute JS.\n\nI can use the browser directly. Let me use `chromium-browser --headless --dump-dom` to get the rendered DOM. Yes! Chromium has a `--dump-dom` flag that dumps the DOM after executing JS.\n\nSo the plan:\n1. Start `npm run serve` in background on port 5173.\n2. Wait a moment.\n3. Use `chromium-browser --headless --no-sandbox --disable-gpu --dump-dom http://localhost:5173/` to get rendered DOM.\n4. Check the DOM for required elements.\n5. Also curl the page and check headers/status.\n6. Check package.json dependency.\n\nLet me start the server and run the headless browser.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"command\":\"npm run serve > /tmp/hello-serve.log 2>&1 & echo $!\",\"workdir\":\"/home/<USER:1>/hello-app\",\"timeout\":30000}",
+            "name": "bash"
+          },
+          "id": "bash_20",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "16252\n",
+      "role": "tool",
+      "tool_call_id": "bash_20"
+    },
+    {
+      "content": "",
+      "reasoning_content": "Now wait a moment and then fetch the page.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"command\":\"sleep 3 && curl -s -o /dev/null -w \\\"%{http_code}\\\\n\\\" http://localhost:5173/\",\"workdir\":\"/home/<USER:1>/hello-app\",\"timeout\":30000}",
+            "name": "bash"
+          },
+          "id": "bash_21",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "200\n",
+      "role": "tool",
+      "tool_call_id": "bash_21"
+    },
+    {
+      "content": "",
+      "reasoning_content": "Good, server is up. Now let me use chromium headless to dump the DOM.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"command\":\"chromium-browser --headless --no-sandbox --disable-gpu --dump-dom http://localhost:5173/ > /tmp/hello-dom.html 2>/tmp/chromium.log; echo \\\"Exit: $?\\\"; wc -l /tmp/hello-dom.html\",\"workdir\":\"/home/<USER:1>/hello-app\",\"timeout\":60000}",
+            "name": "bash"
+          },
+          "id": "bash_22",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "Exit: 0\n13 /tmp/hello-dom.html\n",
+      "role": "tool",
+      "tool_call_id": "bash_22"
+    },
+    {
+      "content": "",
+      "reasoning_content": "Only 13 lines? Let me read the dumped DOM.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"filePath\":\"/tmp/hello-dom.html\"}",
+            "name": "read"
+          },
+          "id": "read_23",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "<path>/tmp/hello-dom.html</path>\n<type>file</type>\n<content>\n1: <!DOCTYPE html>\n2: <html lang=\"en\"><head>\n3:     <meta charset=\"UTF-8\">\n4:     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n5:     <title>Hello</title>\n6:     <script type=\"module\" crossorigin=\"\" src=\"/assets/index-CIr4WkoW.js\"></script>\n7:     <link rel=\"stylesheet\" crossorigin=\"\" href=\"/assets/index-Ok1rtjnu.css\">\n8:   </head>\n9:   <body>\n10:     <div id=\"root\"><div data-component=\"AppShell\" class=\"cs-component-app-shell-24 \"><header data-component=\"Header\" class=\"cs-component-app-shell-3 \"><div class=\"cs-component-app-shell-4 \"><span class=\"cs-component-app-shell-6 \"><span class=\"cs-component-app-shell-8 \">Hello</span></span><nav role=\"navigation\" aria-label=\"Main navigation\"><div class=\"cs-component-app-shell-11 \"></div></nav></div></header><main style=\"display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-4); width: 100%; height: 100%;\"><h1 style=\"color: var(--color-cat-2); font-size: var(--font-size-prose-h1); font-weight: var(--font-weight-bold); margin: 0px;\">Hello, world!</h1><div style=\"display: flex; flex-direction: row; justify-content: center; gap: var(--space-4);\"><button data-component=\"Button\" type=\"button\" class=\"cs-component-button-22  cs-component-button-23  cs-component-button-24  cs-component-button-25  cs-component-button-26 cs-component-button-11  cs-component-button-17 \">Teal</button><button data-component=\"Button\" type=\"button\" class=\"cs-component-button-22  cs-component-button-23  cs-component-button-24  cs-component-button-25  cs-component-button-26 cs-component-button-15  cs-component-button-17 \">Amber</button><button data-component=\"Button\" type=\"button\" class=\"cs-component-button-22  cs-component-button-23  cs-component-button-24  cs-component-button-25  cs-component-button-26 cs-component-button-12  cs-component-button-17 \">Rose</button><button data-component=\"Button\" type=\"button\" class=\"cs-component-button-22  cs-component-button-23  cs-component-button-24  cs-component-button-25  cs-component-button-26 cs-component-button-10  cs-component-button-17 \">Sky</button></div></main><footer data-component=\"Footer\" class=\"cs-component-app-shell-20 \">Built with @codesweep-ai/ui</footer></div></div>\n11:   \n12: \n13: </body></html>\n\n(End of file - total 13 lines)\n</content>",
+      "role": "tool",
+      "tool_call_id": "read_23"
+    },
+    {
+      "content": "",
+      "reasoning_content": "Excellent! The rendered DOM shows:\n- Header with data-component=\"Header\" and text \"Hello\"\n- Footer with data-component=\"Footer\" and text \"Built with @codesweep-ai/ui\"\n- Greeting h1 with \"Hello, world!\" and color: var(--color-cat-2), font-size: var(--font-size-prose-h1), font-weight: var(--font-weight-bold)\n- Four buttons with data-component=\"Button\" labels Teal, Amber, Rose, Sky\n\nNow I need to verify that clicking each button changes the greeting color. I can do this with a headless browser that supports clicking, or use a more advanced tool. Chromium headless has --dump-dom but that just dumps the initial DOM. To test interaction, I can:\n1. Use puppeteer-core with the installed chromium.\n2. Or use a small Node script with CDP (Chrome DevTools Protocol) directly.\n3. Or use Python with Playwright if I install it.\n\nActually, I can also test by inspecting the React source and the built JS to verify the onClick handlers set the correct tokens. But the task explicitly asks to check clicking each button changes the greeting color. Runtime verification is better.\n\nLet me write a small Node script using `puppeteer-core` to click each button and verify the color. I'll install puppeteer-core in a temp directory to avoid modifying the project.\n\nActually, I can use `npx puppeteer-core` but I need a script. Let me install puppeteer-core temporarily. Or I can use `npm install puppeteer-core` in /tmp and run a script from there.\n\nWait, I can also use `chromium-browser` with a script using `--remote-debugging-port` and CDP via curl. But that's more complex.\n\nSimplest: Use Python with Playwright? Not installed. Use Node with puppeteer-core. Let me install puppeteer-core in /tmp.\n\nActually, I can also do this with `node` and the built-in `http` module plus `jsdom`? JSDOM doesn't execute React bundles typically because they use modules and modern features. So that's out.\n\nLet me install puppeteer-core quickly.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"command\":\"mkdir -p /tmp/verify-hello && cd /tmp/verify-hello && npm init -y && npm install puppeteer-core\",\"workdir\":\"/home/<USER:1>/hello-app\",\"timeout\":120000}",
+            "name": "bash"
+          },
+          "id": "bash_24",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "Wrote to /tmp/verify-hello/package.json:\n\n{\n  \"name\": \"verify-hello\",\n  \"version\": \"1.0.0\",\n  \"description\": \"\",\n  \"main\": \"index.js\",\n  \"scripts\": {\n    \"test\": \"echo \\\"Error: no test specified\\\" && exit 1\"\n  },\n  \"keywords\": [],\n  \"author\": \"\",\n  \"license\": \"ISC\",\n  \"type\": \"commonjs\"\n}\n\n\n\nadded 25 packages, and audited 26 packages in 2s\n\n8 packages are looking for funding\n  run `npm fund` for details\n\nfound 0 vulnerabilities\n",
+      "role": "tool",
+      "tool_call_id": "bash_24"
+    },
+    {
+      "content": "",
+      "reasoning_content": "Now let me write a verification script using puppeteer-core.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"content\":\"const puppeteer = require('puppeteer-core');\\n\\nconst CHROMIUM = '/usr/bin/chromium-browser';\\nconst URL = 'http://localhost:5173/';\\n\\n(async () => {\\n  const browser = await puppeteer.launch({\\n    executablePath: CHROMIUM,\\n    headless: true,\\n    args: ['--no-sandbox', '--disable-gpu'],\\n  });\\n\\n  try {\\n    const page = await browser.newPage();\\n    await page.goto(URL, { waitUntil: 'networkidle2' });\\n\\n    const checks = [];\\n\\n    // Helper to get greeting color style\\n    const getGreetingColor = async () => {\\n      return page.$eval('h1', (el) => el.style.color);\\n    };\\n\\n    const getGreetingText = async () => {\\n      return page.$eval('h1', (el) => el.textContent);\\n    };\\n\\n    const getHeaderTitle = async () => {\\n      return page.$eval('[data-component=\\\"Header\\\"]', (el) => el.textContent);\\n    };\\n\\n    const getFooterText = async () => {\\n      return page.$eval('[data-component=\\\"Footer\\\"]', (el) => el.textContent);\\n    };\\n\\n    const getButtonLabels = async () => {\\n      return page.$$eval('[data-component=\\\"Button\\\"]', (btns) => btns.map((b) => b.textContent));\\n    };\\n\\n    checks.push({ label: 'Header title', expected: 'Hello', actual: await getHeaderTitle() });\\n    checks.push({ label: 'Footer text', expected: 'Built with @codesweep-ai/ui', actual: await getFooterText() });\\n    checks.push({ label: 'Greeting text', expected: 'Hello, world!', actual: await getGreetingText() });\\n    checks.push({ label: 'Default greeting colour', expected: 'var(--color-cat-2)', actual: await getGreetingColor() });\\n    checks.push({ label: 'Button labels', expected: 'Teal,Amber,Rose,Sky', actual: (await getButtonLabels()).join(',') });\\n\\n    const expectedTokens = [\\n      { label: 'Teal', token: 'var(--color-cat-2)' },\\n      { label: 'Amber', token: 'var(--color-cat-3)' },\\n      { label: 'Rose', token: 'var(--color-cat-4)' },\\n      { label: 'Sky', token: 'var(--color-cat-9)' },\\n    ];\\n\\n    for (const { label, token } of expectedTokens) {\\n      const button = await page.$(`[data-component=\\\"Button\\\"]:has-text(\\\"${label}\\\")`);\\n      if (!button) {\\n        checks.push({ label: `${label} button exists`, expected: true, actual: false });\\n        continue;\\n      }\\n      await button.click();\\n      await page.waitForTimeout(100); // allow React state update\\n      const color = await getGreetingColor();\\n      checks.push({ label: `${label} button colour`, expected: token, actual: color });\\n    }\\n\\n    console.log(JSON.stringify(checks, null, 2));\\n\\n    const failures = checks.filter((c) => c.expected !== c.actual);\\n    if (failures.length > 0) {\\n      console.error('\\\\nFailures:');\\n      failures.forEach((f) => console.error(`  ${f.label}: expected \\\"${f.expected}\\\", got \\\"${f.actual}\\\"`));\\n      process.exit(1);\\n    }\\n    console.log('\\\\nAll checks passed.');\\n  } finally {\\n    await browser.close();\\n  }\\n})();\\n\",\"filePath\":\"/tmp/verify-hello/verify.js\"}",
+            "name": "write"
+          },
+          "id": "write_25",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "Wrote file successfully.",
+      "role": "tool",
+      "tool_call_id": "write_25"
+    },
+    {
+      "content": "",
+      "reasoning_content": "Now run the verification script.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"command\":\"node verify.js\",\"workdir\":\"/tmp/verify-hello\",\"timeout\":120000}",
+            "name": "bash"
+          },
+          "id": "bash_26",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "node:internal/process/promises:394\n    triggerUncaughtException(err, true /* fromPromise */);\n    ^\n\nDOMException: SyntaxError: Failed to execute 'querySelector' on 'Document': '[data-component=\"Button\"]:has-text(\"Teal\")' is not a valid selector.\n    at evaluateHandle (evaluateHandle at CSSQueryHandler.queryOne (file:///tmp/verify-hello/node_modules/puppeteer-core/lib/puppeteer/common/QueryHandler.js:135:73), <anonymous>:1:15)\n    at #evaluate (file:///tmp/verify-hello/node_modules/puppeteer-core/lib/puppeteer/cdp/ExecutionContext.js:402:19)\n    at async ExecutionContext.evaluateHandle (file:///tmp/verify-hello/node_modules/puppeteer-core/lib/puppeteer/cdp/ExecutionContext.js:340:16)\n    at async IsolatedWorld.evaluateHandle (file:///tmp/verify-hello/node_modules/puppeteer-core/lib/puppeteer/cdp/IsolatedWorld.js:93:16)\n    at async CdpJSHandle.evaluateHandle (file:///tmp/verify-hello/node_modules/puppeteer-core/lib/puppeteer/api/JSHandle.js:162:20)\n    at async CdpElementHandle.evaluateHandle (file:///tmp/verify-hello/node_modules/puppeteer-core/lib/puppeteer/api/ElementHandle.js:350:20)\n    at async CSSQueryHandler.queryOne (file:///tmp/verify-hello/node_modules/puppeteer-core/lib/puppeteer/common/QueryHandler.js:135:59)\n    at async CdpElementHandle.$ (file:///tmp/verify-hello/node_modules/puppeteer-core/lib/puppeteer/api/ElementHandle.js:405:21)\n    at async CdpElementHandle.<anonymous> (file:///tmp/verify-hello/node_modules/puppeteer-core/lib/puppeteer/api/ElementHandle.js:129:24)\n    at async CdpFrame.$ (file:///tmp/verify-hello/node_modules/puppeteer-core/lib/puppeteer/api/Frame.js:402:20)\n\nNode.js v24.19.0\n",
+      "role": "tool",
+      "tool_call_id": "bash_26"
+    },
+    {
+      "content": "",
+      "reasoning_content": "The selector `:has-text` is not valid in standard CSS or puppeteer. I need to use a different approach. Let me fix the script to use `page.evaluate` to find buttons by text content.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"filePath\":\"/tmp/verify-hello/verify.js\",\"oldString\":\"    for (const { label, token } of expectedTokens) {\\n      const button = await page.$(`[data-component=\\\"Button\\\"]:has-text(\\\"${label}\\\")`);\\n      if (!button) {\\n        checks.push({ label: `${label} button exists`, expected: true, actual: false });\\n        continue;\\n      }\\n      await button.click();\\n      await page.waitForTimeout(100); // allow React state update\\n      const color = await getGreetingColor();\\n      checks.push({ label: `${label} button colour`, expected: token, actual: color });\\n    }\",\"newString\":\"    for (const { label, token } of expectedTokens) {\\n      const button = await page.evaluateHandle((text) => {\\n        return Array.from(document.querySelectorAll('[data-component=\\\"Button\\\"]')).find(\\n          (b) => b.textContent.trim() === text\\n        );\\n      }, label);\\n      const node = await button.asElement();\\n      if (!node) {\\n        checks.push({ label: `${label} button exists`, expected: true, actual: false });\\n        continue;\\n      }\\n      await node.click();\\n      await page.waitForTimeout(100); // allow React state update\\n      const color = await getGreetingColor();\\n      checks.push({ label: `${label} button colour`, expected: token, actual: color });\\n    }\"}",
+            "name": "edit"
+          },
+          "id": "edit_27",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "Edit applied successfully.",
+      "role": "tool",
+      "tool_call_id": "edit_27"
+    },
+    {
+      "content": "",
+      "reasoning_content": "Run again.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"command\":\"node verify.js\",\"workdir\":\"/tmp/verify-hello\",\"timeout\":120000}",
+            "name": "bash"
+          },
+          "id": "bash_28",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "/tmp/verify-hello/verify.js:65\n      await page.waitForTimeout(100); // allow React state update\n                 ^\n\nTypeError: page.waitForTimeout is not a function\n    at /tmp/verify-hello/verify.js:65:18\n\nNode.js v24.19.0\n",
+      "role": "tool",
+      "tool_call_id": "bash_28"
+    },
+    {
+      "content": "",
+      "reasoning_content": "puppeteer-core version doesn't have waitForTimeout? Let me check. I can use setTimeout or page.evaluate with a delay. Let me fix by using a simple sleep.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"filePath\":\"/tmp/verify-hello/verify.js\",\"oldString\":\"      await node.click();\\n      await page.waitForTimeout(100); // allow React state update\\n      const color = await getGreetingColor();\",\"newString\":\"      await node.click();\\n      await new Promise((r) => setTimeout(r, 150)); // allow React state update\\n      const color = await getGreetingColor();\"}",
+            "name": "edit"
+          },
+          "id": "edit_29",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "Edit applied successfully.",
+      "role": "tool",
+      "tool_call_id": "edit_29"
+    },
+    {
+      "content": "",
+      "reasoning_content": "Run again.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"command\":\"node verify.js\",\"workdir\":\"/tmp/verify-hello\",\"timeout\":120000}",
+            "name": "bash"
+          },
+          "id": "bash_30",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "[\n  {\n    \"label\": \"Header title\",\n    \"expected\": \"Hello\",\n    \"actual\": \"Hello\"\n  },\n  {\n    \"label\": \"Footer text\",\n    \"expected\": \"Built with @codesweep-ai/ui\",\n    \"actual\": \"Built with @codesweep-ai/ui\"\n  },\n  {\n    \"label\": \"Greeting text\",\n    \"expected\": \"Hello, world!\",\n    \"actual\": \"Hello, world!\"\n  },\n  {\n    \"label\": \"Default greeting colour\",\n    \"expected\": \"var(--color-cat-2)\",\n    \"actual\": \"var(--color-cat-2)\"\n  },\n  {\n    \"label\": \"Button labels\",\n    \"expected\": \"Teal,Amber,Rose,Sky\",\n    \"actual\": \"Teal,Amber,Rose,Sky\"\n  },\n  {\n    \"label\": \"Teal button colour\",\n    \"expected\": \"var(--color-cat-2)\",\n    \"actual\": \"var(--color-cat-2)\"\n  },\n  {\n    \"label\": \"Amber button colour\",\n    \"expected\": \"var(--color-cat-3)\",\n    \"actual\": \"var(--color-cat-3)\"\n  },\n  {\n    \"label\": \"Rose button colour\",\n    \"expected\": \"var(--color-cat-4)\",\n    \"actual\": \"var(--color-cat-4)\"\n  },\n  {\n    \"label\": \"Sky button colour\",\n    \"expected\": \"var(--color-cat-9)\",\n    \"actual\": \"var(--color-cat-9)\"\n  }\n]\n\nAll checks passed.\n",
+      "role": "tool",
+      "tool_call_id": "bash_30"
+    },
+    {
+      "content": "",
+      "reasoning_content": "All runtime checks passed. Now I need to also verify:\n- package.json lists @codesweep-ai/ui as a dependency (done)\n- data-component attributes present in rendered page (done)\n- greeting color applied via CSS custom properties, not hard-coded hex (done, it's var(--color-cat-2) etc.)\n\nI also need to check the dev server is bound to 0.0.0.0:5173 per DESIGN.md. The serve command uses --host 0.0.0.0 --port 5173. The vite.config.js also has host: '0.0.0.0', port: 5173. Good.\n\nNow let me stop the server and write the summary report to the output directory. I also need to reply with `cs-campaign-member reply --file <path-to-summary>`.\n\nWait, I also need to think about committing. The orientation says commit my work to my own branch. But this is a QA task - I should not modify code. However, I need to commit my report/output to my branch? The orientation says \"Commit your work to your own branch.\" My work is the verification report. I should write it to the output directory and possibly commit the report to my branch. But the QA branch is for my work. Let me check: I checked out refs/campaign/orchestrator (detached HEAD). I need to go back to my branch and commit the report there.\n\nActually, the instructions say \"commit your work to your own branch\". I should create the report in the output directory and also commit it to my branch? The report is not source code. The output directory is for durable results. But the branch is the real record. Maybe I should write the report in the output directory and also commit it to the repo? Or just output directory?\n\nThe orientation: \"Write durable results to ~/.local/share/cs-campaign/output — reports, findings, anything that should outlive the run and is not source code.\" So I definitely need to write to output. And \"Commit your work to your own branch\" - I should also commit the report to my branch. But the report is in output dir, which is outside the repo. Hmm.\n\nActually, the report could be committed to the repo, but the output dir is ~/.local/share/cs-campaign/output. I'll write the summary there and then use cs-campaign-member reply with that file. The reply command likely reads the file from the output dir. But the orientation also says commit your work. Since I didn't modify any code, I could commit a report file to the repo. But maybe the reply mechanism handles that? Let me think.\n\nThe dispatch says \"run `cs-campaign-member reply --file <path-to-your-summary>`\". So the reply file should be the summary. I should write it to the output directory.\n\nShould I also commit something to my branch? The orientation says \"Commit your work to your own branch.\" Since my work is just verification (a report), I can add a report file to the repo on my branch and commit it. But the reply mechanism might record whether the branch differs from base. An empty branch under a confident reply speaks for itself. But it says \"an empty branch under a confident reply speaks for itself\" - implying it's okay if the branch has no changes if my work was just verification. However, I should still commit my findings/report to make the branch differ.\n\nBut wait - the dispatch explicitly says \"Do not modify any code; report your observations.\" So I shouldn't modify code. But committing a report file is not modifying code. Let me write a verification report and commit it to my branch.\n\nActually, the output directory is the proper place for reports. The branch might be expected to contain code changes for the dev role, but for QA, the report is the work. I'll write the report to both the output directory and commit it to my branch, to be safe. Or just write to output directory and commit the report file in the repo.\n\nLet me first stop the server. Then go back to my branch and write/commit the report.\n\nLet me also make sure I capture all evidence:\n- Build output\n- Serve command\n- DOM dump\n- Verification script results\n- Source code inspection\n\nI'll write a comprehensive summary to ~/.local/share/cs-campaign/output/d002-report.md.\n\nThen I'll reply with that file. I should also commit it to my branch? Let me check if the cs-campaign-member reply expects a file in output dir. The path can be anywhere. But the orientation says output dir is for durable results. So I'll put it there.\n\nFor the commit: since I checked out the orchestrator ref, my branch is still at the base. If I just reply, my branch won't differ. The orientation says \"an empty branch under a confident reply speaks for itself\" - this is acceptable. But to be thorough, I could commit the report to the branch. However, the report is in output dir (outside repo). I could copy it into the repo on my branch and commit. But that might be considered modifying the repo unnecessarily. \n\nI think the safest interpretation is: write the report to output dir, and reply with it. The branch doesn't need to change because QA doesn't modify code. The orientation's \"commit your work\" is more relevant to the dev role. But to be safe, I'll also commit a copy of the report into the repo on my branch.\n\nWait, actually I realize: I checked out refs/campaign/orchestrator, which is a detached HEAD. My branch cs-sandbox/qa-... is still at 4f159b9. If I want to commit, I need to checkout my branch, then add a report file and commit. That will make the branch differ from base. That's good.\n\nBut the dispatch says \"Do not modify any code; report your observations.\" Adding a report file is not modifying code. So I can do that. Let me do it.\n\nPlan:\n1. Stop the background server.\n2. Write comprehensive report to ~/.local/share/cs-campaign/output/d002-report.md.\n3. Checkout my branch.\n4. Copy/add the report to the repo (maybe as d002-report.md at root or in a reports/ dir).\n5. Commit it.\n6. Run cs-campaign-member reply --file ~/.local/share/cs-campaign/output/d002-report.md.\n\nActually, maybe I don't need to copy to repo - just commit the report. But where? I'll create a `qa-reports/` directory or just put it at root. Since the repo is empty-ish, adding a report at root is fine.\n\nLet me stop the server first.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"command\":\"kill 16252 2>/dev/null || true; sleep 1; ! pgrep -f \\\"vite preview\\\" > /dev/null && echo \\\"server stopped\\\" || echo \\\"server still running\\\"\",\"workdir\":\"/home/<USER:1>/hello-app\"}",
+            "name": "bash"
+          },
+          "id": "bash_31",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "server still running\n",
+      "role": "tool",
+      "tool_call_id": "bash_31"
+    },
+    {
+      "content": "",
+      "reasoning_content": "The server is still running. Let me kill it more forcefully.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"command\":\"pkill -f \\\"vite preview\\\" || pkill -f \\\"vite\\\" || true; sleep 1; ! pgrep -f \\\"vite\\\" > /dev/null && echo \\\"server stopped\\\" || echo \\\"server still running\\\"\",\"workdir\":\"/home/<USER:1>/hello-app\"}",
+            "name": "bash"
+          },
+          "id": "bash_32",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "(no output)\n\n<shell_metadata>\nshell tool terminated command after exceeding timeout 120000 ms. If this command is expected to take longer and is not waiting for interactive input, retry with a larger timeout value in milliseconds.\n</shell_metadata>",
+      "role": "tool",
+      "tool_call_id": "bash_32"
+    },
+    {
+      "content": "",
+      "reasoning_content": "The pkill command timed out, probably because it was waiting. Let me just kill the specific process and not wait.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"command\":\"kill -9 16252 2>/dev/null || true; pgrep -f \\\"vite\\\" || echo \\\"no vite process\\\"\",\"workdir\":\"/home/<USER:1>/hello-app\",\"timeout\":5000}",
+            "name": "bash"
+          },
+          "id": "bash_33",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "25604\n",
+      "role": "tool",
+      "tool_call_id": "bash_33"
+    },
+    {
+      "content": "",
+      "reasoning_content": "There's another vite process (pid 25604). Let me kill it.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"command\":\"kill -9 25604 2>/dev/null || true; sleep 1; pgrep -f \\\"vite\\\" || echo \\\"no vite process\\\"\",\"workdir\":\"/home/<USER:1>/hello-app\",\"timeout\":10000}",
+            "name": "bash"
+          },
+          "id": "bash_34",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "25653\n",
+      "role": "tool",
+      "tool_call_id": "bash_34"
+    },
+    {
+      "content": "",
+      "reasoning_content": "It keeps respawning? Maybe there's a parent process. Let me check what's running.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "function": {
+            "arguments": "{\"command\":\"ps aux | grep -E \\\"vite|npm|node\\\" | grep -v grep\",\"workdir\":\"/home/<USER:1>/hello-app\",\"timeout\":5000}",
+            "name": "bash"
+          },
+          "id": "bash_35",
+          "type": "function"
+        }
+      ]
+    },
+    {
+      "content": "(no output)",
+      "role": "tool",
+      "tool_call_id": "bash_35"
+    }
+  ],
+  "model": "accounts/fireworks/models/kimi-k2p7-code",
+  "stream": true,
+  "stream_options": {
+    "include_usage": true
+  },
+  "temperature": 1,
+  "tool_choice": "auto",
+  "tools": [
+    {
+      "function": {
+        "description": "Executes a given bash command in a persistent shell session with optional timeout, ensuring proper handling and security measures.\n\nBe aware: OS: linux, Shell: bash\n\nAll commands run in the current working directory by default. Use the `workdir` parameter if you need to run a command in a different directory. AVOID using `cd <directory> && <command>` patterns - use `workdir` instead.\n\nUse `/tmp/opencode` for temporary work outside the workspace. This directory has already been created, already exists, and is pre-approved for external directory access.\n\nIMPORTANT: This tool is for terminal operations like git, npm, docker, etc. DO NOT use it for file operations (reading, writing, editing, searching, finding files) - use the specialized tools for this instead.\n\nBefore executing the command, please follow these steps:\n\n1. Directory Verification:\n   - If the command will create new directories or files, first use `ls` to verify the parent directory exists and is the correct location\n   - For example, before running \"mkdir foo/bar\", first use `ls foo` to check that \"foo\" exists and is the intended parent directory\n\n2. Command Execution:\n   - Always quote file paths that contain spaces with double quotes (e.g., rm \"path with spaces/file.txt\")\n   - Examples of proper quoting:\n     - mkdir \"/Users/name/My Documents\" (correct)\n     - mkdir /Users/name/My Documents (incorrect - will fail)\n     - python \"/path/with spaces/script.py\" (correct)\n     - python /path/with spaces/script.py (incorrect - will fail)\n   - After ensuring proper quoting, execute the command.\n   - Capture the output of the command.\n\nUsage notes:\n  - The command argument is required.\n  - You can specify an optional timeout in milliseconds. If not specified, commands will time out after 120000ms.\n  - If the output exceeds 2000 lines or 51200 bytes, it will be truncated and the full output will be written to a file. You can use Read with offset/limit to read specific sections or Grep to search the full content. Do NOT use `head`, `tail`, or other truncation commands to limit output; the full output will already be captured to a file for more precise searching.\n\n  - Avoid using Bash with the `find`, `grep`, `cat`, `head`, `tail`, `sed`, `awk`, or `echo` commands, unless explicitly instructed or when these commands are truly necessary for the task. Instead, always prefer using the dedicated tools for these commands:\n    - File search: Use Glob (NOT find or ls)\n    - Content search: Use Grep (NOT grep or rg)\n    - Read files: Use Read (NOT cat/head/tail)\n    - Edit files: Use Edit (NOT sed/awk)\n    - Write files: Use Write (NOT echo >/cat <<EOF)\n    - Communication: Output text directly (NOT echo/printf)\n  - When issuing multiple commands:\n    - If the commands are independent and can run in parallel, make multiple bash tool calls in a single message. For example, if you need to run \"git status\" and \"git diff\", send a single message with two bash tool calls in parallel.\n    - If the commands depend on each other and must run sequentially, use a single Bash call with '&&' to chain them together (e.g., `git add . && git commit -m \"message\" && git push`). For instance, if one operation must complete before another starts (like mkdir before cp, Write before Bash for git operations, or git add before git commit), run these operations sequentially instead.\n    - Use ';' only when you need to run commands sequentially but don't care if earlier commands fail\n    - DO NOT use newlines to separate commands (newlines are ok in quoted strings)\n  - AVOID using `cd <directory> && <command>`. Use the `workdir` parameter to change directories instead.\n    <good-example>\n    Use workdir=\"/foo/bar\" with command: pytest tests\n    </good-example>\n    <bad-example>\n    cd /foo/bar && pytest tests\n    </bad-example>\n\n# Git and GitHub\n- Only commit, amend, push, or create PRs when explicitly requested.\n- Before committing, inspect `git status`, `git diff`, and `git log --oneline -10`; stage only intended files and never commit secrets.\n- Write a concise commit message that matches the repo style.\n- Do not update git config, skip hooks, use interactive `-i`, force-push, or create empty commits unless explicitly requested.\n- If a commit fails or hooks reject it, fix the issue and create a new commit; do not amend the failed commit.\n- Before creating a PR, inspect status, diff, remote tracking, recent commits, and the diff from the base branch.\n- Review all commits included in the PR, not just the latest commit.\n- Use `gh` for GitHub tasks, including PRs, issues, checks, and releases; return the PR URL when done.\n",
+        "name": "bash",
+        "parameters": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "properties": {
+            "command": {
+              "description": "The command to execute",
+              "type": "string"
+            },
+            "timeout": {
+              "description": "Optional timeout in milliseconds",
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991,
+              "minimum": -9007199254740991,
+              "type": "integer"
+            },
+            "workdir": {
+              "description": "The working directory to run the command in. Defaults to the current directory. Use this instead of 'cd' commands.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "command"
+          ],
+          "type": "object"
+        }
+      },
+      "type": "function"
+    },
+    {
+      "function": {
+        "description": "Performs exact string replacements in files. \n\nUsage:\n- You must use your `Read` tool at least once in the conversation before editing. This tool will error if you attempt an edit without reading the file. \n- When editing text from Read tool output, ensure you preserve the exact indentation (tabs/spaces) as it appears AFTER the line number prefix. The line number prefix format is: line number + colon + space (e.g., `1: `). Everything after that space is the actual file content to match. Never include any part of the line number prefix in the oldString or newString.\n- ALWAYS prefer editing existing files in the codebase. NEVER write new files unless explicitly required.\n- Only use emojis if the user explicitly requests it. Avoid adding emojis to files unless asked.\n- The edit will FAIL if `oldString` is not found in the file with an error \"oldString not found in content\".\n- The edit will FAIL if `oldString` is found multiple times in the file with an error \"Found multiple matches for oldString. Provide more surrounding lines in oldString to identify the correct match.\" Either provide a larger string with more surrounding context to make it unique or use `replaceAll` to change every instance of `oldString`. \n- Use `replaceAll` for replacing and renaming strings across the file. This parameter is useful if you want to rename a variable for instance.\n",
+        "name": "edit",
+        "parameters": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "properties": {
+            "filePath": {
+              "description": "The absolute path to the file to modify",
+              "type": "string"
+            },
+            "newString": {
+              "description": "The text to replace it with (must be different from oldString)",
+              "type": "string"
+            },
+            "oldString": {
+              "description": "The text to replace",
+              "type": "string"
+            },
+            "replaceAll": {
+              "description": "Replace all occurrences of oldString (default false)",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "filePath",
+            "oldString",
+            "newString"
+          ],
+          "type": "object"
+        }
+      },
+      "type": "function"
+    },
+    {
+      "function": {
+        "description": "- Fast file pattern matching tool that works with any codebase size\n- Supports glob patterns like \"**/*.js\" or \"src/**/*.ts\"\n- Returns matching file paths\n- Use this tool when you need to find files by name patterns\n- When you are doing an open-ended search that may require multiple rounds of globbing and grepping, use the Task tool instead\n- You have the capability to call multiple tools in a single response. It is always better to speculatively perform multiple searches as a batch that are potentially useful.\n",
+        "name": "glob",
+        "parameters": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "properties": {
+            "path": {
+              "description": "The directory to search in. If not specified, the current working directory will be used. IMPORTANT: Omit this field to use the default directory. DO NOT enter \"undefined\" or \"null\" - simply omit it for the default behavior. Must be a valid directory path if provided.",
+              "type": "string"
+            },
+            "pattern": {
+              "description": "The glob pattern to match files against",
+              "type": "string"
+            }
+          },
+          "required": [
+            "pattern"
+          ],
+          "type": "object"
+        }
+      },
+      "type": "function"
+    },
+    {
+      "function": {
+        "description": "- Fast content search tool that works with any codebase size\n- Searches file contents using regular expressions\n- Supports full regex syntax (eg. \"log.*Error\", \"function\\s+\\w+\", etc.)\n- Filter files by pattern with the include parameter (eg. \"*.js\", \"*.{ts,tsx}\")\n- Returns file paths and line numbers with matching lines\n- Use this tool when you need to find files containing specific patterns\n- If you need to identify/count the number of matches within files, use the Bash tool with `rg` (ripgrep) directly. Do NOT use `grep`.\n- When you are doing an open-ended search that may require multiple rounds of globbing and grepping, use the Task tool instead\n",
+        "name": "grep",
+        "parameters": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "properties": {
+            "include": {
+              "description": "File pattern to include in the search (e.g. \"*.js\", \"*.{ts,tsx}\")",
+              "type": "string"
+            },
+            "path": {
+              "description": "The directory to search in. Defaults to the current working directory.",
+              "type": "string"
+            },
+            "pattern": {
+              "description": "The regex pattern to search for in file contents",
+              "type": "string"
+            }
+          },
+          "required": [
+            "pattern"
+          ],
+          "type": "object"
+        }
+      },
+      "type": "function"
+    },
+    {
+      "function": {
+        "description": "Use this tool when you need to ask the user questions during execution. This allows you to:\n1. Gather user preferences or requirements\n2. Clarify ambiguous instructions\n3. Get decisions on implementation choices as you work\n4. Offer choices to the user about what direction to take.\n\nUsage notes:\n- When `custom` is enabled (default), a \"Type your own answer\" option is added automatically; don't include \"Other\" or catch-all options\n- Answers are returned as arrays of labels; set `multiple: true` to allow selecting more than one\n- If you recommend a specific option, make that the first option in the list and add \"(Recommended)\" at the end of the label\n",
+        "name": "question",
+        "parameters": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "properties": {
+            "questions": {
+              "description": "Questions to ask",
+              "items": {
+                "properties": {
+                  "header": {
+                    "description": "Very short label (max 30 chars)",
+                    "type": "string"
+                  },
+                  "multiple": {
+                    "description": "Allow selecting multiple choices",
+                    "type": "boolean"
+                  },
+                  "options": {
+                    "description": "Available choices",
+                    "items": {
+                      "properties": {
+                        "description": {
+                          "description": "Explanation of choice",
+                          "type": "string"
+                        },
+                        "label": {
+                          "description": "Display text (1-5 words, concise)",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "label",
+                        "description"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "question": {
+                    "description": "Complete question",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "question",
+                  "header",
+                  "options"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "questions"
+          ],
+          "type": "object"
+        }
+      },
+      "type": "function"
+    },
+    {
+      "function": {
+        "description": "Read a file or directory from the local filesystem. If the path does not exist, an error is returned.\n\nUsage:\n- The filePath parameter should be an absolute path.\n- By default, this tool returns up to 2000 lines from the start of the file.\n- The offset parameter is the line number to start from (1-indexed).\n- To read later sections, call this tool again with a larger offset.\n- Use the grep tool to find specific content in large files or files with long lines.\n- If you are unsure of the correct file path, use the glob tool to look up filenames by glob pattern.\n- Contents are returned with each line prefixed by its line number as `<line>: <content>`. For example, if a file has contents \"foo\\n\", you will receive \"1: foo\\n\". For directories, entries are returned one per line (without line numbers) with a trailing `/` for subdirectories.\n- Any line longer than 2000 characters is truncated.\n- Call this tool in parallel when you know there are multiple files you want to read.\n- Avoid tiny repeated slices (30 line chunks). If you need more context, read a larger window.\n- This tool can read image files and PDFs and return them as file attachments.\n",
+        "name": "read",
+        "parameters": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "properties": {
+            "filePath": {
+              "description": "The absolute path to the file or directory to read",
+              "type": "string"
+            },
+            "limit": {
+              "description": "The maximum number of lines to read (defaults to 2000)",
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "offset": {
+              "description": "The line number to start reading from (1-indexed)",
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "filePath"
+          ],
+          "type": "object"
+        }
+      },
+      "type": "function"
+    },
+    {
+      "function": {
+        "description": "Load a specialized skill when the task at hand matches one of the skills listed in the system prompt.\n\nUse this tool to inject the skill's instructions and resources into current conversation. The output may contain detailed workflow guidance as well as references to scripts, files, etc in the same directory as the skill.\n\nThe skill name must match one of the skills listed in your system prompt.\n",
+        "name": "skill",
+        "parameters": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "properties": {
+            "name": {
+              "description": "The name of the skill from available_skills",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "type": "object"
+        }
+      },
+      "type": "function"
+    },
+    {
+      "function": {
+        "description": "Launch a new agent to handle complex, multistep tasks autonomously.\n\nWhen using the Task tool, you must specify a subagent_type parameter to select which agent type to use.\n\nWhen NOT to use the Task tool:\n- If you want to read a specific file path, use the Read or Glob tool instead of the Task tool, to find the match more quickly\n- If you are searching for a specific class definition like \"class Foo\", use the Grep tool instead, to find the match more quickly\n- If you are searching for code within a specific file or set of 2-3 files, use the Read tool instead of the Task tool, to find the match more quickly\n- If no available agent is a good fit for the task, use other tools directly\n\n\nUsage notes:\n1. Launch multiple agents concurrently whenever possible, to maximize performance; to do that, use a single message with multiple tool uses\n2. Once you have delegated work to an agent, do not duplicate that work yourself. Continue with non-overlapping tasks, or wait for the result. For background tasks, you will be notified automatically when the result is ready.\n3. When the agent is done, it will return a single message back to you. The result returned by the agent is not visible to the user. To show the user the result, you should send a text message back to the user with a concise summary of the result. The output includes a task_id you can reuse later to continue the same subagent session.\n4. Each agent invocation starts with a fresh context unless you provide task_id to resume the same subagent session (which continues with its previous messages and tool outputs). When starting fresh, your prompt should contain a highly detailed task description for the agent to perform autonomously and you should specify exactly what information the agent should return back to you in its final and only message to you.\n5. The agent's outputs should generally be trusted\n6. Clearly tell the agent whether you expect it to write code or just to do research (search, file reads, web fetches, etc.), since it is not aware of the user's intent. Tell it how to verify its work if possible (e.g., relevant test commands).\n7. If the agent description mentions that it should be used proactively, then you should try your best to use it without the user having to ask for it first. Use your judgement.\n\nAvailable agent types and the tools they have access to:\n- explore: Fast agent specialized for exploring codebases. Use this when you need to quickly find files by patterns (eg. \"src/components/**/*.tsx\"), search code for keywords (eg. \"API endpoints\"), or answer questions about the codebase (eg. \"how do API endpoints work?\"). When calling this agent, specify the desired thoroughness level: \"quick\" for basic searches, \"medium\" for moderate exploration, or \"very thorough\" for comprehensive analysis across multiple locations and naming conventions.\n- general: General-purpose agent for researching complex questions and executing multi-step tasks. Use this agent to execute multiple units of work in parallel.",
+        "name": "task",
+        "parameters": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "properties": {
+            "command": {
+              "description": "The command that triggered this task",
+              "type": "string"
+            },
+            "description": {
+              "description": "A short (3-5 words) description of the task",
+              "type": "string"
+            },
+            "prompt": {
+              "description": "The task for the agent to perform",
+              "type": "string"
+            },
+            "subagent_type": {
+              "description": "The type of specialized agent to use for this task",
+              "type": "string"
+            },
+            "task_id": {
+              "description": "This should only be set if you mean to resume a previous task (you can pass a prior task_id and the task will continue the same subagent session as before instead of creating a fresh one)",
+              "type": "string"
+            }
+          },
+          "required": [
+            "description",
+            "prompt",
+            "subagent_type"
+          ],
+          "type": "object"
+        }
+      },
+      "type": "function"
+    },
+    {
+      "function": {
+        "description": "Create and maintain a structured task list for the current coding session. Tracks progress, organizes multi-step work, and surfaces status to the user.\n\n## When to use\nUse proactively when:\n- The task requires 3+ distinct steps or actions (not just 3 tool calls for a single conceptual step)\n- The work is non-trivial and benefits from planning\n- The user provides multiple tasks (numbered or comma-separated) or explicitly asks for a todo list\n- New instructions arrive - capture them as todos\n- You start a task - mark it `in_progress` (only one at a time) before working\n- You finish a task - mark it `completed` and add any follow-ups discovered during the work\n\n## When NOT to use\nSkip when:\n- The work is a single, straightforward task (or <3 trivial steps)\n- The request is purely informational or conversational\n- Tracking adds no organizational value\n\n## States\n- `pending` - not started\n- `in_progress` - actively working (exactly ONE at a time)\n- `completed` - finished successfully\n- `cancelled` - no longer needed\n\n## Rules\n- Update status in real time; don't batch completions\n- Mark `completed` only after the required work is actually done, including any required verification. Never based on intent.\n- Keep exactly one `in_progress` while work remains\n- If blocked or partial, keep it `in_progress` and add a follow-up todo describing the blocker\n- Preserve user-provided commands verbatim (flags, args, order)\n- Items should be specific and actionable; break large work into smaller steps\n\n## Examples\n\nUse it:\n- \"Add a dark mode toggle and run the tests\" -> multi-step feature + explicit verification\n- \"Rename getCwd -> getCurrentWorkingDirectory across the repo\" -> grep reveals 15 occurrences in 8 files\n- \"Implement registration, catalog, cart, checkout\" -> multiple complex features\n\nSkip it:\n- \"How do I print Hello World in Python?\" -> informational\n- \"Add a comment to calculateTotal\" -> single edit\n- \"Run npm install and tell me what happened\" -> one command\n\nWhen in doubt, use it.\n",
+        "name": "todowrite",
+        "parameters": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "properties": {
+            "todos": {
+              "description": "The updated todo list",
+              "items": {
+                "properties": {
+                  "content": {
+                    "description": "Brief description of the task",
+                    "type": "string"
+                  },
+                  "priority": {
+                    "description": "Priority level of the task: high, medium, low",
+                    "type": "string"
+                  },
+                  "status": {
+                    "description": "Current status of the task: pending, in_progress, completed, cancelled",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "content",
+                  "status",
+                  "priority"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "todos"
+          ],
+          "type": "object"
+        }
+      },
+      "type": "function"
+    },
+    {
+      "function": {
+        "description": "- Fetches content from a specified URL\n- Takes a URL and optional format as input\n- Fetches the URL content, converts to requested format (markdown by default)\n- Returns the content in the specified format\n- Use this tool when you need to retrieve and analyze web content\n\nUsage notes:\n  - IMPORTANT: if another tool is present that offers better web fetching capabilities, is more targeted to the task, or has fewer restrictions, prefer using that tool instead of this one.\n  - The URL must be a fully-formed valid URL\n  - HTTP URLs will be automatically upgraded to HTTPS\n  - Format options: \"markdown\" (default), \"text\", or \"html\"\n  - This tool is read-only and does not modify any files\n  - Results may be summarized if the content is very large\n",
+        "name": "webfetch",
+        "parameters": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "properties": {
+            "format": {
+              "default": "markdown",
+              "description": "The format to return the content in (text, markdown, or html). Defaults to markdown.",
+              "enum": [
+                "text",
+                "markdown",
+                "html"
+              ],
+              "type": "string"
+            },
+            "timeout": {
+              "description": "Optional timeout in seconds (max 120)",
+              "type": "number"
+            },
+            "url": {
+              "description": "The URL to fetch content from",
+              "type": "string"
+            }
+          },
+          "required": [
+            "url"
+          ],
+          "type": "object"
+        }
+      },
+      "type": "function"
+    },
+    {
+      "function": {
+        "description": "Writes a file to the local filesystem.\n\nUsage:\n- This tool will overwrite the existing file if there is one at the provided path.\n- If this is an existing file, you MUST use the Read tool first to read the file's contents. This tool will fail if you did not read the file first.\n- ALWAYS prefer editing existing files in the codebase. NEVER write new files unless explicitly required.\n- NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.\n- Only use emojis if the user explicitly requests it. Avoid writing emojis to files unless asked.\n",
+        "name": "write",
+        "parameters": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "properties": {
+            "content": {
+              "description": "The content to write to the file",
+              "type": "string"
+            },
+            "filePath": {
+              "description": "The absolute path to the file to write (must be absolute, not relative)",
+              "type": "string"
+            }
+          },
+          "required": [
+            "content",
+            "filePath"
+          ],
+          "type": "object"
+        }
+      },
+      "type": "function"
+    }
+  ]
+}

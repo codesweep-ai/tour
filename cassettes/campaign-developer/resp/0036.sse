@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-ebf9c89ad3fc417b9a8b86773afb90cc","object":"chat.completion.chunk","created":1789849137,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Now create README.md."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849137,"id":"chatcmpl-ebf9c89ad3fc417b9a8b86773afb90cc","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"content\": \"# Hello App\\n\\nA single-page React + Vite greeting application built with `@codesweep-ai/ui`.\\n\\n## Commands\\n\\n- **Build:** `npm run build`\\n- **Serve (production preview):** `npm run serve`\\n- **Development:** `npm run dev` (bound to `0.0.0.0:5173`)\\n\\nThe Vite dev server is configured to listen on `0.0.0.0:5173` so the host can forward the page.\\n\", \"filePath\": \"/home/<USER:1>/hello-app/README.md\"}","name":"write"},"id":"write_33","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849137,"id":"chatcmpl-ebf9c89ad3fc417b9a8b86773afb90cc","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-ebf9c89ad3fc417b9a8b86773afb90cc","object":"chat.completion.chunk","created":1789849137,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-ebf9c89ad3fc417b9a8b86773afb90cc","object":"chat.completion.chunk","created":1789849137,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":36163,"total_tokens":36307,"completion_tokens":144,"prompt_tokens_details":{"cached_tokens":35527},"completion_tokens_details":{"reasoning_tokens":5},"output_tokens_details":{"reasoning_tokens":5}}}
+
+data: [DONE]
+

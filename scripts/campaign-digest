@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# campaign-digest — one hash over everything that decides what the agents are asked.
+#
+# A cassette replays only while the agents ask what they asked when it was recorded. The
+# mission, the briefs, the profile and the pinned campaign version all reach the prompts,
+# so an edit to any of them makes the recording stale, and nothing else would say so.
+# `make demo-record` stores this hash beside the cassettes, and `make check` compares it.
+set -euo pipefail
+cd "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+{
+  cat campaign/hello/mission.md campaign/hello/roles/*.md campaign/hello/profile.yaml.in
+  grep -E '^(CAMPAIGN_VERSION|FW_MODEL) ' Makefile
+} | sha256sum | cut -c1-16

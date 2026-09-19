@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-32d686e3c3ed4e5db9ad437a88999f9e","object":"chat.completion.chunk","created":1789849022,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Now I need to commit DESIGN.md, then push to developer and dispatch work."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849022,"id":"chatcmpl-32d686e3c3ed4e5db9ad437a88999f9e","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"cd ~/hello-app \u0026\u0026 git add DESIGN.md \u0026\u0026 git commit -m \\\"Add DESIGN.md for hello greeting app\\\"\", \"workdir\": \"/home/<USER:1>\"}","name":"bash"},"id":"bash_26","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849022,"id":"chatcmpl-32d686e3c3ed4e5db9ad437a88999f9e","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-32d686e3c3ed4e5db9ad437a88999f9e","object":"chat.completion.chunk","created":1789849022,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-32d686e3c3ed4e5db9ad437a88999f9e","object":"chat.completion.chunk","created":1789849022,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":45255,"total_tokens":45319,"completion_tokens":64,"prompt_tokens_details":{"cached_tokens":44416},"completion_tokens_details":{"reasoning_tokens":16},"output_tokens_details":{"reasoning_tokens":16}}}
+
+data: [DONE]
+

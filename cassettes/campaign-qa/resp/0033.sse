@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-511ddac8a6ea4ff094fb6587234bafb0","object":"chat.completion.chunk","created":1789849496,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"The server is still running. Let me kill it more forcefully."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849496,"id":"chatcmpl-511ddac8a6ea4ff094fb6587234bafb0","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"pkill -f \\\"vite preview\\\" || pkill -f \\\"vite\\\" || true; sleep 1; ! pgrep -f \\\"vite\\\" \u003e /dev/null \u0026\u0026 echo \\\"server stopped\\\" || echo \\\"server still running\\\"\", \"workdir\": \"/home/<USER:1>/hello-app\"}","name":"bash"},"id":"bash_32","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849496,"id":"chatcmpl-511ddac8a6ea4ff094fb6587234bafb0","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-511ddac8a6ea4ff094fb6587234bafb0","object":"chat.completion.chunk","created":1789849496,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-511ddac8a6ea4ff094fb6587234bafb0","object":"chat.completion.chunk","created":1789849496,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":20440,"total_tokens":20529,"completion_tokens":89,"prompt_tokens_details":{"cached_tokens":18987},"completion_tokens_details":{"reasoning_tokens":14},"output_tokens_details":{"reasoning_tokens":14}}}
+
+data: [DONE]
+

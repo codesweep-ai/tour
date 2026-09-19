@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-06f8ef2e53694c60b5947a34f877064f","object":"chat.completion.chunk","created":1789849233,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"I need to read d003.md and follow its instructions."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849233,"id":"chatcmpl-06f8ef2e53694c60b5947a34f877064f","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/.local/share/cs-campaign/input/d003.md\"}","name":"read"},"id":"read_42","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849233,"id":"chatcmpl-06f8ef2e53694c60b5947a34f877064f","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-06f8ef2e53694c60b5947a34f877064f","object":"chat.completion.chunk","created":1789849233,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-06f8ef2e53694c60b5947a34f877064f","object":"chat.completion.chunk","created":1789849233,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":38165,"total_tokens":38207,"completion_tokens":42,"prompt_tokens_details":{"cached_tokens":37904},"completion_tokens_details":{"reasoning_tokens":12},"output_tokens_details":{"reasoning_tokens":12}}}
+
+data: [DONE]
+

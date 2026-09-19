@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-2d5bd531d62345549e0cf4211fc45d15","object":"chat.completion.chunk","created":1789849299,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Now merge into my branch."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849299,"id":"chatcmpl-2d5bd531d62345549e0cf4211fc45d15","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"cd ~/hello-app \u0026\u0026 git merge refs/remotes/campaign/developer/hello-app --no-edit\", \"workdir\": \"/home/<USER:1>\"}","name":"bash"},"id":"bash_59","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849299,"id":"chatcmpl-2d5bd531d62345549e0cf4211fc45d15","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-2d5bd531d62345549e0cf4211fc45d15","object":"chat.completion.chunk","created":1789849299,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-2d5bd531d62345549e0cf4211fc45d15","object":"chat.completion.chunk","created":1789849299,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":57593,"total_tokens":57643,"completion_tokens":50,"prompt_tokens_details":{"cached_tokens":57478},"completion_tokens_details":{"reasoning_tokens":6},"output_tokens_details":{"reasoning_tokens":6}}}
+
+data: [DONE]
+

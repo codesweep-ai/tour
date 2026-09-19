@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-044a53526d5d47a7a0f204aa6e796e43","object":"chat.completion.chunk","created":1789849125,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Now create src/App.jsx. I need to import AppShell, Header, Footer from \"@codesweep-ai/ui\" and Button from \"@codesweep-ai/ui\". I need to check the main index exports."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849125,"id":"chatcmpl-044a53526d5d47a7a0f204aa6e796e43","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"head -50 node_modules/@codesweep-ai/ui/dist/index.js\", \"workdir\": \"/home/<USER:1>/hello-app\"}","name":"bash"},"id":"bash_30","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849125,"id":"chatcmpl-044a53526d5d47a7a0f204aa6e796e43","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-044a53526d5d47a7a0f204aa6e796e43","object":"chat.completion.chunk","created":1789849125,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-044a53526d5d47a7a0f204aa6e796e43","object":"chat.completion.chunk","created":1789849125,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":32896,"total_tokens":32978,"completion_tokens":82,"prompt_tokens_details":{"cached_tokens":32731},"completion_tokens_details":{"reasoning_tokens":41},"output_tokens_details":{"reasoning_tokens":41}}}
+
+data: [DONE]
+

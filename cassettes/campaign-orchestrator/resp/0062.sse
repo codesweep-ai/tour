@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-737d05d61c85486d8f826809282490e2","object":"chat.completion.chunk","created":1789849700,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"The user hasn't asked a new question - this is just a system reminder. I should provide a final summary since the campaign is closed."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849700,"id":"chatcmpl-737d05d61c85486d8f826809282490e2","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"content":"Campaign `hello` concluded — replied to dispatch `m1` with outcome `campaign-met`.\n\nSummary:\n- Wrote and committed `DESIGN.md` in `~/hello-app`.\n- Dispatched implementation to `developer`; accepted after one rework for an undefined font-size token.\n- Dispatched verification to `qa`; accepted — all requirements passed.\n- Merged the verified app into `cs-sandbox/<ORCHESTRATOR:1>.<GROUP:1>`.\n- Left the Vite dev server running on `0.0.0.0:5173` (returns HTTP 200).\n- Wrote the durable final report to `~/.local/share/cs-campaign/output/final-report.md`.\n- Closed `m1` with `cs-campaign-member reply --file ... --outcome campaign-met`.\n\nNo criteria remain unmet."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849700,"id":"chatcmpl-737d05d61c85486d8f826809282490e2","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-737d05d61c85486d8f826809282490e2","object":"chat.completion.chunk","created":1789849700,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"stop","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-737d05d61c85486d8f826809282490e2","object":"chat.completion.chunk","created":1789849700,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":69924,"total_tokens":70127,"completion_tokens":203,"prompt_tokens_details":{"cached_tokens":69280},"completion_tokens_details":{"reasoning_tokens":27},"output_tokens_details":{"reasoning_tokens":27}}}
+
+data: [DONE]
+

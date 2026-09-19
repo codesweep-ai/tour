@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-3cd90bfb04bb453ab68bd3d0c43c006b","object":"chat.completion.chunk","created":1789848955,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Need follow d001. Steps: 1. Run cs-campaign-member check-inputs. 2. Read config \u0026 inputs (done). 3. Write /tmp/readback.json exactly JSON single line with member, role, branch, missing array from check-inputs output, goal, scope, obligations one sentence each. 4. Reply with cs-campaign-member reply --file /tmp/readback.json.\n\nNeed run check-inputs. Use bash."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789848955,"id":"chatcmpl-3cd90bfb04bb453ab68bd3d0c43c006b","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"cs-campaign-member check-inputs\", \"workdir\": \"/home/<USER:1>\", \"timeout\": 60000}","name":"bash"},"id":"bash_4","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789848955,"id":"chatcmpl-3cd90bfb04bb453ab68bd3d0c43c006b","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-3cd90bfb04bb453ab68bd3d0c43c006b","object":"chat.completion.chunk","created":1789848955,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-3cd90bfb04bb453ab68bd3d0c43c006b","object":"chat.completion.chunk","created":1789848955,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":9114,"total_tokens":9247,"completion_tokens":133,"prompt_tokens_details":{"cached_tokens":0},"completion_tokens_details":{"reasoning_tokens":93},"output_tokens_details":{"reasoning_tokens":93}}}
+
+data: [DONE]
+

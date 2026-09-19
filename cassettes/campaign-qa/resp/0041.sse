@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-95d826e62792458db4d6435e946e6e57","object":"chat.completion.chunk","created":1789849638,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Now commit."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849638,"id":"chatcmpl-95d826e62792458db4d6435e946e6e57","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"git commit -m \\\"QA report for dispatch d002: verify Hello greeting app\\\"\", \"workdir\": \"/home/<USER:1>/hello-app\"}","name":"bash"},"id":"bash_40","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849638,"id":"chatcmpl-95d826e62792458db4d6435e946e6e57","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-95d826e62792458db4d6435e946e6e57","object":"chat.completion.chunk","created":1789849638,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-95d826e62792458db4d6435e946e6e57","object":"chat.completion.chunk","created":1789849638,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":22399,"total_tokens":22446,"completion_tokens":47,"prompt_tokens_details":{"cached_tokens":22178},"completion_tokens_details":{"reasoning_tokens":3},"output_tokens_details":{"reasoning_tokens":3}}}
+
+data: [DONE]
+

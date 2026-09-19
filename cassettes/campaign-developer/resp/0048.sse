@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-eb0ffbf2855d4c0cac737d1247f644d8","object":"chat.completion.chunk","created":1789849269,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Now build to verify, then commit."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849269,"id":"chatcmpl-eb0ffbf2855d4c0cac737d1247f644d8","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"npm run build\", \"workdir\": \"/home/<USER:1>/hello-app\", \"timeout\": 120000}","name":"bash"},"id":"bash_45","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849269,"id":"chatcmpl-eb0ffbf2855d4c0cac737d1247f644d8","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-eb0ffbf2855d4c0cac737d1247f644d8","object":"chat.completion.chunk","created":1789849269,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-eb0ffbf2855d4c0cac737d1247f644d8","object":"chat.completion.chunk","created":1789849269,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":39372,"total_tokens":39418,"completion_tokens":46,"prompt_tokens_details":{"cached_tokens":39281},"completion_tokens_details":{"reasoning_tokens":8},"output_tokens_details":{"reasoning_tokens":8}}}
+
+data: [DONE]
+

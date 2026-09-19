@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-9029bb7dab0a448ea14008d549eec29d","object":"chat.completion.chunk","created":1789849105,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Good. Now I need to check the actual package.json structure. The developer.md said Header and Footer come from AppShell module, and Button is exported separately. Let me check the package.json exports."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849105,"id":"chatcmpl-9029bb7dab0a448ea14008d549eec29d","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/hello-app/node_modules/@codesweep-ai/ui/package.json\"}","name":"read"},"id":"read_23","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849105,"id":"chatcmpl-9029bb7dab0a448ea14008d549eec29d","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-9029bb7dab0a448ea14008d549eec29d","object":"chat.completion.chunk","created":1789849105,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-9029bb7dab0a448ea14008d549eec29d","object":"chat.completion.chunk","created":1789849105,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":30421,"total_tokens":30492,"completion_tokens":71,"prompt_tokens_details":{"cached_tokens":29764},"completion_tokens_details":{"reasoning_tokens":40},"output_tokens_details":{"reasoning_tokens":40}}}
+
+data: [DONE]
+

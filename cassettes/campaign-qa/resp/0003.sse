@@ -1,0 +1,16 @@
+data: {"id":"chatcmpl-34c8999b32164661a0cb816aa9dd27e3","object":"chat.completion.chunk","created":1789848953,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Need read every file it lists under \"inputs\": ORIENTATION.md and qa.md, in inputDir .local/share/cs-campaign/input. Also read d001.md. Use absolute paths /home/<USER:1>/.local/share/cs-campaign/input/... Read all three in parallel."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789848953,"id":"chatcmpl-34c8999b32164661a0cb816aa9dd27e3","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/.local/share/cs-campaign/input/ORIENTATION.md\"}","name":"read"},"id":"read_1","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789848953,"id":"chatcmpl-34c8999b32164661a0cb816aa9dd27e3","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/.local/share/cs-campaign/input/qa.md\"}","name":"read"},"id":"read_2","index":1,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789848953,"id":"chatcmpl-34c8999b32164661a0cb816aa9dd27e3","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/.local/share/cs-campaign/input/d001.md\"}","name":"read"},"id":"read_3","index":2,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789848953,"id":"chatcmpl-34c8999b32164661a0cb816aa9dd27e3","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-34c8999b32164661a0cb816aa9dd27e3","object":"chat.completion.chunk","created":1789848953,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-34c8999b32164661a0cb816aa9dd27e3","object":"chat.completion.chunk","created":1789848953,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":7458,"total_tokens":7596,"completion_tokens":138,"prompt_tokens_details":{"cached_tokens":6973},"completion_tokens_details":{"reasoning_tokens":56},"output_tokens_details":{"reasoning_tokens":56}}}
+
+data: [DONE]
+
