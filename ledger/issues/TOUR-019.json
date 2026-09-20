@@ -1,0 +1,25 @@
+{
+  "id": "TOUR-019",
+  "title": "On a slow machine a replay could accept unfinished work, and nothing would show it",
+  "type": "defect",
+  "severity": "med",
+  "status": "closed",
+  "foundBy": "session agent, reading the campaign source to find which timers a replay depends on",
+  "opened": "2026-09-20",
+  "resolved": "2026-09-20",
+  "stint": null,
+  "evidence": {
+    "commits": [
+      "c42dbae"
+    ],
+    "integrated": [],
+    "verified": "`scripts/wait-ceiling cassettes/campaign-orchestrator` printed 840. A full `make demo-replay` then ran with the key removed. The step printed `a wait may last 840 seconds`, and `cs-sandbox exec` inside the orchestrator showed `CS_CAMPAIGN_WAIT_SECONDS=840`. The replay ended with `replayed 157`, `upstream calls 0` and `misses 0`, exit 0, and the recording's four commit ids. The proxy log held 9 lines whose recorded text began `wait chunk elapsed` and whose live text began `wait returned`, which is the harmless direction. The new failure check counted 0 on that log and 1 on a line written by hand for the harmful direction. No real replay has yet been made slow enough to trip it."
+  },
+  "resolution": null,
+  "details": "The orchestrator waits for the other agents with `cs-campaign-member wait`. That command gives up after 240 seconds and asks to be called again. A live orchestrator calls it again. A recorded orchestrator does whatever it did when it was recorded.\n\nThe recording holds five waits. Four returned an answer inside 240 seconds, and one gave up and was called again. Suppose a replay runs on a machine slow enough that one of the four takes longer than 240 seconds. The proxy tolerates the changed tool result, as it does every tool result. The recorded orchestrator then reads and accepts a reply that does not exist yet. The replay ends with `misses 0`, and what it delivered is wrong.\n\nThe opposite case is harmless and already happens. The wait that gave up in the recording gets its answer in time on this machine, and the next recorded wait returns at once.\n\n`cs-campaign` already has the setting for this. `CS_CAMPAIGN_WAIT_SECONDS` overrides how long a wait lasts, and `create` forwards it to the members. The ceiling is the timeout that the recorded model gave the command, which is 900 seconds in this recording and is the same in every replay. `scripts/wait-ceiling` reads it from the cassette and takes a minute off, so a new recording cannot leave a stale number behind. The step also fails when a wait gave up where the recorded one had an answer, and it says that the machine was too slow.\n\nTwo other timers were suspected and cleared. A member's stall threshold of 180 seconds does not fire on slow work, because each turn driver calls a stall only when the agent has stopped working. The readback bound of 15 minutes is about fifteen times what a readback took here.",
+  "notes": [],
+  "links": [
+    "TOUR-009",
+    "TOUR-018"
+  ]
+}
