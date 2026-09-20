@@ -131,6 +131,16 @@ if [ "$mode" = replay ]; then
   printf 'not-a-real-key' > "$fake/.cs-keys/fireworks"; chmod 600 "$fake/.cs-keys/fireworks"
   export CS_SANDBOX_AGENT_HOME="$fake"
   echo "  lending the key in $fake/.cs-keys/fireworks, which holds the words not-a-real-key"
+  # The orchestrator's `wait` gives up after 240 seconds and asks to be called again. A
+  # live orchestrator calls it again, and a recorded one does whatever it did when it was
+  # recorded. So on a slow machine a wait can give up where the recorded one had an answer,
+  # and the recorded orchestrator then accepts work that is not there yet. A longer wait
+  # costs nothing, because a wait returns the moment there is an answer. Its ceiling is
+  # the time the recorded model allowed that command, which scripts/wait-ceiling reads
+  # from the cassette. `cs-campaign create` forwards the variable to the members.
+  CS_CAMPAIGN_WAIT_SECONDS="$("$root/scripts/wait-ceiling" "$store/campaign-orchestrator" 2>/dev/null || echo 240)"
+  export CS_CAMPAIGN_WAIT_SECONDS
+  echo "  a wait may last $CS_CAMPAIGN_WAIT_SECONDS seconds, which is what the recorded orchestrator allowed it"
 fi
 
 # --- 5. create, and start the proxy the moment the campaign's network exists --------
@@ -220,6 +230,15 @@ fi
 make --no-print-directory demo-fetch demo-archive demo-dispatch-page demo-trajectories show-app || exit 1
 
 if [ "$mode" = replay ]; then
+  # The proxy logs every tool result that differs from the recorded one. A wait that gave
+  # up, where the recorded wait had an answer, is the one such difference that matters. The
+  # recorded orchestrator went on to accept work that this run had not finished.
+  gave_up="$(grep -cE 'recorded="wait returned[^"]*" live="wait chunk elapsed' "$vw/vcr.log" || true)"
+  if [ "${gave_up:-0}" -gt 0 ]; then
+    echo "FAILED: $gave_up wait(s) gave up after $CS_CAMPAIGN_WAIT_SECONDS seconds, where the recorded wait had an answer." >&2
+    echo "This machine ran the agents' work more slowly than a replay can allow, so what was delivered cannot be trusted." >&2
+    exit 1
+  fi
   if [ "${upstream:-x}" != 0 ] || [ "${misses:-x}" != 0 ]; then
     echo "FAILED: a replay must show upstream calls 0 and no miss that an agent sent, and this showed ${upstream:-?} and ${misses:-?}." >&2
     echo "The proxy log is .work/campaign-vcr/vcr.log, and any missed request is under .work/campaign-vcr/misses" >&2

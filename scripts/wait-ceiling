@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+"""wait-ceiling — how long one `wait` may safely last in a replay, in seconds.
+
+usage: scripts/wait-ceiling <orchestrator cassette directory>
+
+The orchestrator runs `cs-campaign-member wait` as a shell command, and its model gives
+that command a timeout. The timeout is part of the recording, so it is the same in every
+replay. A wait has to end before it, or the agent CLI ends the command and the recorded
+orchestrator carries on without an answer. This prints the smallest such timeout in the
+cassette, less a minute, and never less than the 240 seconds a live campaign uses.
+"""
+import glob
+import json
+import os
+import sys
+
+LIVE = 240
+
+
+def ceiling(cassette):
+    reqs = glob.glob(os.path.join(cassette, "req", "*.json"))
+    if not reqs:
+        return LIVE
+    # The last request of a session holds the whole conversation, and it is the largest.
+    doc = json.load(open(max(reqs, key=os.path.getsize)))
+    body = doc.get("body", doc)
+    if isinstance(body, str):
+        body = json.loads(body)
+    smallest = None
+    for message in body.get("messages", []):
+        for call in message.get("tool_calls") or []:
+            try:
+                args = json.loads(call["function"]["arguments"])
+            except (KeyError, TypeError, ValueError):
+                continue
+            if "cs-campaign-member wait" in str(args.get("command", "")) and args.get("timeout"):
+                secs = int(args["timeout"]) // 1000
+                smallest = secs if smallest is None else min(smallest, secs)
+    return max(LIVE, smallest - 60) if smallest else LIVE
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        sys.exit("usage: scripts/wait-ceiling <orchestrator cassette directory>")
+    print(ceiling(sys.argv[1]))

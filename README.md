@@ -378,6 +378,13 @@ possible. The first is the cassette, which fixes what the models said. The secon
 date. The third is that every commit carries one fixed author and date. As a result, the
 commit ids in the delivered repository are the same on every run and on every machine.
 
+Time is the one input that a recording cannot hold. The orchestrator waits for the other
+agents with a command that gives up after 240 seconds and asks to be called again. A live
+orchestrator calls it again, and a recorded one does whatever it did when it was recorded.
+So the step lets a wait last as long as the recorded model allowed that command, which is
+840 seconds in this recording. If a wait still gives up where the recorded one had an
+answer, the step fails and says that the machine was too slow.
+
 The trajectories of a replayed run show a cost of about a dollar. That is what the
 recording cost when it was made, because the recorded answers carry the provider's token
 counts. The replay itself costs nothing.
