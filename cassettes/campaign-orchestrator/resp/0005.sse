@@ -1,12 +1,12 @@
-data: {"id":"chatcmpl-e24d83dbfb9341a4972008c2d44649b0","object":"chat.completion.chunk","created":1789848961,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+data: {"id":"chatcmpl-795f438b1b3d411e8e9a4b693c2163df","object":"chat.completion.chunk","created":1789958809,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
 
-data: {"choices":[{"delta":{"reasoning_content":"Now I need to reply using cs-campaign-member reply --file /tmp/readback.json."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789848961,"id":"chatcmpl-e24d83dbfb9341a4972008c2d44649b0","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+data: {"choices":[{"delta":{"reasoning_content":"Now I need to reply with cs-campaign-member reply --file /tmp/readback.json"},"finish_reason":null,"index":0,"raw_output":null}],"created":1789958809,"id":"chatcmpl-795f438b1b3d411e8e9a4b693c2163df","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
 
-data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"cs-campaign-member reply --file /tmp/readback.json\", \"workdir\": \"/home/<USER:1>\"}","name":"bash"},"id":"bash_9","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789848961,"id":"chatcmpl-e24d83dbfb9341a4972008c2d44649b0","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"cs-campaign-member reply --file /tmp/readback.json\", \"workdir\": \"/home/<USER:1>\"}","name":"bash"},"id":"bash_9","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789958809,"id":"chatcmpl-795f438b1b3d411e8e9a4b693c2163df","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
 
-data: {"id":"chatcmpl-e24d83dbfb9341a4972008c2d44649b0","object":"chat.completion.chunk","created":1789848961,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+data: {"id":"chatcmpl-795f438b1b3d411e8e9a4b693c2163df","object":"chat.completion.chunk","created":1789958809,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
 
-data: {"id":"chatcmpl-e24d83dbfb9341a4972008c2d44649b0","object":"chat.completion.chunk","created":1789848961,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":12572,"total_tokens":12629,"completion_tokens":57,"prompt_tokens_details":{"cached_tokens":7837},"completion_tokens_details":{"reasoning_tokens":19},"output_tokens_details":{"reasoning_tokens":19}}}
+data: {"id":"chatcmpl-795f438b1b3d411e8e9a4b693c2163df","object":"chat.completion.chunk","created":1789958809,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":12464,"total_tokens":12520,"completion_tokens":56,"prompt_tokens_details":{"cached_tokens":11994},"completion_tokens_details":{"reasoning_tokens":18},"output_tokens_details":{"reasoning_tokens":18}}}
 
 data: [DONE]
 

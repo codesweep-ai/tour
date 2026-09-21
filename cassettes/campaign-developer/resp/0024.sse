@@ -1,14 +1,10 @@
-data: {"id":"chatcmpl-2fe904bf2bf5414ebfe0d4773813813b","object":"chat.completion.chunk","created":1789849088,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+data: {"id":"chatcmpl-40ace389f50b4932988eca0957ec72d6","object":"chat.completion.chunk","created":1789959011,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
 
-data: {"choices":[{"delta":{"reasoning_content":"Good. Now let me read the catalog.json to understand the components, and check the d.ts files."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849088,"id":"chatcmpl-2fe904bf2bf5414ebfe0d4773813813b","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"rg --color never \\\"(--color-info|--color-success|--color-warning|--color-error|--font-size-prose-h1|--font-weight-bold|--space-)\\\" node_modules/@codesweep-ai/ui/dist/styles/tokens.css | head -40\", \"workdir\": \"/home/<USER:1>/hello-app\"}","name":"bash"},"id":"bash_29","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959011,"id":"chatcmpl-40ace389f50b4932988eca0957ec72d6","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
 
-data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/hello-app/node_modules/@codesweep-ai/ui/catalog.json\"}","name":"read"},"id":"read_19","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849088,"id":"chatcmpl-2fe904bf2bf5414ebfe0d4773813813b","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+data: {"id":"chatcmpl-40ace389f50b4932988eca0957ec72d6","object":"chat.completion.chunk","created":1789959011,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
 
-data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"ls node_modules/@codesweep-ai/ui/dist/components\", \"workdir\": \"/home/<USER:1>/hello-app\"}","name":"bash"},"id":"bash_20","index":1,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849088,"id":"chatcmpl-2fe904bf2bf5414ebfe0d4773813813b","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
-
-data: {"id":"chatcmpl-2fe904bf2bf5414ebfe0d4773813813b","object":"chat.completion.chunk","created":1789849088,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
-
-data: {"id":"chatcmpl-2fe904bf2bf5414ebfe0d4773813813b","object":"chat.completion.chunk","created":1789849088,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":13306,"total_tokens":13392,"completion_tokens":86,"prompt_tokens_details":{"cached_tokens":12962},"completion_tokens_details":{"reasoning_tokens":21},"output_tokens_details":{"reasoning_tokens":21}}}
+data: {"id":"chatcmpl-40ace389f50b4932988eca0957ec72d6","object":"chat.completion.chunk","created":1789959011,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":35676,"total_tokens":35752,"completion_tokens":76,"prompt_tokens_details":{"cached_tokens":35480},"completion_tokens_details":{"reasoning_tokens":0},"output_tokens_details":{"reasoning_tokens":0}}}
 
 data: [DONE]
 

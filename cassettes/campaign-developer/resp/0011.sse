@@ -1,28 +1,12 @@
-data: {"id":"chatcmpl-5d7f0a39ca7748318671ffad31fe1b04","object":"chat.completion.chunk","created":1789849045,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+data: {"id":"chatcmpl-3100a246469b4d72b8958a46275bebf6","object":"chat.completion.chunk","created":1789958932,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
 
-data: {"choices":[{"delta":{"reasoning_content":"The user wants a title for a conversation where the main task is to read a campaign config file, read input files, process a specific dispatch (d002), and then reply using a command. Need to focus on main topic/question. The user message is an instruction. Key elements: cs-campaign, dispatch d002, read config and inputs, follow d002.md, reply with command. Title should be brief ≤50 chars, same language (English), grammatically correct, no tool names, no \"summarizing/generating\", remove articles, no tech stack assumptions. Need to avoid including tool names? \"Read\" is not a tool name here. The task is campaign dispatch d002. Maybe title: \"Campaign dispatch d002: read config, inputs, reply\" or \"Process cs-campaign dispatch d002 and reply\". Let's craft under 50 chars. \"Process cs-campaign dispatch d002 and reply\" = 42 chars. Good. Could also \"cs-campaign dispatch d002 execution and reply\" 45. Need no articles. \"Process\" okay. The examples show titles like \"Debugging production 500 errors\". Use action. Title: \"Process cs-campaign dispatch d002 and reply\". That captures reading config/inputs and reply. Ensure no \"the\". Good."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849045,"id":"chatcmpl-5d7f0a39ca7748318671ffad31fe1b04","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+data: {"choices":[{"delta":{"reasoning_content":"Need implement in hello-app. Let's inspect repo status and merge refs/campaign/orchestrator. Use git. Also need read DESIGN.md after merge. Let's proceed."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789958932,"id":"chatcmpl-3100a246469b4d72b8958a46275bebf6","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
 
-data: {"id":"chatcmpl-5d7f0a39ca7748318671ffad31fe1b04","object":"chat.completion.chunk","created":1789849045,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"content":"Process"},"finish_reason":null,"raw_output":null}],"usage":null}
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"git status \u0026\u0026 git branch -a \u0026\u0026 git log --oneline -5 \u0026\u0026 git show-ref | head -20\", \"workdir\": \"/home/<USER:1>/hello-app\"}","name":"bash"},"id":"bash_5","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789958932,"id":"chatcmpl-3100a246469b4d72b8958a46275bebf6","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
 
-data: {"id":"chatcmpl-5d7f0a39ca7748318671ffad31fe1b04","object":"chat.completion.chunk","created":1789849045,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"content":" cs"},"finish_reason":null,"raw_output":null}],"usage":null}
+data: {"id":"chatcmpl-3100a246469b4d72b8958a46275bebf6","object":"chat.completion.chunk","created":1789958932,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
 
-data: {"id":"chatcmpl-5d7f0a39ca7748318671ffad31fe1b04","object":"chat.completion.chunk","created":1789849045,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"content":"-c"},"finish_reason":null,"raw_output":null}],"usage":null}
-
-data: {"id":"chatcmpl-5d7f0a39ca7748318671ffad31fe1b04","object":"chat.completion.chunk","created":1789849045,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"content":"ampaign"},"finish_reason":null,"raw_output":null}],"usage":null}
-
-data: {"id":"chatcmpl-5d7f0a39ca7748318671ffad31fe1b04","object":"chat.completion.chunk","created":1789849045,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"content":" dispatch"},"finish_reason":null,"raw_output":null}],"usage":null}
-
-data: {"id":"chatcmpl-5d7f0a39ca7748318671ffad31fe1b04","object":"chat.completion.chunk","created":1789849045,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"content":" d"},"finish_reason":null,"raw_output":null}],"usage":null}
-
-data: {"id":"chatcmpl-5d7f0a39ca7748318671ffad31fe1b04","object":"chat.completion.chunk","created":1789849045,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"content":"002"},"finish_reason":null,"raw_output":null}],"usage":null}
-
-data: {"id":"chatcmpl-5d7f0a39ca7748318671ffad31fe1b04","object":"chat.completion.chunk","created":1789849045,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"content":" and"},"finish_reason":null,"raw_output":null}],"usage":null}
-
-data: {"id":"chatcmpl-5d7f0a39ca7748318671ffad31fe1b04","object":"chat.completion.chunk","created":1789849045,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"content":" reply"},"finish_reason":null,"raw_output":null}],"usage":null}
-
-data: {"id":"chatcmpl-5d7f0a39ca7748318671ffad31fe1b04","object":"chat.completion.chunk","created":1789849045,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"stop","raw_output":null}],"usage":null}
-
-data: {"id":"chatcmpl-5d7f0a39ca7748318671ffad31fe1b04","object":"chat.completion.chunk","created":1789849045,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":611,"total_tokens":885,"completion_tokens":274,"prompt_tokens_details":{"cached_tokens":1},"completion_tokens_details":{"reasoning_tokens":263},"output_tokens_details":{"reasoning_tokens":263}}}
+data: {"id":"chatcmpl-3100a246469b4d72b8958a46275bebf6","object":"chat.completion.chunk","created":1789958932,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":10133,"total_tokens":10217,"completion_tokens":84,"prompt_tokens_details":{"cached_tokens":0},"completion_tokens_details":{"reasoning_tokens":33},"output_tokens_details":{"reasoning_tokens":33}}}
 
 data: [DONE]
 

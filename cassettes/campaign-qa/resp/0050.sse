@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-9439b10227ef4a2f8d55aada13fa9219","object":"chat.completion.chunk","created":1789959929,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Now I need to switch back to my branch and commit the report. Let me also save the verification script to the output directory as evidence."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959929,"id":"chatcmpl-9439b10227ef4a2f8d55aada13fa9219","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"cp /tmp/verify.js ~/.local/share/cs-campaign/output/d002-verify.js \u0026\u0026 cp /tmp/verify-output.txt ~/.local/share/cs-campaign/output/d002-verify-output.txt 2\u003e/dev/null || node /tmp/verify.js \u003e ~/.local/share/cs-campaign/output/d002-verify-output.txt 2\u003e\u00261\", \"workdir\": \"/home/<USER:1>/hello-app\"}","name":"bash"},"id":"bash_50","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959929,"id":"chatcmpl-9439b10227ef4a2f8d55aada13fa9219","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-9439b10227ef4a2f8d55aada13fa9219","object":"chat.completion.chunk","created":1789959929,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-9439b10227ef4a2f8d55aada13fa9219","object":"chat.completion.chunk","created":1789959929,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":39059,"total_tokens":39181,"completion_tokens":122,"prompt_tokens_details":{"cached_tokens":38027},"completion_tokens_details":{"reasoning_tokens":28},"output_tokens_details":{"reasoning_tokens":28}}}
+
+data: [DONE]
+

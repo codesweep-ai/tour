@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-4f2d7adff49048339b8fbad198391c16","object":"chat.completion.chunk","created":1789959934,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"The dev server is dead. I need to restart it."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959934,"id":"chatcmpl-4f2d7adff49048339b8fbad198391c16","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"npm run dev \u003e /tmp/dev-server2.log 2\u003e\u00261 \u0026 echo $!\", \"workdir\": \"/home/<USER:1>/hello-app\"}","name":"bash"},"id":"bash_52","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959934,"id":"chatcmpl-4f2d7adff49048339b8fbad198391c16","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-4f2d7adff49048339b8fbad198391c16","object":"chat.completion.chunk","created":1789959934,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-4f2d7adff49048339b8fbad198391c16","object":"chat.completion.chunk","created":1789959934,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":39431,"total_tokens":39488,"completion_tokens":57,"prompt_tokens_details":{"cached_tokens":39200},"completion_tokens_details":{"reasoning_tokens":12},"output_tokens_details":{"reasoning_tokens":12}}}
+
+data: [DONE]
+

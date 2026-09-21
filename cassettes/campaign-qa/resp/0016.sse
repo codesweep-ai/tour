@@ -1,12 +1,12 @@
-data: {"id":"chatcmpl-b1c386e059bd4c5a92fb536502795426","object":"chat.completion.chunk","created":1789849376,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+data: {"id":"chatcmpl-3a5bbb303270473480f4ab6ac3cf6f77","object":"chat.completion.chunk","created":1789959460,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
 
-data: {"choices":[{"delta":{"reasoning_content":"Now I need to run the build and serve commands. But first, I need to install dependencies. Let me check if node_modules exists."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849376,"id":"chatcmpl-b1c386e059bd4c5a92fb536502795426","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+data: {"choices":[{"delta":{"reasoning_content":"Now run build."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959460,"id":"chatcmpl-3a5bbb303270473480f4ab6ac3cf6f77","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
 
-data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"ls -la | head -20 \u0026\u0026 test -d node_modules \u0026\u0026 echo \\\"node_modules exists\\\" || echo \\\"node_modules missing\\\"\", \"workdir\": \"/home/<USER:1>/hello-app\"}","name":"bash"},"id":"bash_15","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849376,"id":"chatcmpl-b1c386e059bd4c5a92fb536502795426","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"npm run build\", \"workdir\": \"/home/<USER:1>/hello-app\", \"timeout\": 120000}","name":"bash"},"id":"bash_16","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959460,"id":"chatcmpl-3a5bbb303270473480f4ab6ac3cf6f77","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
 
-data: {"id":"chatcmpl-b1c386e059bd4c5a92fb536502795426","object":"chat.completion.chunk","created":1789849376,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+data: {"id":"chatcmpl-3a5bbb303270473480f4ab6ac3cf6f77","object":"chat.completion.chunk","created":1789959460,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
 
-data: {"id":"chatcmpl-b1c386e059bd4c5a92fb536502795426","object":"chat.completion.chunk","created":1789849376,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":12424,"total_tokens":12506,"completion_tokens":82,"prompt_tokens_details":{"cached_tokens":11183},"completion_tokens_details":{"reasoning_tokens":28},"output_tokens_details":{"reasoning_tokens":28}}}
+data: {"id":"chatcmpl-3a5bbb303270473480f4ab6ac3cf6f77","object":"chat.completion.chunk","created":1789959460,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":12779,"total_tokens":12821,"completion_tokens":42,"prompt_tokens_details":{"cached_tokens":12515},"completion_tokens_details":{"reasoning_tokens":4},"output_tokens_details":{"reasoning_tokens":4}}}
 
 data: [DONE]
 

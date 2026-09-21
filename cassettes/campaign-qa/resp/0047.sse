@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-80658dc5f0144506bd6a97e7082986ef","object":"chat.completion.chunk","created":1789959902,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"The command timed out, probably because pkill didn't find vite or the shell got stuck. Let me just kill the process directly."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959902,"id":"chatcmpl-80658dc5f0144506bd6a97e7082986ef","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"kill 23479 2\u003e/dev/null || true\", \"workdir\": \"/home/<USER:1>/hello-app\"}","name":"bash"},"id":"bash_47","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959902,"id":"chatcmpl-80658dc5f0144506bd6a97e7082986ef","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-80658dc5f0144506bd6a97e7082986ef","object":"chat.completion.chunk","created":1789959902,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-80658dc5f0144506bd6a97e7082986ef","object":"chat.completion.chunk","created":1789959902,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":37870,"total_tokens":37935,"completion_tokens":65,"prompt_tokens_details":{"cached_tokens":36822},"completion_tokens_details":{"reasoning_tokens":26},"output_tokens_details":{"reasoning_tokens":26}}}
+
+data: [DONE]
+

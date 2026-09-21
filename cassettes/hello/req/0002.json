@@ -8,26 +8,6 @@
     {
       "content": "\"Create a file called hello.txt that contains exactly the word hello. Then say done.\"",
       "role": "user"
-    },
-    {
-      "content": "",
-      "reasoning_content": "The user wants me to create a file called hello.txt with exactly the word \"hello\", and then say \"done\". This is a simple task. I need to use the Write tool to create the file. The working directory is <ROOT>/.work/vcr/proj. I should use an absolute path.",
-      "role": "assistant",
-      "tool_calls": [
-        {
-          "function": {
-            "arguments": "{\"content\":\"hello\",\"filePath\":\"<ROOT>/.work/vcr/proj/hello.txt\"}",
-            "name": "write"
-          },
-          "id": "write_0",
-          "type": "function"
-        }
-      ]
-    },
-    {
-      "content": "Wrote file successfully.",
-      "role": "tool",
-      "tool_call_id": "write_0"
     }
   ],
   "model": "accounts/fireworks/models/kimi-k2p7-code",

@@ -1,12 +1,12 @@
-data: {"id":"chatcmpl-3e14f78682f040c4bcdc9535e1327b96","object":"chat.completion.chunk","created":1789836973,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+data: {"id":"chatcmpl-5ba678cfecd04ae9b781429747920485","object":"chat.completion.chunk","created":1789960799,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
 
-data: {"choices":[{"delta":{"reasoning_content":"The file has been written successfully. Now I need to say \"done\" to the user. I can do this directly in my response."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789836973,"id":"chatcmpl-3e14f78682f040c4bcdc9535e1327b96","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+data: {"choices":[{"delta":{"reasoning_content":"The user wants me to create a file called hello.txt with exactly the word \"hello\", then say \"done\". I need to use the Write tool to create this file. The working directory is <ROOT>/.work/vcr/proj. I should write the file there. Then respond with \"done\"."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789960799,"id":"chatcmpl-5ba678cfecd04ae9b781429747920485","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
 
-data: {"id":"chatcmpl-3e14f78682f040c4bcdc9535e1327b96","object":"chat.completion.chunk","created":1789836973,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"content":"done"},"finish_reason":null,"raw_output":null}],"usage":null}
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"content\": \"hello\", \"filePath\": \"<ROOT>/.work/vcr/proj/hello.txt\"}","name":"write"},"id":"write_0","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789960799,"id":"chatcmpl-5ba678cfecd04ae9b781429747920485","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
 
-data: {"id":"chatcmpl-3e14f78682f040c4bcdc9535e1327b96","object":"chat.completion.chunk","created":1789836973,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"stop","raw_output":null}],"usage":null}
+data: {"id":"chatcmpl-5ba678cfecd04ae9b781429747920485","object":"chat.completion.chunk","created":1789960799,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
 
-data: {"id":"chatcmpl-3e14f78682f040c4bcdc9535e1327b96","object":"chat.completion.chunk","created":1789836973,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":6477,"total_tokens":6508,"completion_tokens":31,"prompt_tokens_details":{"cached_tokens":6345},"completion_tokens_details":{"reasoning_tokens":28},"output_tokens_details":{"reasoning_tokens":28}}}
+data: {"id":"chatcmpl-5ba678cfecd04ae9b781429747920485","object":"chat.completion.chunk","created":1789960799,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":6346,"total_tokens":6455,"completion_tokens":109,"prompt_tokens_details":{"cached_tokens":0},"completion_tokens_details":{"reasoning_tokens":69},"output_tokens_details":{"reasoning_tokens":69}}}
 
 data: [DONE]
 

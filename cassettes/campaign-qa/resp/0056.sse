@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-e334cb2a014a496d85e7c771f32f68ff","object":"chat.completion.chunk","created":1789959958,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Good. Now I'm back on my branch. Let me add the verification report to the repo. I'll copy the report to the repo root as `QA-REPORT-d002.md`."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959958,"id":"chatcmpl-e334cb2a014a496d85e7c771f32f68ff","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"cp ~/.local/share/cs-campaign/output/d002-report.md QA-REPORT-d002.md \u0026\u0026 cp ~/.local/share/cs-campaign/output/d002-verify-output.txt QA-VERIFICATION-d002.txt \u0026\u0026 git status\", \"workdir\": \"/home/<USER:1>/hello-app\"}","name":"bash"},"id":"bash_56","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959958,"id":"chatcmpl-e334cb2a014a496d85e7c771f32f68ff","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-e334cb2a014a496d85e7c771f32f68ff","object":"chat.completion.chunk","created":1789959958,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-e334cb2a014a496d85e7c771f32f68ff","object":"chat.completion.chunk","created":1789959958,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":41879,"total_tokens":41987,"completion_tokens":108,"prompt_tokens_details":{"cached_tokens":40889},"completion_tokens_details":{"reasoning_tokens":37},"output_tokens_details":{"reasoning_tokens":37}}}
+
+data: [DONE]
+

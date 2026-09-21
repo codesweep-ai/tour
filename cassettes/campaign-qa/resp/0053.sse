@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-f736f67fa7af40d29fb2f8ca0f2574fe","object":"chat.completion.chunk","created":1789959936,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Wait a bit and run verification again."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959936,"id":"chatcmpl-f736f67fa7af40d29fb2f8ca0f2574fe","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"sleep 3 \u0026\u0026 node /tmp/verify.js \u003e ~/.local/share/cs-campaign/output/d002-verify-output.txt 2\u003e\u00261; echo \\\"exit=$?\\\"\", \"workdir\": \"/tmp\", \"timeout\": 120000}","name":"bash"},"id":"bash_53","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959936,"id":"chatcmpl-f736f67fa7af40d29fb2f8ca0f2574fe","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-f736f67fa7af40d29fb2f8ca0f2574fe","object":"chat.completion.chunk","created":1789959936,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-f736f67fa7af40d29fb2f8ca0f2574fe","object":"chat.completion.chunk","created":1789959936,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":39508,"total_tokens":39580,"completion_tokens":72,"prompt_tokens_details":{"cached_tokens":39430},"completion_tokens_details":{"reasoning_tokens":8},"output_tokens_details":{"reasoning_tokens":8}}}
+
+data: [DONE]
+

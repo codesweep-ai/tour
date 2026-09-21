@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-06d37a99c8ea43278b4cac1ed9efc5f6","object":"chat.completion.chunk","created":1789959945,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"The verification script exits with 1 due to the layout failures. That's expected. Let me check the output file."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959945,"id":"chatcmpl-06d37a99c8ea43278b4cac1ed9efc5f6","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"filePath\": \"/home/<USER:1>/.local/share/cs-campaign/output/d002-verify-output.txt\"}","name":"read"},"id":"read_54","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959945,"id":"chatcmpl-06d37a99c8ea43278b4cac1ed9efc5f6","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-06d37a99c8ea43278b4cac1ed9efc5f6","object":"chat.completion.chunk","created":1789959945,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-06d37a99c8ea43278b4cac1ed9efc5f6","object":"chat.completion.chunk","created":1789959945,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":39601,"total_tokens":39656,"completion_tokens":55,"prompt_tokens_details":{"cached_tokens":39507},"completion_tokens_details":{"reasoning_tokens":23},"output_tokens_details":{"reasoning_tokens":23}}}
+
+data: [DONE]
+

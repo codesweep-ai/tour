@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-15b6ffe3412e44118a22efc4468c3728","object":"chat.completion.chunk","created":1789959903,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Now let me create the output report. First make sure output directory exists."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959903,"id":"chatcmpl-15b6ffe3412e44118a22efc4468c3728","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"mkdir -p ~/.local/share/cs-campaign/output\", \"workdir\": \"/home/<USER:1>/hello-app\"}","name":"bash"},"id":"bash_48","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959903,"id":"chatcmpl-15b6ffe3412e44118a22efc4468c3728","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-15b6ffe3412e44118a22efc4468c3728","object":"chat.completion.chunk","created":1789959903,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-15b6ffe3412e44118a22efc4468c3728","object":"chat.completion.chunk","created":1789959903,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":37955,"total_tokens":38008,"completion_tokens":53,"prompt_tokens_details":{"cached_tokens":37869},"completion_tokens_details":{"reasoning_tokens":15},"output_tokens_details":{"reasoning_tokens":15}}}
+
+data: [DONE]
+

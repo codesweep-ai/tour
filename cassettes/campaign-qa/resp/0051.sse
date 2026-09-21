@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-92a77add49e64d3c8de5fcdd39652e52","object":"chat.completion.chunk","created":1789959932,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Now run the verification again to capture output to file."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959932,"id":"chatcmpl-92a77add49e64d3c8de5fcdd39652e52","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"node /tmp/verify.js \u003e ~/.local/share/cs-campaign/output/d002-verify-output.txt 2\u003e\u00261; echo \\\"exit=$?\\\"; head -5 ~/.local/share/cs-campaign/output/d002-verify-output.txt\", \"workdir\": \"/tmp\", \"timeout\": 120000}","name":"bash"},"id":"bash_51","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959932,"id":"chatcmpl-92a77add49e64d3c8de5fcdd39652e52","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-92a77add49e64d3c8de5fcdd39652e52","object":"chat.completion.chunk","created":1789959932,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-92a77add49e64d3c8de5fcdd39652e52","object":"chat.completion.chunk","created":1789959932,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":39201,"total_tokens":39288,"completion_tokens":87,"prompt_tokens_details":{"cached_tokens":39058},"completion_tokens_details":{"reasoning_tokens":11},"output_tokens_details":{"reasoning_tokens":11}}}
+
+data: [DONE]
+

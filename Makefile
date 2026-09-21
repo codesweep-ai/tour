@@ -15,7 +15,7 @@
 # CAMPAIGN_VERSION is the only version to choose. The cs-sandbox, cs-tracer and
 # cs-vcr it needs are derived from that campaign's own go.mod on the module proxy,
 # so the chain cannot drift apart here. Set SANDBOX_VERSION to override.
-CAMPAIGN_VERSION ?= v0.0.0-20260917015214-48a6d6745bb3
+CAMPAIGN_VERSION ?= v0.0.0-20260921013337-3ac5613baf20
 SANDBOX_VERSION  ?=
 TOOLSDIR         := $(abspath tools)
 CAMPAIGN_MOD     := https://proxy.golang.org/github.com/codesweep-ai/campaign/@v/$(CAMPAIGN_VERSION).mod

@@ -11,7 +11,7 @@
     },
     {
       "content": "",
-      "reasoning_content": "The user wants me to follow a campaign workflow. I need to:\n1. Read ~/.config/cs-campaign/member.json\n2. Read every file it lists under \"inputs\"\n3. Read ~/.local/share/cs-campaign/input/d001.md\n4. Follow the instructions in d001.md\n5. When done, run `cs-campaign-member reply --file <path-to-your-summary>`\n\nLet me start by reading the member.json file and the campaign input file.",
+      "reasoning_content": "Let me start by reading the member.json file and the input file as requested.",
       "role": "assistant",
       "tool_calls": [
         {
@@ -33,7 +33,7 @@
       ]
     },
     {
-      "content": "<path>/home/<USER:1>/.config/cs-campaign/member.json</path>\n<type>file</type>\n<content>\n1: {\n2:   \"campaign\": \"hello\",\n3:   \"member\": \"orchestrator\",\n4:   \"role\": \"orchestrator\",\n5:   \"network\": \"cs-sandbox-<GROUP:1>\",\n6:   \"branch\": \"cs-sandbox/<ORCHESTRATOR:1>.<GROUP:1>\",\n7:   \"repos\": [\n8:     {\n9:       \"name\": \"hello-app\",\n10:       \"base\": \"4f159b9e055a7c408ae19c219223f41513bba263\"\n11:     }\n12:   ],\n13:   \"inputs\": [\n14:     \"ORIENTATION.md\",\n15:     \"orchestrator.md\",\n16:     \"mission.md\",\n17:     \"roles/developer.md\",\n18:     \"roles/qa.md\"\n19:   ],\n20:   \"inputDir\": \".local/share/cs-campaign/input\",\n21:   \"outputDir\": \".local/share/cs-campaign/output\",\n22:   \"orientation\": \".local/share/cs-campaign/input/ORIENTATION.md\",\n23:   \"policy\": {\n24:     \"continueAttempts\": 2,\n25:     \"restarts\": 1,\n26:     \"elapsedSeconds\": 7200,\n27:     \"blindProbes\": 10,\n28:     \"pollSeconds\": 30,\n29:     \"settlingSeconds\": 300,\n30:     \"stallSeconds\": 180\n31:   },\n32:   \"deadline\": \"2026-09-19T22:15:24.344084239Z\"\n33: }\n\n(End of file - total 33 lines)\n</content>",
+      "content": "<path>/home/<USER:1>/.config/cs-campaign/member.json</path>\n<type>file</type>\n<content>\n1: {\n2:   \"campaign\": \"hello3843\",\n3:   \"member\": \"orchestrator\",\n4:   \"role\": \"orchestrator\",\n5:   \"network\": \"cs-sandbox-<GROUP:1>\",\n6:   \"branch\": \"cs-sandbox/<ORCHESTRATOR:1>.<GROUP:1>\",\n7:   \"repos\": [\n8:     {\n9:       \"name\": \"hello-app\",\n10:       \"base\": \"4f159b9e055a7c408ae19c219223f41513bba263\"\n11:     }\n12:   ],\n13:   \"inputs\": [\n14:     \"ORIENTATION.md\",\n15:     \"orchestrator.md\",\n16:     \"mission.md\",\n17:     \"roles/developer.md\",\n18:     \"roles/qa.md\"\n19:   ],\n20:   \"inputDir\": \".local/share/cs-campaign/input\",\n21:   \"outputDir\": \".local/share/cs-campaign/output\",\n22:   \"orientation\": \".local/share/cs-campaign/input/ORIENTATION.md\",\n23:   \"policy\": {\n24:     \"continueAttempts\": 2,\n25:     \"restarts\": 1,\n26:     \"elapsedSeconds\": 7200,\n27:     \"blindProbes\": 10,\n28:     \"pollSeconds\": 30,\n29:     \"settlingSeconds\": 300,\n30:     \"providerWaitSeconds\": 3600,\n31:     \"stallSeconds\": 180\n32:   },\n33:   \"deadline\": \"2026-09-21T04:45:22.397872339Z\"\n34: }\n\n(End of file - total 34 lines)\n</content>",
       "role": "tool",
       "tool_call_id": "read_0"
     },

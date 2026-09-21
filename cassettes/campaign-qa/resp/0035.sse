@@ -1,12 +1,12 @@
-data: {"id":"chatcmpl-503f75d1954b4a50a3ae510ca4617927","object":"chat.completion.chunk","created":1789849620,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+data: {"id":"chatcmpl-003cdf84e2c941b09257baa9be81afd7","object":"chat.completion.chunk","created":1789959610,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
 
-data: {"choices":[{"delta":{"reasoning_content":"There's another vite process (pid 25604). Let me kill it."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849620,"id":"chatcmpl-503f75d1954b4a50a3ae510ca4617927","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+data: {"choices":[{"delta":{"reasoning_content":"Run it."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959610,"id":"chatcmpl-003cdf84e2c941b09257baa9be81afd7","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
 
-data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"kill -9 25604 2\u003e/dev/null || true; sleep 1; pgrep -f \\\"vite\\\" || echo \\\"no vite process\\\"\", \"workdir\": \"/home/<USER:1>/hello-app\", \"timeout\": 10000}","name":"bash"},"id":"bash_34","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789849620,"id":"chatcmpl-503f75d1954b4a50a3ae510ca4617927","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"node /tmp/inspect-buttons.js\", \"workdir\": \"/tmp\", \"timeout\": 120000}","name":"bash"},"id":"bash_35","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959610,"id":"chatcmpl-003cdf84e2c941b09257baa9be81afd7","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
 
-data: {"id":"chatcmpl-503f75d1954b4a50a3ae510ca4617927","object":"chat.completion.chunk","created":1789849620,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+data: {"id":"chatcmpl-003cdf84e2c941b09257baa9be81afd7","object":"chat.completion.chunk","created":1789959610,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
 
-data: {"id":"chatcmpl-503f75d1954b4a50a3ae510ca4617927","object":"chat.completion.chunk","created":1789849620,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":20700,"total_tokens":20781,"completion_tokens":81,"prompt_tokens_details":{"cached_tokens":20593},"completion_tokens_details":{"reasoning_tokens":15},"output_tokens_details":{"reasoning_tokens":15}}}
+data: {"id":"chatcmpl-003cdf84e2c941b09257baa9be81afd7","object":"chat.completion.chunk","created":1789959610,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":25666,"total_tokens":25707,"completion_tokens":41,"prompt_tokens_details":{"cached_tokens":25323},"completion_tokens_details":{"reasoning_tokens":3},"output_tokens_details":{"reasoning_tokens":3}}}
 
 data: [DONE]
 

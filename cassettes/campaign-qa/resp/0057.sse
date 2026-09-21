@@ -1,0 +1,12 @@
+data: {"id":"chatcmpl-69105b9172e8483f90d92f4453d46643","object":"chat.completion.chunk","created":1789959960,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"reasoning_content":"Need to add the report files only, not dist/ or node_modules/. Let me add and commit."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959960,"id":"chatcmpl-69105b9172e8483f90d92f4453d46643","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"git add QA-REPORT-d002.md QA-VERIFICATION-d002.txt \u0026\u0026 git commit -m \\\"QA verification report for dispatch d002\\\"\", \"workdir\": \"/home/<USER:1>/hello-app\"}","name":"bash"},"id":"bash_57","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959960,"id":"chatcmpl-69105b9172e8483f90d92f4453d46643","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-69105b9172e8483f90d92f4453d46643","object":"chat.completion.chunk","created":1789959960,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-69105b9172e8483f90d92f4453d46643","object":"chat.completion.chunk","created":1789959960,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":42090,"total_tokens":42168,"completion_tokens":78,"prompt_tokens_details":{"cached_tokens":41878},"completion_tokens_details":{"reasoning_tokens":21},"output_tokens_details":{"reasoning_tokens":21}}}
+
+data: [DONE]
+

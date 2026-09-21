@@ -1,7 +1,7 @@
 {
-  "recorded": "2026-09-19T20:29:13Z",
-  "npm_before": "2026-09-19T00:00:00Z",
-  "campaign_digest": "9a2dec9959578686",
-  "cs_campaign": "cs-campaign v0.0.0-20260917015214-48a6d6745bb3 (linux/amd64, go1.27.1)",
-  "cs_vcr": "cs-vcr v0.0.0-20260913030743-7da913347984 (linux/amd64, go1.27.1)"
+  "recorded": "2026-09-21T03:07:53Z",
+  "npm_before": "2026-09-21T00:00:00Z",
+  "campaign_digest": "9f7e2b978b420902",
+  "cs_campaign": "cs-campaign v0.0.0-20260921013337-3ac5613baf20 (linux/amd64, go1.27.1)",
+  "cs_vcr": "cs-vcr v0.0.0-20260920060905-918c50515233 (linux/amd64, go1.27.1)"
 }
