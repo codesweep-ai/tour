@@ -537,41 +537,6 @@ yourself. None of these servers binds to every interface.
 `make show-reports` serves `.work/reports` and nothing else. The archive, the harvested
 application and any page from step 1 stay off the network.
 
-### Each member needs 4 GiB
-
-The profile gives each member 4096 MiB. At 2048 the kernel killed the agent during
-`npm install`, and nothing reported it. The member sat idle for five minutes until it
-was prodded. When a member stalls, run `sudo dmesg | grep "Out of memory"` inside it
-before you suspect the brief.
-
-### When the readback misses its bound
-
-A readback is bounded at 15 minutes per member, and no flag raises it. Under host
-load a member's first turn can miss that bound, and the create then fails naming
-the members.
-
-The demo treats that as a failure and stops. It does not resume the create, even
-though `create` is documented as resumable. There are two reasons. The demo exists to
-show that a clean create works, and a resumed create would not show that. The resume
-path is also not yet trusted, so the demo does not rely on it. For that reason the demo always destroys a failed campaign and creates a new
-one.
-
-When a readback fails, read the member logs under `~/.cs-opencode-remote-logs`. A
-first turn that dies with `TUI server does not know session` means a recorded
-session outlived its campaign, which `make demo-reset` clears.
-
-### Reports never carry over
-
-`make demo-start` moves the previous run's archive and reports into `.work/runs`, under
-the time of the move. `make show-reports` also refuses a page that is older than the
-archive beside it.
-
-The archive has to happen while the members are alive. Their channels, configs and
-transcripts live inside the sandboxes and go with them, and the audit runs in the
-same pass. So `make demo` archives mid-cycle, and `make demo-destroy` only
-destroys. It refuses when no archive exists, because a destroy without one loses
-the evidence for good.
-
 ### Watching a campaign
 
 A campaign reports its state through `cs-campaign observe`, but that command
