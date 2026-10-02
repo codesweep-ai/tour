@@ -2,9 +2,6 @@
 # output, never committed.
 tools/
 
-# npm's install directory. Nothing here runs npm, and a clone that has one can delete it.
-node_modules/
-
 # Campaign workspace, throwaway app repo, port-forward state.
 .work/
 
