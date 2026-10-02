@@ -4,21 +4,28 @@
 # its tool through scripts/cs, which prints the command and then runs exactly that, so
 # what you read on the screen is what you would type in a project of your own.
 #
-# The tools come from two places, and both are pinned.
+# Every tool is pinned, and `make setup` fetches them all into tools/.
 #
-#   npm   cs-lint, cs-ledger and the opencode agent. Pinned in package.json and
-#         package-lock.json, and run from node_modules/.bin.
-#   Go    cs-campaign, cs-sandbox, cs-tracer, cs-vcr and cs-dispatch-viewer. None has
-#         an npm package or a tagged release, so `make setup` installs them from the
-#         Go module proxy into tools/. That needs a Go toolchain.
+#   Go        cs-campaign, cs-sandbox, cs-tracer, cs-vcr, cs-lint, cs-ledger and
+#             cs-dispatch-viewer. None has a tagged release, so they are built from the
+#             Go module proxy. That needs a Go toolchain.
+#   opencode  the agent step 4 drives, from its own release, checked against a
+#             recorded checksum.
 
-# CAMPAIGN_VERSION is the only version to choose. The cs-sandbox, cs-tracer and
-# cs-vcr it needs are derived from that campaign's own go.mod on the module proxy,
-# so the chain cannot drift apart here. Set SANDBOX_VERSION to override.
+# CAMPAIGN_VERSION is the only version to choose. The cs-sandbox, cs-tracer, cs-vcr,
+# cs-lint and cs-ledger it needs are derived from that campaign's own go.mod on the
+# module proxy, so the chain cannot drift apart here. Set SANDBOX_VERSION to override.
 CAMPAIGN_VERSION ?= v0.0.0-20260921013337-3ac5613baf20
 SANDBOX_VERSION  ?=
 TOOLSDIR         := $(abspath tools)
 CAMPAIGN_MOD     := https://proxy.golang.org/github.com/codesweep-ai/campaign/@v/$(CAMPAIGN_VERSION).mod
+
+# The opencode agent that step 4 drives. Another version sends another prompt, and the
+# cassette stops matching. Upstream publishes no checksum file, so the digests were
+# recorded from the release assets themselves, as the sandbox image does.
+OPENCODE_VERSION      := 1.18.31
+OPENCODE_SHA256_X64   := e9312be75ed803b7415fc2aeabda1f4fe938912a39673762dc0c38c0e11ebde4
+OPENCODE_SHA256_ARM64 := d4e332f46b227448582c0d9fc75f6f826dfe95c9f751bc2011fc4d937a042be6
 
 # CS runs one pinned tool and prints the command first. CSQ does the same in silence,
 # for the places where a recipe reads the output itself.
@@ -48,7 +55,7 @@ RECORD        := $${CS_CAMPAIGN_STATE_DIR:-$$HOME/.config/cs-campaign/campaigns}
 
 .DEFAULT_GOAL := help
 
-.PHONY: help help-all setup go-version tools doctor env check test ci prose refs oss actionlint clean clean-all \
+.PHONY: help help-all setup go-version tools linters doctor env check test ci prose refs oss actionlint clean \
         try-tracer try-lint try-ledger try-vcr try-sandbox vcr-record \
         demo-replay demo-record no-identity \
         demo demo-start demo-watch demo-stop demo-destroy demo-clean show-reports show-app \
@@ -100,15 +107,13 @@ help-all:
 	  | awk -F': ' '{printf "  %-20s %s\n", $$1, substr($$0, index($$0,": ")+2)}'
 	@echo ""
 
-## setup: install both sets of tools, prove the chain, and name what is missing
+## setup: install every tool, prove the chain, and name what is missing
 ##
 ## The tools are only half of what the campaign needs. It lends a Fireworks key from
 ## a host file, so this ends by saying whether that file is there. Lending reads a file
 ## rather than an environment variable, which is why an exported key is not enough.
 ## The five `try-` targets need no key at all.
-setup: go-version
-	npm install
-	@$(MAKE) --no-print-directory tools
+setup: go-version tools
 	@$(MAKE) --no-print-directory doctor
 	@echo ""
 	@echo "  next        make try-tracer, and on down the list that \`make\` prints"
@@ -141,8 +146,22 @@ go-version:
 	     echo "stops it fetching a newer one. INSTALL.md, section 1, says how to install Go $(GO_MIN)." >&2; exit 1 ;; \
 	esac
 
-### tools: fetch the pinned Go binaries into tools/
-tools:
+# go_tools installs, for each name in $(1), the cs-<name> that campaign's own go.mod names.
+define go_tools
+	@for t in $(1); do \
+	  v="$$(curl -fsS $(CAMPAIGN_MOD) | awk -v m="github.com/codesweep-ai/$$t" '$$1==m{print $$2}')"; \
+	  [ -n "$$v" ] || { echo "cannot determine the cs-$$t $(CAMPAIGN_VERSION) names" >&2; exit 1; }; \
+	  echo "cs-$$t $$v"; \
+	  GOBIN=$(TOOLSDIR) go install github.com/codesweep-ai/$$t/cmd/cs-$$t@$$v; \
+	done
+endef
+
+### linters: fetch cs-lint and cs-ledger alone, which is all the documentation gates need
+linters: go-version
+	$(call go_tools,lint ledger)
+
+### tools: fetch every pinned tool into tools/
+tools: linters
 	GOBIN=$(TOOLSDIR) go install github.com/codesweep-ai/campaign/cmd/cs-campaign@$(CAMPAIGN_VERSION)
 	GOBIN=$(TOOLSDIR) go install github.com/codesweep-ai/campaign/cmd/cs-campaign-member@$(CAMPAIGN_VERSION)
 	GOBIN=$(TOOLSDIR) go install github.com/codesweep-ai/campaign/dispatch-viewer/cmd/cs-dispatch-viewer@$(CAMPAIGN_VERSION)
@@ -153,16 +172,24 @@ tools:
 	[ -n "$$sbx" ] || { echo "cannot determine the cs-sandbox $(CAMPAIGN_VERSION) names" >&2; exit 1; }; \
 	echo "cs-sandbox $$sbx (named by campaign $(CAMPAIGN_VERSION))"; \
 	GOBIN=$(TOOLSDIR) go install github.com/codesweep-ai/sandbox/cmd/cs-sandbox@$$sbx
-	@for t in tracer vcr; do \
-	  v="$$(curl -fsS $(CAMPAIGN_MOD) | awk -v m="github.com/codesweep-ai/$$t" '$$1==m{print $$2}')"; \
-	  [ -n "$$v" ] || { echo "cannot determine the cs-$$t $(CAMPAIGN_VERSION) names" >&2; exit 1; }; \
-	  echo "cs-$$t $$v"; \
-	  GOBIN=$(TOOLSDIR) go install github.com/codesweep-ai/$$t/cmd/cs-$$t@$$v; \
-	done
+	$(call go_tools,tracer vcr)
 	@# The campaign replay runs cs-vcr in a container built from nothing but a static
 	@# base, so that copy is linked without cgo. It is the same pinned version.
 	@v="$$(curl -fsS $(CAMPAIGN_MOD) | awk '$$1=="github.com/codesweep-ai/vcr"{print $$2}')"; \
 	CGO_ENABLED=0 GOBIN=$(TOOLSDIR)/static go install github.com/codesweep-ai/vcr/cmd/cs-vcr@$$v
+	@case "$$(uname -s)/$$(uname -m)" in \
+	  Linux/x86_64)              arch=x64;   want=$(OPENCODE_SHA256_X64) ;; \
+	  Linux/aarch64|Linux/arm64) arch=arm64; want=$(OPENCODE_SHA256_ARM64) ;; \
+	  *) echo "opencode is fetched for Linux only, so step 4 will not run here"; exit 0 ;; \
+	esac; \
+	[ "$$($(TOOLSDIR)/opencode/opencode --version 2>/dev/null)" = "$(OPENCODE_VERSION)" ] && exit 0; \
+	asset="opencode-linux-$$arch.tar.gz"; tmp="$$(mktemp -d)"; \
+	curl -fsSL -o "$$tmp/$$asset" "https://github.com/anomalyco/opencode/releases/download/v$(OPENCODE_VERSION)/$$asset" \
+	  || { echo "cannot fetch $$asset" >&2; rm -rf "$$tmp"; exit 1; }; \
+	got="$$(sha256sum "$$tmp/$$asset" | cut -d' ' -f1)"; \
+	[ "$$got" = "$$want" ] || { echo "opencode checksum mismatch: want $$want, got $$got" >&2; rm -rf "$$tmp"; exit 1; }; \
+	mkdir -p $(TOOLSDIR)/opencode && tar -xzf "$$tmp/$$asset" -C $(TOOLSDIR)/opencode --no-same-owner; \
+	rm -rf "$$tmp"; echo "opencode $(OPENCODE_VERSION)"
 	$(CS) cs-sandbox install-agent-tools $(TOOLSDIR)
 
 ## doctor: prove cs-campaign and the sandbox it needs agree with the pins
@@ -175,7 +202,7 @@ doctor:
 ## pinned copy, so any command a target printed can be typed again by hand. These are
 ## the same three settings scripts/cs applies.
 env:
-	@echo 'export PATH="$(TOOLSDIR):$(CURDIR)/node_modules/.bin:$$PATH"'
+	@echo 'export PATH="$(TOOLSDIR):$(TOOLSDIR)/opencode:$$PATH"'
 	@echo 'export CS_SANDBOX_BIN="$(TOOLSDIR)/cs-sandbox"'
 	@echo 'export CS_CAMPAIGN_GUEST_BIN="$(TOOLSDIR)/cs-campaign-member"'
 
@@ -201,7 +228,7 @@ try-sandbox:
 
 ### vcr-record: record cassettes/hello again. Calls Fireworks, for about two cents.
 ##
-## Do this after changing the opencode pin in package.json, because another version of
+## Do this after changing OPENCODE_VERSION, because another version of
 ## the agent sends another prompt and the old cassette stops matching. The scrub that
 ## follows looks for keys and addresses, and exits non-zero while any are left.
 vcr-record:
@@ -220,7 +247,7 @@ test: try-lint try-ledger try-vcr
 ## ci: every gate the CI workflow runs, in the order it runs them
 ##
 ## It starts with `setup`, so that the one command is enough on a fresh clone. A second
-## run is quick, because the Go and npm caches already hold every pinned tool.
+## run is quick, because Go's caches already hold every pinned tool.
 ci: setup check test
 
 ### lint: the three linters that need no build
@@ -289,7 +316,7 @@ no-identity:
 	bad=""; for v in "$$(id -un)" "$$(git config --global user.name)" "$$(git config --global user.email)" "$$(hostname)"; do \
 	  [ -n "$$v" ] || continue; \
 	  case "$$v" in root|user|admin|ubuntu|debian|fedora|runner|dev|developer|test|vagrant|codespace|ec2-user|localhost) continue ;; esac; \
-	  hit="$$(git ls-files --cached --others --exclude-standard | grep -vE '^(node_modules|tools|\.work)/' | xargs -r grep -lwF -- "$$v" 2>/dev/null | head -5)"; \
+	  hit="$$(git ls-files --cached --others --exclude-standard | grep -vE '^(tools|\.work)/' | xargs -r grep -lwF -- "$$v" 2>/dev/null | head -5)"; \
 	  [ -n "$$hit" ] && bad="$$bad$$hit\n"; \
 	done; \
 	if [ -n "$$bad" ]; then \
@@ -322,7 +349,7 @@ no-session-links:
 ## agent's own tool description, so every cassette carries it.
 no-local-paths:
 	@bad=$$(git ls-files --cached --others --exclude-standard 2>/dev/null \
-	  | grep -vE '^(node_modules|tools|\.work)/' \
+	  | grep -vE '^(tools|\.work)/' \
 	  | while read -r f; do \
 	      grep -ohE '(/home|/Users)/[a-z][A-Za-z0-9_-]*' "$$f" 2>/dev/null \
 	        | grep -vx '/Users/name' | grep -q . && echo "$$f"; \
@@ -384,7 +411,7 @@ demo-start: demo-preflight
 ## each member's agent log. That last one matters: a member that cannot reach its
 ## provider still reports node-working, so only its log shows the failure.
 demo-watch:
-	@PATH="$(TOOLSDIR):$(CURDIR)/node_modules/.bin:$$PATH" \
+	@PATH="$(TOOLSDIR):$$PATH" \
 	  CS_SANDBOX_BIN=$(TOOLSDIR)/cs-sandbox CS_CAMPAIGN_BIN=$(TOOLSDIR)/cs-campaign \
 	  ./scripts/campaign-watch $(CAMPAIGN_NAME)
 
@@ -642,10 +669,6 @@ demo-clean: demo-stop
 	@echo "removed $(WORKDIR) and forgot any recorded $(CAMPAIGN_NAME) sessions"
 	@echo "the credential at ~/.cs-keys/fireworks is untouched"
 
-### clean: remove the fetched Go binaries, rebuilt by `make tools`
+## clean: remove every fetched tool, rebuilt by `make tools`
 clean:
 	rm -rf $(TOOLSDIR)
-
-## clean-all: also remove the npm tools, rebuilt by `npm install`
-clean-all: clean
-	rm -rf $(CURDIR)/node_modules

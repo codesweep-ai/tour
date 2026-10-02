@@ -48,7 +48,6 @@ a key for the Fireworks model service and about a dollar.
 You need these, and [INSTALL.md](INSTALL.md) says how to install them:
 
 - Go 1.27.1.
-- Node 24.21.0, with npm.
 - For steps 5 to 7, Linux with podman 5.0 or later and a writable `/dev/kvm`.
 
 Then run one command:
@@ -57,11 +56,11 @@ Then run one command:
 make setup
 ```
 
-The tools come from two places. `cs-lint`, `cs-ledger` and the `opencode` agent
-come from npm, pinned in `package.json`. The Go tools have no npm package and no tagged
-release, so they come from the Go module proxy into a local `tools` directory. The first
-run on a machine takes a couple of minutes, and a later one takes seconds, because npm
-and Go both keep what they fetched. It ends by saying what to run next.
+The codesweep tools have no tagged release, so `make setup` builds them from the Go module
+proxy into a local `tools` directory. The `opencode` agent comes from its own release,
+which the step checks against a recorded checksum. The first run on a machine takes a
+couple of minutes, and a later one takes seconds, because Go keeps what it fetched. It
+ends by saying what to run next.
 
 Part of the way through, `cs-sandbox` prints a line that starts with `next: sign in once
 on the host`. That advice is for people who lend a subscription login to a sandbox. This
@@ -249,14 +248,14 @@ which is the agent trying to reach a host of its own and being stopped.
 A cassette only replays when the agent asks the same question it asked before. The
 script `scripts/vcr-agent` holds still everything that could change the question. The
 agent gets an empty home directory, a working directory inside this repo, and the
-`opencode` version pinned in `package.json`. `make vcr-record` records the cassette
+`opencode` version pinned in the `Makefile`. `make vcr-record` records the cassette
 again, which calls Fireworks and costs about two cents.
 
 ### 5. cs-sandbox: a disposable machine for an agent
 
 `cs-sandbox` creates an isolated Linux machine with the agent CLIs already installed.
-This step needs [podman](INSTALL.md#3-podman), and a writable
-[`/dev/kvm`](INSTALL.md#4-devkvm-for-firecracker) for the Firecracker virtual machine
+This step needs [podman](INSTALL.md#2-podman), and a writable
+[`/dev/kvm`](INSTALL.md#3-devkvm-for-firecracker) for the Firecracker virtual machine
 it boots. `scripts/cs cs-sandbox doctor` says whether this machine has them. In its
 output, `ok` is a check that passed and `NO` is one that failed. A line that starts with `??` is advice, for example about memory or
 disk space, and nothing in this tour depends on it. `doctor` checks every sandbox on the
@@ -498,8 +497,8 @@ been run on Linux with KVM, so the other routes are untested here.
 
 You choose one version, `CAMPAIGN_VERSION`, and the `Makefile` derives the rest.
 It reads that campaign's own `go.mod` from the module proxy, and it installs the
-`cs-sandbox`, `cs-tracer` and `cs-vcr` versions named there. This keeps the
-chain consistent without asking you to track four numbers.
+`cs-sandbox`, `cs-tracer`, `cs-vcr`, `cs-lint` and `cs-ledger` versions named there.
+This keeps the chain consistent without asking you to track six numbers.
 
 Of those versions, `cs-sandbox` is the only one that has to agree with campaign at
 runtime. The reason is that campaign executes `cs-sandbox` on every run. `make doctor`
@@ -575,7 +574,7 @@ queried when you run the target, so neither is written down anywhere.
 
 ```bash
 make demo-clean      # drops the members, removes .work, forgets the sessions
-make clean-all       # removes tools and node_modules
+make clean           # removes the tools
 ```
 
 Both targets deliberately leave two things alone. The first is your credential at

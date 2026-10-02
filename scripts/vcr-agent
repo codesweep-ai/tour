@@ -16,7 +16,7 @@
 #     working directory it reports is the same <ROOT>-relative path in every clone;
 #   - it gets an empty HOME, so your own agent settings cannot reach its prompt;
 #   - cs-vcr gets an empty config home, so your own cs-vcr rules cannot change a match;
-#   - the agent itself is the opencode pinned in package.json, because another version
+#   - the agent itself is the opencode pinned in the Makefile, because another version
 #     sends another prompt.
 set -uo pipefail
 mode="${1:-}"
@@ -76,7 +76,7 @@ config='{"provider":{"fireworks-ai":{"options":{"baseURL":"http://127.0.0.1:'"$p
 # Everything the agent is given. Nothing else reaches it, because `env -i` starts it
 # from an empty environment.
 agent_env=(
-  PATH="$root/node_modules/.bin:/usr/bin:/bin" HOME="$work/home" TERM=dumb
+  PATH="$root/tools/opencode:/usr/bin:/bin" HOME="$work/home" TERM=dumb
   XDG_CONFIG_HOME="$work/home/.config" XDG_DATA_HOME="$work/home/.local/share"
   XDG_CACHE_HOME="$work/home/.cache" XDG_STATE_HOME="$work/home/.local/state"
   FIREWORKS_API_KEY="$key" OPENCODE_CONFIG_CONTENT="$config"

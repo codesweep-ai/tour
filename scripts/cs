@@ -7,13 +7,12 @@
 # cannot drift apart. Paths under this repository are printed relative to it, which
 # is how you would type them from here.
 #
-# The pins live in this file and nowhere else. `tools/` holds the Go binaries that
-# `make setup` fetched at the pinned versions, and `node_modules/.bin` holds the npm
-# ones. Both go first on PATH, so a bare tool name means the pinned copy. `make env`
-# prints the same settings for your own shell.
+# The pins live in the Makefile. `tools/` holds what `make setup` fetched at the pinned
+# versions, with the opencode agent in `tools/opencode`. Both go first on PATH, so a bare
+# tool name means the pinned copy. `make env` prints the same settings for your own shell.
 set -euo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-export PATH="$root/tools:$root/node_modules/.bin:$PATH"
+export PATH="$root/tools:$root/tools/opencode:$PATH"
 export CS_SANDBOX_BIN="$root/tools/cs-sandbox"
 export CS_CAMPAIGN_GUEST_BIN="$root/tools/cs-campaign-member"
 

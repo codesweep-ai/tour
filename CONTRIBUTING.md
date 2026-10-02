@@ -40,11 +40,12 @@ That is every gate the CI workflow has, on this machine and in the order the wor
 so a green run here is a green run there. `make check` is the faster subset to keep beside you
 while you work, and `make ci` is the one that has to pass.
 
-No linter needs installing. Every one the gates shell out to is pinned, and `make ci` fetches it:
-`cs-lint` and `cs-ledger` in `package.json`, and `actionlint` in the `Makefile`.
+No linter needs installing. Every one the gates shell out to is pinned in the `Makefile`, and
+`make ci` fetches it: `cs-lint` and `cs-ledger` at the versions `CAMPAIGN_VERSION` names, and
+`actionlint` at `ACTIONLINT_VERSION`.
 
-Moving a linter pin is an edit to `package.json`, or to `ACTIONLINT_VERSION` in the `Makefile` for
-`actionlint`. A linter release reaches you when you ask for it, not on an unrelated pull request.
+Moving a linter pin is an edit to one of those two. A linter release reaches you when you ask for
+it, not on an unrelated pull request.
 
 `make try-sandbox` and `make demo` boot virtual machines, so CI cannot run them. Run them yourself
 when you change a script they use, or a file under `campaign/`. `make demo` spends about a dollar.

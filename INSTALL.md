@@ -1,7 +1,7 @@
 # Installing tour
 
-`make setup` fetches every codesweep tool at the version this repository pins. Before you run it,
-install Go and Node. Steps 5 to 7 also need podman and `/dev/kvm`, on Linux.
+`make setup` fetches every tool the tour runs, at the version this repository pins. Before you run
+it, install Go. Steps 5 to 7 also need podman and `/dev/kvm`, on Linux.
 
 Once these are in place, go back to the [README](README.md).
 
@@ -18,16 +18,7 @@ go version
 
 On macOS, or on another architecture, take the matching download from [go.dev](https://go.dev/dl/).
 
-## 2. Node
-
-Install Node 24.21.0, with npm, from [nodejs.org](https://nodejs.org/en/download). Then
-check it:
-
-```bash
-node --version
-```
-
-## 3. Podman
+## 2. Podman
 
 Steps 5 to 7 need podman 5.0 or later, with the OpenSSH client and git:
 
@@ -37,7 +28,7 @@ sudo apt install podman openssh-client git     # Ubuntu, Debian
 podman --version
 ```
 
-## 4. /dev/kvm for Firecracker
+## 3. /dev/kvm for Firecracker
 
 Steps 5 to 7 boot Firecracker virtual machines, which need Linux on x86_64 with KVM. Give your user
 access to `/dev/kvm`, then log out and back in:
@@ -50,7 +41,7 @@ Firecracker also needs a few host packages, which the
 [sandbox installation guide](https://github.com/codesweep-ai/sandbox/blob/main/INSTALL.md#firecracker-packages-linux--kvm-x86_64)
 lists.
 
-## 5. Verify the installation
+## 4. Verify the installation
 
 ```bash
 make setup

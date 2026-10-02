@@ -1,9 +1,9 @@
-# Dev-mode tools: pinned by package.json + package-lock.json, fetched by npm.
-node_modules/
-
-# Use-mode tools: pinned by CAMPAIGN_VERSION/SANDBOX_VERSION in the Makefile,
-# fetched by `make tools`. Binaries are build output, never committed.
+# Every tool: pinned in the Makefile and fetched by `make tools`. Binaries are build
+# output, never committed.
 tools/
+
+# npm's install directory. Nothing here runs npm, and a clone that has one can delete it.
+node_modules/
 
 # Campaign workspace, throwaway app repo, port-forward state.
 .work/

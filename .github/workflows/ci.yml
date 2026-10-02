@@ -26,10 +26,6 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0 # the history rules read the history
-      - uses: actions/setup-node@v7
-        with:
-          node-version: "24.21.0"
-          cache: npm
       - uses: actions/setup-go@v7
         with:
           go-version: "1.27"
@@ -56,19 +52,19 @@ jobs:
       - run: make actionlint
 
   # A job each for the linters that read the tree and nothing else. They need
-  # only the npm tools, so they answer in seconds, and they answer even when the
-  # larger job is failing.
+  # only cs-lint and cs-ledger, which `make linters` builds, so they answer even
+  # when the larger job is failing.
   prose:
     name: docs prose
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-go@v7
         with:
-          node-version: "24.21.0"
-          cache: npm
-      - run: npm ci
+          go-version: "1.27"
+          cache-dependency-path: Makefile
+      - run: make linters
       - run: make prose
 
   refs:
@@ -77,11 +73,11 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-go@v7
         with:
-          node-version: "24.21.0"
-          cache: npm
-      - run: npm ci
+          go-version: "1.27"
+          cache-dependency-path: Makefile
+      - run: make linters
       - run: make refs
 
   oss:
@@ -92,11 +88,11 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0 # the history rules read the history
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-go@v7
         with:
-          node-version: "24.21.0"
-          cache: npm
-      - run: npm ci
+          go-version: "1.27"
+          cache-dependency-path: Makefile
+      - run: make linters
       - run: make oss
 
   ledger:
@@ -107,9 +103,9 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0 # a closed record cites a commit, and the check looks it up
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-go@v7
         with:
-          node-version: "24.21.0"
-          cache: npm
-      - run: npm ci
+          go-version: "1.27"
+          cache-dependency-path: Makefile
+      - run: make linters
       - run: make ledger
