@@ -48,7 +48,7 @@ RECORD        := $${CS_CAMPAIGN_STATE_DIR:-$$HOME/.config/cs-campaign/campaigns}
 
 .DEFAULT_GOAL := help
 
-.PHONY: help help-all setup tools doctor env check test ci prose refs oss actionlint clean clean-all \
+.PHONY: help help-all setup go-version tools doctor env check test ci prose refs oss actionlint clean clean-all \
         try-tracer try-lint try-ledger try-vcr try-sandbox vcr-record \
         demo-replay demo-record no-identity \
         demo demo-start demo-watch demo-stop demo-destroy demo-clean show-reports show-app \
@@ -106,7 +106,7 @@ help-all:
 ## a host file, so this ends by saying whether that file is there. Lending reads a file
 ## rather than an environment variable, which is why an exported key is not enough.
 ## The five `try-` targets need no key at all.
-setup:
+setup: go-version
 	npm install
 	@$(MAKE) --no-print-directory tools
 	@$(MAKE) --no-print-directory doctor
@@ -122,6 +122,24 @@ setup:
 	  echo "              chmod 600 ~/.cs-keys/fireworks"; \
 	fi
 	@echo ""
+
+### go-version: refuse to start on a Go that cannot build the tools
+##
+## The tools ask for Go 1.27.1, the version INSTALL.md names. An older go still builds
+## them when GOTOOLCHAIN lets it fetch that version, which is Go's default. Many
+## distributions set GOTOOLCHAIN=local, and then the first `go install` fails with an
+## error that does not say what to do.
+GO_MIN := 1.27.1
+go-version:
+	@command -v go >/dev/null 2>&1 || { \
+	  echo "make setup needs Go $(GO_MIN), and go is not on the PATH. INSTALL.md, section 1, says how to install it." >&2; exit 1; }
+	@have="$$(go env GOVERSION | sed -E 's/^go//; s/[^0-9.].*//')"; \
+	[ "$$(printf '%s\n%s\n' "$(GO_MIN)" "$$have" | sort -V | head -1)" = "$(GO_MIN)" ] && exit 0; \
+	case "$$(go env GOTOOLCHAIN)" in \
+	  *auto*) echo "go $$have will fetch Go $(GO_MIN) for the tools, because GOTOOLCHAIN allows it" ;; \
+	  *) echo "make setup needs Go $(GO_MIN) or newer. This go is $$have, and GOTOOLCHAIN=$$(go env GOTOOLCHAIN)" >&2; \
+	     echo "stops it fetching a newer one. INSTALL.md, section 1, says how to install Go $(GO_MIN)." >&2; exit 1 ;; \
+	esac
 
 ### tools: fetch the pinned Go binaries into tools/
 tools:
