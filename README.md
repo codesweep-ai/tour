@@ -288,12 +288,20 @@ group so that it cannot touch anything else on your machine. A sandbox created w
 `--group` joins the shared `default` group, and a destroy is all it needs.
 
 The sandbox shares one repository with this machine and nothing else. A commit made
-inside comes back with `fetch`. When you have a key at `~/.cs-keys/fireworks`, the step
-also shows how lending works. Inside the sandbox the variable holds a loan token such
-as `loan_tour1234_...`. The step searches `~`, `/etc` and `/run` inside the sandbox for
-the real key and finds it in no file. It then calls the provider directly from inside,
-and that call is refused with a 403. A model call has to go through the lender on this
-machine, which is where the loan token is exchanged for the real key.
+inside comes back with `fetch`.
+
+An agent in the sandbox still needs a key to call its model, and `cs-sandbox` lends one
+rather than copying it in. That is what `--lend-api-key fireworks` asks for. The sandbox
+gets a loan token, a stand-in that is worth nothing anywhere else. Every model call goes
+through a lender that `cs-sandbox` runs on this machine, and the lender swaps the token
+for your real key on the way out. The agent uses your key without ever seeing it.
+
+When you have a key at `~/.cs-keys/fireworks`, the step shows this at work. Inside the
+sandbox the variable holds a loan token such as `loan_tour1234_...`. The step searches
+`~`, `/etc` and `/run` inside the sandbox for the real key and finds it in no file. It
+then calls the provider directly from inside, and that call is refused with a 403,
+because the sandbox reaches the provider only through the lender. Without a key file,
+the step skips this part.
 
 ### 6. cs-campaign, replayed: the whole campaign for nothing
 
