@@ -3,6 +3,9 @@ name: ci
 on:
   push:
     branches: [main]
+    # A push that changes nothing but the ledger builds and publishes nothing,
+    # and ledger.yml checks it.
+    paths-ignore: ["ledger/**"]
   pull_request:
   workflow_dispatch:
 
@@ -81,7 +84,7 @@ jobs:
       - run: make refs
 
   oss:
-    name: open source readiness
+    name: open-source readiness
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -96,7 +99,7 @@ jobs:
       - run: make oss
 
   ledger:
-    name: cs-ledger check
+    name: ledger check
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

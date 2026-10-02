@@ -1,0 +1,82 @@
+name: ledger
+
+# The checks of a push to main that changes the ledger. ci.yml ignores a push
+# that changes nothing outside ledger/, and without this such a push would be
+# checked by nothing. It builds and publishes nothing itself. pages.yml runs
+# when this finishes, and republishes the ledger's page.
+#
+# A push that changes the ledger and anything else runs ci as well, which checks
+# the ledger again. The second check costs a minute.
+on:
+  push:
+    branches: [main]
+    paths: ["ledger/**"]
+  # By hand as well, as ci can be: `gh workflow run ledger.yml`, and --ref to
+  # check a branch. pages.yml republishes only after a run on main.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  # prose, refs and oss read the records along with the rest of the tree, so
+  # a record can fail them: its prose, the record IDs the documents cite,
+  # what a record may not publish, and the commits that changed it. Each is
+  # a job of its own, named as in ci.yml, so a failed run names the check
+  # that failed.
+  prose:
+    name: docs prose
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version: "1.27"
+          cache-dependency-path: Makefile
+      - run: make linters
+      - run: make prose
+
+  refs:
+    name: docs refs
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version: "1.27"
+          cache-dependency-path: Makefile
+      - run: make linters
+      - run: make refs
+
+  oss:
+    name: open-source readiness
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v7
+        with:
+          go-version: "1.27"
+          cache-dependency-path: Makefile
+      - run: make linters
+      - run: make oss
+
+  check:
+    name: ledger check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # the check resolves every sha a record cites
+      - uses: actions/setup-go@v7
+        with:
+          go-version: "1.27"
+          cache-dependency-path: Makefile
+      - run: make linters
+      - name: records and page
+        run: make ledger

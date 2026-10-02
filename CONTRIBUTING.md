@@ -55,6 +55,10 @@ This repository keeps a **ledger** of open issues in `ledger/`. Read
 that touches `ledger/` needs `cs-ledger render && cs-ledger check` to pass first, and
 `make ledger` runs the check half.
 
+A push to main that changes only `ledger/` builds nothing. `ci` does not run for it: the `ledger`
+workflow runs `make ledger`, `make prose`, `make refs` and `make oss` instead, and the site
+republishes the ledger's page when it finishes.
+
 ## Design rules
 
 1. **Every tool runs through `scripts/cs`.** The script prints the command and then runs that same
