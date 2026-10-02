@@ -320,12 +320,17 @@ handed out. The step prints one `ok  readback` line for each agent. Each line en
 `(confirmed by the answering turn)`. That means the model the agent answered
 on is the model that its profile declares.
 
-An orchestrator then writes the design of a small web page, and it commits that design. A
-developer builds it with the `@codesweep-ai/ui` design system, and a qa role checks it in
-a real browser. Then the step fetches the work, archives the run, and builds the dispatch
-page and the trajectories. A dispatch is one piece of work that the orchestrator hands to
-another agent, and the dispatch page is the timeline of all of them. It ends with the page served on a URL, and
-`make show-reports` serves the two reports.
+An orchestrator then writes the design of a small web page and commits it. A developer
+builds the page with the `@codesweep-ai/ui` design system, and a qa agent checks it in a
+real browser. The step then fetches their work and archives the run.
+
+The step ends by printing three addresses. The first is the web page the agents built,
+which runs inside the orchestrator's machine. The other two are reports on how they
+built it, written as files on this machine. The dispatch page is a timeline of the run,
+where a dispatch is one piece of work that the orchestrator hands to another agent. The
+trajectories record each agent's sessions, every tool call included, and you review them
+on the trace pages that `cs-tracer` from step 1 draws. `make show-reports` serves the two
+reports, so that another machine can open them.
 
 In a replay, only the agents' decisions come from the recording. Every command that
 they decide to run is executed for real. The installs, the build, the browser check and
