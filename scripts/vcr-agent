@@ -32,13 +32,13 @@ model="${VCR_MODEL:-fireworks-ai/accounts/fireworks/models/kimi-k2p7-code}"
 task="${VCR_TASK:-Create a file called hello.txt that contains exactly the word hello. Then say done.}"
 
 if [ "$mode" = agent ]; then
-  key="${FIREWORKS_API_KEY:-not-a-real-key}"
+  key="${FIREWORKS_API_KEY:-}"
 elif [ "$mode" = record ]; then
   [ -n "${FIREWORKS_API_KEY:-}" ] || { echo "record calls Fireworks, so FIREWORKS_API_KEY has to be set" >&2; exit 1; }
   key="$FIREWORKS_API_KEY"; rm -rf "$root/cassettes/$cassette"
 else
   [ -d "$root/cassettes/$cassette" ] || { echo "no cassette at cassettes/$cassette. Record one with: make vcr-record" >&2; exit 1; }
-  key="not-a-real-key"
+  key=""
 fi
 
 if [ "$mode" = agent ]; then
@@ -49,7 +49,7 @@ elif [ "$mode" = replay ]; then
   CS_VCR_CASSETTES="$root/cassettes" "$cs" cs-vcr cassette ls "$cassette"
   echo ""
   echo "2. Replay it. cs-vcr stands where the provider would, and the real agent runs"
-  echo "   against it with a key that is not a key."
+  echo "   against it with no key at all."
 else
   echo "Recording cassettes/$cassette. This run calls Fireworks for real."
 fi
@@ -74,15 +74,16 @@ fi
 
 config='{"provider":{"fireworks-ai":{"options":{"baseURL":"http://127.0.0.1:'"$port"'/c/fireworks/'"$cassette"'/v1"}}}}'
 # Everything the agent is given. Nothing else reaches it, because `env -i` starts it
-# from an empty environment.
+# from an empty environment. A replay gives it no key, because it calls no provider.
 agent_env=(
   PATH="$root/tools/opencode:/usr/bin:/bin" HOME="$work/home" TERM=dumb
   XDG_CONFIG_HOME="$work/home/.config" XDG_DATA_HOME="$work/home/.local/share"
   XDG_CACHE_HOME="$work/home/.cache" XDG_STATE_HOME="$work/home/.local/state"
-  FIREWORKS_API_KEY="$key" OPENCODE_CONFIG_CONTENT="$config"
+  OPENCODE_CONFIG_CONTENT="$config"
   HTTP_PROXY="http://127.0.0.1:$port" HTTPS_PROXY="http://127.0.0.1:$port" ALL_PROXY="http://127.0.0.1:$port"
   NO_PROXY=127.0.0.1,localhost no_proxy=127.0.0.1,localhost
 )
+[ -n "$key" ] && agent_env+=(FIREWORKS_API_KEY="$key")
 {
   echo ""
   echo "  The agent's command line does not say where its model calls go. Its environment"
@@ -90,7 +91,7 @@ agent_env=(
   echo ""
   echo "    OPENCODE_CONFIG_CONTENT='$config'"
   echo "    HTTPS_PROXY=http://127.0.0.1:$port   (and HTTP_PROXY, ALL_PROXY: its other calls are refused the same way each run)"
-  [ "$mode" = record ] && echo "    FIREWORKS_API_KEY=<your real key>" || echo "    FIREWORKS_API_KEY=$key"
+  [ -n "$key" ] && echo "    FIREWORKS_API_KEY=<your real key>"
   echo "    HOME=.work/vcr/home                  (empty, so your own agent settings cannot change the prompt)"
   echo "    working directory .work/vcr/proj"
 } >&2

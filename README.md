@@ -217,9 +217,9 @@ steps and then replays them:
 ```
 
 The agent in this step is the real `opencode` program, and it really does create the
-file. The model is the only part that is replaced, so the key the agent holds is the
-string `not-a-real-key`. Look for `upstream calls 0` in the summary, which means that
-no provider was called. This is what lets a CI job test an agent with no credential and no cost.
+file. The model is the only part that is replaced, so the agent holds no key at all. Look
+for `upstream calls 0` in the summary, which means that no provider was called. This is
+what lets a CI job test an agent with no credential and no cost.
 
 The agent's command line does not say where its model calls go. Its environment does,
 so the step prints those settings too. The one that matters most is a base URL ending
