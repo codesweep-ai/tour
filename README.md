@@ -419,11 +419,10 @@ them up too, and it says so. Running `make demo-replay` again removes them first
 ### 7. cs-campaign, live: the same mission, decided afresh
 
 This is the only step that spends, and a run costs about a dollar. It runs the campaign
-from step 6 against the real model, so the agents make their own decisions and the design comes out different each
-time. It needs podman and KVM, and it needs a Fireworks key in two places. Export `FIREWORKS_API_KEY`, and write the same key to
-`~/.cs-keys/fireworks` with mode `0600`. The campaign lends the key to its members, and
-the lender reads a host file, so an environment variable alone is not enough.
-`make setup` prints the three commands that write the file.
+from step 6 against the real model, so the agents make their own decisions and the
+design comes out different each time. It needs podman and KVM, and a Fireworks key in
+`~/.cs-keys/fireworks` with mode `0600`. The campaign lends that key to its members, as
+step 5 showed. `make setup` prints the three commands that write the file.
 
 ```bash
 make demo-validate   # check the campaign, which costs nothing

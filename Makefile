@@ -473,7 +473,6 @@ demo-destroy: demo-stop
 
 ### demo-preflight: refuse to spend unless the credential and the host are ready
 demo-preflight:
-	@[ -n "$$FIREWORKS_API_KEY" ] || { echo "FIREWORKS_API_KEY is not set" >&2; exit 1; }
 	@[ -s "$$HOME/.cs-keys/fireworks" ] || { echo "$$HOME/.cs-keys/fireworks is missing or empty. Borrow mode lends a host file, so an environment variable alone cannot be lent." >&2; exit 1; }
 	@$(CSQ) cs-campaign doctor >/dev/null 2>&1 || { echo "cs-campaign doctor is not green. Run: make doctor" >&2; exit 1; }
 	@echo "preflight ok: key file present, doctor green"
