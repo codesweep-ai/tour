@@ -66,31 +66,15 @@ Part of the way through, `cs-sandbox` prints a line that starts with `next: sign
 on the host`. That advice is for people who lend a subscription login to a sandbox. This
 tour lends a key file and never a login, so you can ignore the line.
 
-Run `make` on its own at any time to see the tour again.
-
-## How to read what a step prints
-
-Each step runs its tool through a small script, `scripts/cs`. The script prints the
-command, and then it runs exactly that command. A printed command looks like this:
-
-```
-  $ cs-ledger check ledger
-```
-
-That line is what you would type in a project of your own, where this Makefile does not
-exist. The script builds the printed line and the command from the same argument list.
-This means that the line you read is always the command that ran.
-
-To type a command yourself, put the pinned tools on your `PATH` first:
+To run a tool yourself, put the pinned tools on your `PATH` first. Otherwise a bare tool
+name finds whatever copy is installed elsewhere, which may be another version:
 
 ```bash
 eval "$(make env)"
 cs-ledger check ledger
 ```
 
-You need that step because a bare tool name finds whatever copy sits on your `PATH`.
-That copy is often a different version from the one this repo pins. `make env` prints
-the same three settings that `scripts/cs` applies, so both routes reach the same binary.
+Run `make` on its own at any time to see the tour again.
 
 ## The tour
 
@@ -194,7 +178,7 @@ a closed record has to cite the commit that fixed it, and say how the fix was pr
 third error is a separate gate. The page is rendered from the records, so a record that
 changed without a render leaves a page that no longer matches. The step prints the
 exact `evidence` line to write, and the two commands that make the check pass.
-Run `scripts/cs cs-ledger guide` for the practice an agent follows day to day.
+Run `cs-ledger guide` for the practice an agent follows day to day.
 
 ### 4. cs-vcr: replay an agent run for nothing
 
@@ -224,8 +208,8 @@ what lets a CI job test an agent with no credential and no cost.
 The agent's command line does not say where its model calls go. Its environment does,
 so the step prints those settings too. The one that matters most is a base URL ending
 in `/c/fireworks/hello/v1`. That path tells `cs-vcr` which provider the call is for and
-which cassette it belongs to. `scripts/cs cs-vcr config opencode --cassette hello
---provider fireworks` prints the settings for any agent. For `opencode` on Fireworks,
+which cassette it belongs to. `cs-vcr config opencode --cassette hello --provider
+fireworks` prints the settings for any agent. For `opencode` on Fireworks,
 change the provider key it prints to `fireworks-ai`, which is the name `opencode` uses.
 
 To drive the two halves yourself, start the proxy in one terminal and the agent in
@@ -256,7 +240,7 @@ again, which calls Fireworks and costs about two cents.
 `cs-sandbox` creates an isolated Linux machine with the agent CLIs already installed.
 This step needs [podman](INSTALL.md#2-podman), and a writable
 [`/dev/kvm`](INSTALL.md#3-devkvm-for-firecracker) for the Firecracker virtual machine
-it boots. `scripts/cs cs-sandbox doctor` says whether this machine has them. In its
+it boots. `cs-sandbox doctor` says whether this machine has them. In its
 output, `ok` is a check that passed and `NO` is one that failed. A line that starts with `??` is advice, for example about memory or
 disk space, and nothing in this tour depends on it. `doctor` checks every sandbox on the
 machine, including other people's, and it ends with a failure when any of them has a `NO`.
