@@ -588,19 +588,6 @@ channels and transcripts exist only while its members do, so an archive is the o
 copy once they are gone. Use `make demo-destroy` instead when you want the members
 gone but the archive kept, because that one refuses to run without an archive.
 
-## Committing to this repo
-
-Run `make check` before a commit. It runs the linters, checks the ledger, verifies the
-cassettes, and refuses a local path or a session link.
-
-This repository is meant to be published, so its history is part of what readers see.
-Keep commit subjects under 60 characters, and keep bodies to two paragraphs at most.
-
-Never put an agent session link in a commit message. Such a link is private to whoever
-ran the session, it is useless to everybody else, and it cannot be taken out once the
-history is public. `make check` refuses one, so the rule holds without anybody
-remembering it.
-
 ## Recording the campaign again
 
 The campaign's cassettes are bound to what the agents were asked. An edit to the
@@ -626,14 +613,22 @@ campaign has not changed since the recording. It does not run the agents, so it 
 show that they still ask the questions that were recorded. `make check` also runs `make no-identity`, which searches every file git would
 commit for those same values.
 
-## What this repo commits
+## Docs
 
-The committed files are the campaign, the ledger, four cassettes, the two files the tour
-plants, and the scripts. Everything else is generated. The `tools` directory holds
-binaries, `node_modules` contains packages, and `.work` collects whatever a step writes.
-All three stay out of git, and all three rebuild from what is committed.
+- [INSTALL.md](INSTALL.md) · what the machine needs before `make setup`
+- [CONTRIBUTING.md](CONTRIBUTING.md) · working on the tour: the gates and the conventions
+- [AGENTS.md](AGENTS.md) · where an agent looks first
+- [ledger/ledger.html](ledger/ledger.html) · what went wrong while the tour was built, with the
+  records under `ledger/issues/`
+
+Each tool's own documents are in its repository, which the table at the top links to.
+
+## Contributing
+
+Bug reports and pull requests are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) first: it names
+the one command to run before you push, and what a change must not break. It applies to coding
+agents as well as to people.
 
 ## License
 
-This repository is released under the [Apache 2.0 licence](LICENSE), and so is every tool it
-shows. [CONTRIBUTING.md](CONTRIBUTING.md) says how to propose a change.
+[Apache-2.0](LICENSE).
