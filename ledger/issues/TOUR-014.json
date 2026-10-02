@@ -10,7 +10,7 @@
   "stint": null,
   "evidence": {
     "commits": [
-      "689ad00"
+      "f773b75"
     ],
     "integrated": [],
     "verified": "Read from the trajectories of the committed recording: orchestrator $0.72, developer $0.30 and qa $0.17, which is $1.19 for the campaign. The exported session of the small cassette comes to $0.0238 in total. Both are the agent's own accounting from recorded token counts, and neither was checked against a provider invoice."

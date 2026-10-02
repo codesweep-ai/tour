@@ -10,7 +10,7 @@
   "stint": null,
   "evidence": {
     "commits": [
-      "7736cb0"
+      "b6137d7"
     ],
     "integrated": [],
     "verified": "`grep -c WATCH_STALL scripts/campaign-watch` returned 0 and the README no longer names it. The README's ledger block was compared with a fresh `make try-ledger` run, and the three errors match apart from the record id. `cs-campaign doctor` now reports `ok` for both `cs-lint` and `cs-ledger`."

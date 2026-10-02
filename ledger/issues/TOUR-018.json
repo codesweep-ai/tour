@@ -10,8 +10,8 @@
   "stint": null,
   "evidence": {
     "commits": [
-      "0db1e4d",
-      "84e5c87"
+      "cc5d304",
+      "0d6b2bf"
     ],
     "integrated": [],
     "verified": "Two of the readers' replays failed with `replayed 157` out of 157 recorded calls, one with `misses 3` and one with `misses 1`. Every miss in both proxy logs had `target=/`, and all were stamped 22:46:38, one second before the third reader's `cs-sandbox doctor` log was written. After the fix, a replay was run in this clone and `scripts/cs cs-sandbox doctor` was run during it. `doctor` printed three `NO` lines that named this campaign's members. The proxy ended with `requests 160`, `replayed 157` and `misses 3`. The step reported 3 of them as asking for `/`, printed `misses that an agent sent 0`, and ended with exit 0. The fetched commit ids were the recording's, and the three replays that no `doctor` touched had passed unchanged."

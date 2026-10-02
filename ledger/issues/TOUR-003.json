@@ -10,7 +10,7 @@
   "stint": null,
   "evidence": {
     "commits": [
-      "4cd8c67"
+      "511af59"
     ],
     "integrated": [],
     "verified": "The next `make demo` printed `reset: moved the previous run's reports to .work/runs/20260918T235143Z`. With a dispatch page dated before its archive, `make show-reports` printed `is older than the archive` and exited 2."

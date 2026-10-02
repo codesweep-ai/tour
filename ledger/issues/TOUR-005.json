@@ -10,7 +10,7 @@
   "stint": null,
   "evidence": {
     "commits": [
-      "61db0b9"
+      "b2acdec"
     ],
     "integrated": [],
     "verified": "`make demo` on 2026-09-18 at 23:51 UTC, read from the orchestrator session. It started the server once with the `nohup` line from the brief, and the session holds no `pkill` call. The mission closed 5.5 minutes after dispatch, against 12.6 minutes in the run before."

@@ -10,7 +10,7 @@
   "stint": null,
   "evidence": {
     "commits": [
-      "7736cb0"
+      "b6137d7"
     ],
     "integrated": [],
     "verified": "Ran `scripts/cs echo` with the real key inside one argument. The printed line held `<redacted>` and 0 copies of the key, and the echoed output held 1 copy, which shows the command still received it."

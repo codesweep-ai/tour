@@ -10,7 +10,7 @@
   "stint": null,
   "evidence": {
     "commits": [
-      "689ad00"
+      "f773b75"
     ],
     "integrated": [],
     "verified": "With a record of the same name whose `profilePath` was in another directory, `make demo-reset` printed `It is not this clone's to destroy` and exited 2. A full `make demo-replay` then ran under the name `hello3956` and ended with `replayed 157`, `upstream calls 0` and `misses 0`, with the same commit ids as the recording. The reader's own second run, under a name of its choosing, had passed the same way."

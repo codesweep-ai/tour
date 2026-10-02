@@ -10,7 +10,7 @@
   "stint": null,
   "evidence": {
     "commits": [
-      "28c8b12"
+      "795fb85"
     ],
     "integrated": [],
     "verified": "`cs-vcr calibrate` was run on the reader's real missed request. Under the old configuration it reported one path that differed, `messages[].content[].image_url.url`. Under the new one it reported `every paired request already aligns`. A full `make demo-replay` was then run from the reader's own clone, where it had failed twice, with 18 other sandboxes running on the machine. The proxy's count at the end was `replayed 157`, `upstream calls 0` and `misses 0`."

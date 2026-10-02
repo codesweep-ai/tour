@@ -10,7 +10,7 @@
   "stint": null,
   "evidence": {
     "commits": [
-      "4cd8c67"
+      "511af59"
     ],
     "integrated": [],
     "verified": "`make demo-trajectories` on a real archive printed `built 3 member site(s)`. The index listed `orchestrator`, `developer` and `qa`, and each link opened that member's own sessions."

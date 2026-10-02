@@ -10,7 +10,7 @@
   "stint": null,
   "evidence": {
     "commits": [
-      "0db1e4d"
+      "cc5d304"
     ],
     "integrated": [],
     "verified": "The reader's clone showed a `cs-sandbox-tour1829-keepalive` container and a `cs-sandbox-tour1829` network after the four printed commands, and two clones that only ran `make try-sandbox` showed neither. After the fix, `make try-sandbox` was run in this clone with exit 0. It printed `$ cs-sandbox group rm tour3956` and `removed group tour3956`, and `podman ps -a` and `podman network ls` then held nothing named `tour3956`."

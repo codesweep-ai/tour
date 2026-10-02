@@ -10,7 +10,7 @@
   "stint": "tour session of 2026-09-19",
   "evidence": {
     "commits": [
-      "155047b"
+      "bf4593b"
     ],
     "integrated": [],
     "verified": "With `FIREWORKS_API_KEY` removed from the environment, `make try-tracer`, `make try-lint`, `make try-vcr` and `make try-sandbox` each exited 0, and each printed its tool commands as `  $ <command>` lines. After `eval \"$(make env)\"`, `cs-campaign version` reported the pinned build, where the bare name reported an older, locally built one. `make -n` passed on all 38 targets."

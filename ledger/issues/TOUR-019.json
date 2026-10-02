@@ -10,7 +10,7 @@
   "stint": null,
   "evidence": {
     "commits": [
-      "c42dbae"
+      "caa7aec"
     ],
     "integrated": [],
     "verified": "`scripts/wait-ceiling cassettes/campaign-orchestrator` printed 840. A full `make demo-replay` then ran with the key removed. The step printed `a wait may last 840 seconds`, and `cs-sandbox exec` inside the orchestrator showed `CS_CAMPAIGN_WAIT_SECONDS=840`. The replay ended with `replayed 157`, `upstream calls 0` and `misses 0`, exit 0, and the recording's four commit ids. The proxy log held 9 lines whose recorded text began `wait chunk elapsed` and whose live text began `wait returned`, which is the harmless direction. The new failure check counted 0 on that log and 1 on a line written by hand for the harmful direction. No real replay has yet been made slow enough to trip it."

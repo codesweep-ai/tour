@@ -10,7 +10,7 @@
   "stint": null,
   "evidence": {
     "commits": [
-      "bcfc938"
+      "2f45c89"
     ],
     "integrated": [],
     "verified": "`make demo` on 2026-09-18, read from the member sessions. The developer ran `git merge refs/campaign/orchestrator` 7 seconds into its first dispatch. The qa member ran `git checkout refs/campaign/orchestrator` 6 seconds into its own. Neither session holds a tool call that looks for the work anywhere else."

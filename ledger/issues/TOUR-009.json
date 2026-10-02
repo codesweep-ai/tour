@@ -10,7 +10,7 @@
   "stint": null,
   "evidence": {
     "commits": [
-      "df47227"
+      "b2490dd"
     ],
     "integrated": [],
     "verified": "The committed recording holds 157 model calls. It was replayed three times with `FIREWORKS_API_KEY` removed from the environment, twice by `scripts/campaign-vcr replay` and once by `make demo-replay`. Each run ended with `replayed 157`, `upstream calls 0` and `misses 0`, the served page answered 200, and `git log` in the fetched repository gave the same three commit ids as the recording. An earlier recording passed the same checks four times, once from a fresh clone at another path, where the campaign group differed."

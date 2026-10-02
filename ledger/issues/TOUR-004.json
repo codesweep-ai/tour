@@ -10,7 +10,7 @@
   "stint": null,
   "evidence": {
     "commits": [
-      "ff4f67e"
+      "db1755c"
     ],
     "integrated": [],
     "verified": "The check was `sudo dmesg | grep -c \"Out of memory\"`, run inside each member. Before the change it returned 1 on the developer and 1 on qa. In the two runs after it, it returned 0 on all three members, and each member reported 3902 MiB in total."
