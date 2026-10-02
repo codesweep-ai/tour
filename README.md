@@ -22,12 +22,12 @@ down, by something other than the agent. Each tool below addresses one of those 
 
 | Tool | What it is for |
 |---|---|
-| `cs-sandbox` | Gives an agent a disposable Linux machine of its own, so it cannot touch your files or see your keys. |
-| `cs-campaign` | Runs a team of agents on one job, each in its own sandbox, and keeps the evidence of what each one did. |
-| `cs-tracer` | Turns the session files an agent leaves behind into one page that a person can read. |
-| `cs-vcr` | Records what passes between an agent and its model, and plays it back later, so a run can be repeated for nothing. |
-| `cs-ledger` | Keeps a project's open problems as small files beside the code, written by agents and read by people. |
-| `cs-lint` | Checks that a project's documents are clearly written, and that what they say is still true. |
+| [`cs-sandbox`](https://github.com/codesweep-ai/sandbox) | Gives an agent a disposable Linux machine of its own, so it cannot touch your files or see your keys. |
+| [`cs-campaign`](https://github.com/codesweep-ai/campaign) | Runs a team of agents on one job, each in its own sandbox, and keeps the evidence of what each one did. |
+| [`cs-tracer`](https://github.com/codesweep-ai/tracer) | Turns the session files an agent leaves behind into one page that a person can read. |
+| [`cs-vcr`](https://github.com/codesweep-ai/vcr) | Records what passes between an agent and its model, and plays it back later, so a run can be repeated for nothing. |
+| [`cs-ledger`](https://github.com/codesweep-ai/ledger) | Keeps a project's open problems as small files beside the code, written by agents and read by people. |
+| [`cs-lint`](https://github.com/codesweep-ai/lint) | Checks that a project's documents are clearly written, and that what they say is still true. |
 
 The tools are separate programs, and each one is useful alone. They are also built to
 work together. A campaign runs its agents in sandboxes, the tracer reads what those
