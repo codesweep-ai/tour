@@ -23,11 +23,12 @@ oss:
 
   published: false
 
-  # A demonstration has a tour and a way to contribute. It has no tool to install,
-  # no command surface to document and no behaviour to specify, so INSTALL.md,
-  # MANUAL.md and SPEC.md have nothing to say here. Each tool carries its own.
+  # A demonstration has a tour, what to install before it, and a way to contribute.
+  # It has no command surface to document and no behaviour to specify, so MANUAL.md
+  # and SPEC.md have nothing to say here. Each tool carries its own.
   docSet:
     - README.md
+    - INSTALL.md
     - CONTRIBUTING.md
     - AGENTS.md
 

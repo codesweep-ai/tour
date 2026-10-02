@@ -122,6 +122,7 @@ has one job, so a fact lives in exactly one of them and the others link to it.
 | If you are writing | It goes in |
 |---|---|
 | What the tools are for, and each step of the tour | `README.md` |
+| What the machine needs before `make setup`, and how to install it | `INSTALL.md` |
 | How to work on the tour itself | `CONTRIBUTING.md` |
 | Where an agent working in this repository looks first | `AGENTS.md` |
 

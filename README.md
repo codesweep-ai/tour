@@ -43,12 +43,15 @@ three agents that design, build, check and serve a small web page, with the mode
 answers played back from a recording. Step 7 runs the same job live, and that one needs
 a key for the Fireworks model service and about a dollar.
 
-Steps 1 to 4 run on any machine with node and Go. Steps 5 to 7 boot small virtual
-machines, so they need Linux with podman and a writable `/dev/kvm`.
-
 ## Set up
 
-You need node and npm, and a Go toolchain. Then run one command:
+You need these, and [INSTALL.md](INSTALL.md) says how to install them:
+
+- Go 1.27.1.
+- Node 24.21.0, with npm.
+- For steps 5 to 7, Linux with podman 5.0 or later and a writable `/dev/kvm`.
+
+Then run one command:
 
 ```bash
 make setup
@@ -252,9 +255,10 @@ again, which calls Fireworks and costs about two cents.
 ### 5. cs-sandbox: a disposable machine for an agent
 
 `cs-sandbox` creates an isolated Linux machine with the agent CLIs already installed.
-This step needs podman and a writable `/dev/kvm`, and `scripts/cs cs-sandbox doctor`
-says whether this machine has them. In its output, `ok` is a check that passed and `NO` is
-one that failed. A line that starts with `??` is advice, for example about memory or
+This step needs [podman](INSTALL.md#3-podman), and a writable
+[`/dev/kvm`](INSTALL.md#4-devkvm-for-firecracker) for the Firecracker virtual machine
+it boots. `scripts/cs cs-sandbox doctor` says whether this machine has them. In its
+output, `ok` is a check that passed and `NO` is one that failed. A line that starts with `??` is advice, for example about memory or
 disk space, and nothing in this tour depends on it. `doctor` checks every sandbox on the
 machine, including other people's, and it ends with a failure when any of them has a `NO`.
 For this step you only need the lines about podman and KVM to say `ok`. Step 6 explains a
