@@ -468,15 +468,22 @@ program that runs on your machine. None of them calls a hosted service. The only
 spent is what your own model provider charges, and only `cs-campaign` and a `cs-vcr`
 recording ever call one.
 
-The two npm tools install as dev dependencies, and the Go tools install with `go install`:
+Five of the tools install with `go install`, which needs Go 1.27.1 and puts each binary
+in `$(go env GOPATH)/bin`. Put that directory on your `PATH`:
 
 ```bash
-npm install --save-dev @codesweep-ai/lint @codesweep-ai/ledger
+go install github.com/codesweep-ai/lint/cmd/cs-lint@latest
+go install github.com/codesweep-ai/ledger/cmd/cs-ledger@latest
 go install github.com/codesweep-ai/tracer/cmd/cs-tracer@latest
 go install github.com/codesweep-ai/vcr/cmd/cs-vcr@latest
 go install github.com/codesweep-ai/sandbox/cmd/cs-sandbox@latest
-go install github.com/codesweep-ai/campaign/cmd/cs-campaign@latest
+export PATH="$(go env GOPATH)/bin:$PATH"
 ```
+
+`cs-lint` and `cs-ledger` also ship on npm, for a Node project that wants them among its
+dev dependencies. `cs-campaign` builds from a clone, as its
+[INSTALL.md](https://github.com/codesweep-ai/campaign/blob/main/INSTALL.md) shows,
+because `go install` cannot build the second binary it embeds.
 
 `cs-ledger init --project NAME --prefix ABC` starts a ledger in a repository, and
 `cs-campaign init <name>` writes a first profile, mission and set of briefs. Each tool
