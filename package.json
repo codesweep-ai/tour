@@ -8,5 +8,8 @@
     "@codesweep-ai/lint": "0.0.0-20260915220605-2381ff44d94a",
     "opencode-ai": "1.18.31"
   },
-  "private": true
+  "private": true,
+  "engines": {
+    "node": ">=24.21.0"
+  }
 }
