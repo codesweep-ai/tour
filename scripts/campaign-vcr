@@ -29,7 +29,7 @@ name="${CAMPAIGN_NAME:-hello$(printf '%s' "$root" | cksum | cut -c1-4)}"; export
 record="${CS_CAMPAIGN_STATE_DIR:-$HOME/.config/cs-campaign/campaigns}/$name.json"
 work="$root/.work"; ws="$work/$name"; vw="$work/campaign-vcr"
 store="$root/cassettes"; meta="$store/campaign.json"
-model="${FW_MODEL:-fireworks-ai/accounts/fireworks/models/kimi-k2p7-code}"
+model="${FW_MODEL:-fireworks-ai/accounts/fireworks/models/kimi-k3}"
 image="gcr.io/distroless/static-debian12:nonroot"
 static="$root/tools/static/cs-vcr"
 members=(orchestrator developer qa)
@@ -157,14 +157,23 @@ create_pid=$!
 # The network is read from this campaign's own record, never searched for on the host.
 # Another campaign's network can match any pattern, and a proxy joined to it would record
 # or serve somebody else's agents.
+#
+# create makes the network only once the members' image is on this host, and the first
+# run after a new CAMPAIGN_VERSION pulls it: some 8 GB, which takes minutes. So the wait
+# lasts as long as create runs, up to half an hour. A wait that gives up stops create too.
+# Left running, it starts the members with no proxy to record or serve them, and the next
+# run's destroy waits behind it.
 network=""
-for _ in $(seq 240); do
+for _ in $(seq 3600); do
   want="$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1])).get("network",""))' "$record" 2>/dev/null || true)"
   if [ -n "$want" ] && podman network exists "$want" 2>/dev/null; then network="$want"; break; fi
   kill -0 "$create_pid" 2>/dev/null || break
   sleep 0.5
 done
-[ -n "$network" ] || { echo "the campaign's network never appeared:" >&2; cat "$vw/create.log" >&2; exit 1; }
+if [ -z "$network" ]; then
+  kill "$create_pid" 2>/dev/null && wait "$create_pid" 2>/dev/null
+  echo "the campaign's network never appeared:" >&2; cat "$vw/create.log" >&2; exit 1
+fi
 # create runs in the background, so its command line is shown from its log, now that the
 # log holds it.
 echo ""; sed -n '/^  \$ /p' "$vw/create.log"
