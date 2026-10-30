@@ -1,12 +1,132 @@
-data: {"id":"chatcmpl-ebc1a671c79c4c0c834e8c5b6d2f648e","object":"chat.completion.chunk","created":1789958907,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
 
-data: {"choices":[{"delta":{"reasoning_content":"Good. Now I need to create a dispatch file for the developer. The dispatch should include all requirements the developer needs. It should reference the ref `refs/campaign/orchestrator` and tell them to merge it and read DESIGN.md.\n\nLet me write the dispatch file."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789958907,"id":"chatcmpl-ebc1a671c79c4c0c834e8c5b6d2f648e","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+data: {"choices":[{"delta":{"reasoning_content":"I have everything I need to write the design. Package version is 0.3.0 (latest). Tokens: `--color-cat-1` (blue), `--color-cat-6` (orange), `--color-cat-10` (lime), etc. The categorical palette is the natural choice for greeting colours.\n\nDesign decisions (small, one pass):\n- **Greeting**: \"Hello from Codesweep!\" — actually let me pick something simple: \"Hello, world!\" is classic but plain. The campaign is hello2952. Greeting: \"Hello from the campaign!\" Let me just choose: **\"Hello, world!\"** with a subtitle maybe. Keep it small. I'll choose greeting text: `Hello, world!`\n- **Colours**: three colour buttons using categorical tokens: blue (`--color-cat-1`), orange (`--color-cat-6`), violet (`--color-cat-5`). Default greeting colour: blue (`--color-cat-1`).\n- **Buttons**: three DS `Button`s labelled \"Blue\", \"Orange\", \"Violet\". Variants: keep simple — `secondary` for all? Or match? Keep simple: variant=\"secondary\", size=\"md\". Actually primary for the active one could add state complexity; keep design small: all `secondary`.\n- **Layout**: `AppShell` wrapping everything; `Header` with title \"Colour Greeting\" (no nav); content area centered: an `h1` greeting in the selected token colour, and a row of the three Buttons beneath it; `Footer` with a short line like \"Built with @codesweep-ai/ui\".\n- Maybe use `Page` for the content inset? The catalog has Page (experimental, since 0.3.0 — package is 0.3.0, so it exists). Keep it small: AppShell + Header + Page + Footer? Page is \"experimental\" but available. Simpler: just AppShell, Header, Footer, and a centered div. The mission requires Header, Footer, Button, tokens — beyond those the design is mine. Keep minimal: no extra components. Maybe a Card to hold the greeting? That adds a component stylesheet. Keep it stupidly simple: no Card.\n\nLayout specifics without pixels: greeting centered horizontally and vertically in the content area, button row centered below the greeting with a small gap.\n\nState: useState holding the current colour token name; clicking a button sets it.\n\nNow write DESIGN.md in ~/hello-app, commit, then push to developer and dispatch.\n\nDESIGN.md content plan:\n\n```md\n# Design — Colour Greeting\n\n## What the interface is\nA single page that shows a greeting and lets the viewer recolour it with a button click.\n\n## Building blocks (from @codesweep-ai/ui)\n- AppShell — outermost wrapper\n- Header — top bar, title \"Colour Greeting\", no nav items, no actions\n- Footer — bottom bar with one line of text: \"Built with the codesweep design system\"\n- Button — the colour buttons (variant=\"secondary\", size=\"md\")\n- Colour tokens — greeting colours come only from --color-* tokens\n\n## Greeting\nText: \"Hello, world!\"\nRendered as a single large heading (h1). Its colour is the currently selected token.\n\n## Colours\nThree choices, each a design-system token:\n| Button label | Token | Resulting greeting colour |\n| Blue | --color-cat-1 | blue |\n| Orange | --color-cat-6 | orange |\n| Violet | --color-cat-5 | violet |\n\nDefault on load: Blue (--color-cat-1).\n\n## Layout\n- Header at top (via AppShell), Footer at bottom.\n- Content area between them: the greeting heading centred horizontally, with the three Buttons in a row directly beneath it, centred, small even gaps. The group sits in the vertical middle of the content area.\n- No other components.\n\n## Behaviour\n- Clicking a button immediately changes the greeting's colour to that button's token. State held with useState. No persistence, no animation.\n```\n\nKeep it concise. Also note: no hex values anywhere; buttons labelled exactly \"Blue\", \"Orange\", \"Violet\".\n\nThen commit, push to developer, write dispatch file for developer.\n\nThe developer dispatch must contain everything the developer needs (it cannot ask). Its brief (roles/developer.md) already covers most: merge refs/campaign/orchestrator, read DESIGN.md, React+Vite+useState, npm install @codesweep-ai/ui, AppShell/Header/Footer/Button, style imports, tokens, catalog reading hints, bind 0.0.0.0:5173, README with build/serve commands, .gitignore, one pass, report branch + commands. So my dispatch should tell it: implement DESIGN.md per your brief; the ref is there; merge it; report branch and commands. Keep it focused but complete.\n\nLet me write DESIGN.md now."},"finish_reason":null,"index":0,"raw_output":null}],"created":1793342820,"id":"chatcmpl-c22e4e83","model":"accounts/fireworks/models/kimi-k3","object":"chat.completion.chunk","usage":null}
 
-data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"content\": \"Implement the React greeting-colour interface described in `DESIGN.md`.\\n\\nThe orchestrator has pushed the design to your clone at `refs/campaign/orchestrator`. Bring it into your branch with:\\n\\n```sh\\ngit merge refs/campaign/orchestrator\\n```\\n\\nThen read `DESIGN.md` carefully and build exactly what it specifies.\\n\\nKey requirements:\\n- Use React with Vite. Hold colour state with `useState`.\\n- Install `@codesweep-ai/ui` (latest). Let npm write the version range into `package.json`; do not write the word `latest` there yourself.\\n- Use `AppShell`, `Header`, `Footer`, `Page`, `Card`, and `Button` from the package. Note: `Header` and `Footer` are exported by `AppShell`, not as separate catalog entries.\\n- Import the required styles at the entry point:\\n  ```js\\n  import \\\"@codesweep-ai/ui/styles/core.css\\\";\\n  import \\\"@codesweep-ai/ui/styles/components/app-shell.css\\\";\\n  import \\\"@codesweep-ai/ui/styles/components/button.css\\\";\\n  import \\\"@codesweep-ai/ui/styles/components/card.css\\\";\\n  import \\\"@codesweep-ai/ui/styles/components/page.css\\\";\\n  ```\\n- Apply greeting colours using the design-system tokens (`--color-info`, `--color-success`, `--color-warning`, `--color-error`) via inline styles or CSS variables, not hard-coded hex values.\\n- The dev server must bind to `0.0.0.0` on port `5173`.\\n- Write a `.gitignore` containing at least `node_modules/` and `dist/` before your first commit so they are never committed.\\n- Write a `README.md` at the repository root naming the build command (`npm run build`) and the serve command (`npm run dev`).\\n- Do not install the optional peer dependencies (`mermaid`, `puppeteer`, `pixelmatch`, `pngjs`); this app needs none of them.\\n- Deliver everything in one commit on your own branch.\\n\\nReport back the branch you committed to and the two commands you documented.\\n\", \"filePath\": \"/tmp/dispatch-developer.md\"}","name":"write"},"id":"write_33","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789958907,"id":"chatcmpl-ebc1a671c79c4c0c834e8c5b6d2f648e","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
 
-data: {"id":"chatcmpl-ebc1a671c79c4c0c834e8c5b6d2f648e","object":"chat.completion.chunk","created":1789958907,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
 
-data: {"id":"chatcmpl-ebc1a671c79c4c0c834e8c5b6d2f648e","object":"chat.completion.chunk","created":1789958907,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":59127,"total_tokens":59673,"completion_tokens":546,"prompt_tokens_details":{"cached_tokens":58996},"completion_tokens_details":{"reasoning_tokens":55},"output_tokens_details":{"reasoning_tokens":55}}}
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{","name":"write"},"id":"call_74ce0f48ab0c41b497433466","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1793342820,"id":"chatcmpl-c22e4e83","model":"accounts/fireworks/models/kimi-k3","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"\"filePath\": \"/home/<USER:1>/hello-app/DESIGN.md"},"index":0}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1793342820,"id":"chatcmpl-c22e4e83","model":"accounts/fireworks/models/kimi-k3","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"\""},"index":0}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1793342820,"id":"chatcmpl-c22e4e83","model":"accounts/fireworks/models/kimi-k3","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":", \"content\": \"# Design — Colour Greeting\\n\\nA single page that shows a greeting and lets the viewer change the greeting's\\ncolour by clicking a button.\\n\\n## Building blocks (all from `@codesweep-ai/ui`)\\n\\n- `AppShell` — the outermost wrapper of the page.\\n- `Header` — placed inside `AppShell` at the top. Title: **Colour Greeting**.\\n  No nav items, no actions.\\n- `Footer` — placed inside `AppShell` at the bottom. One line of text:\\n  **Built with the codesweep design system**.\\n- `Button` — used for every colour button, `variant=\\\"secondary\\\"`, `size=\\\"md\\\"`.\\n- Colour tokens — every greeting colour is a `--color-*` token from the design\\n  system. No hex values anywhere in the application.\\n\\nNo other components. Nothing else from the catalog.\\n\\n## Greeting\\n\\nThe exact text **Hello, world!**, rendered as a single large heading (`h1`).\\nIts text colour is the currently selected token.\\n\\n## Colours\\n\\nThree choices, each a design-system token:\\n\\n| Button label | Token           |\\n| ------------ | --------------- |\\n| Blue         | `--color-cat-1` |\\n| Orange       | `--color-cat-6` |\\n| Violet       | `--color-cat-5` |\\n\\nOn first load the greeting uses **Blue** (`--color-cat-1`).\\n\\n## Layout\\n\\n- `Header` at the top, `Footer` at the bottom (both via `AppShell`).\\n- The content area between them holds the greeting heading, horizontally\\n  centred, with the three `Button`s in a row directly beneath it — also\\n  centred, with a small even gap between them. The greeting-plus-buttons group\\n  sits in the vertical middle of the content area.\\n\\n## Behaviour\\n\\n- Clicking a button immediately changes the greeting's colour to that button's\\n  token.\\n- State is held with `useState`. No persistence, no animation, no routing.\\n"},"index":0}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1793342820,"id":"chatcmpl-c22e4e83","model":"accounts/fireworks/models/kimi-k3","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"\""},"index":0}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1793342820,"id":"chatcmpl-c22e4e83","model":"accounts/fireworks/models/kimi-k3","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"}"},"index":0}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1793342820,"id":"chatcmpl-c22e4e83","model":"accounts/fireworks/models/kimi-k3","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","object":"chat.completion.chunk","created":1793342820,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-c22e4e83","choices":[],"created":1793342820,"model":"accounts/fireworks/models/kimi-k3","service_tier":null,"system_fingerprint":null,"object":"chat.completion.chunk","usage":{"prompt_tokens":31132,"completion_tokens":1510,"total_tokens":32642,"prompt_tokens_details":{"audio_tokens":null,"cached_tokens":30583},"completion_tokens_details":{"accepted_prediction_tokens":null,"audio_tokens":null,"reasoning_tokens":1025,"rejected_prediction_tokens":null}}}
 
 data: [DONE]
 

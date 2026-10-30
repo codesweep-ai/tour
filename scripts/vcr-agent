@@ -28,7 +28,7 @@ case "$mode" in
 esac
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cs="$root/scripts/cs"; work="$root/.work/vcr"
-model="${VCR_MODEL:-fireworks-ai/accounts/fireworks/models/kimi-k2p7-code}"
+model="${VCR_MODEL:-fireworks-ai/accounts/fireworks/models/kimi-k3}"
 task="${VCR_TASK:-Create a file called hello.txt that contains exactly the word hello. Then say done.}"
 
 if [ "$mode" = agent ]; then

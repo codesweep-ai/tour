@@ -15,7 +15,7 @@
 # CAMPAIGN_VERSION is the only version to choose. The cs-sandbox, cs-tracer, cs-vcr,
 # cs-lint and cs-ledger it needs are derived from that campaign's own go.mod on the
 # module proxy, so the chain cannot drift apart here. Set SANDBOX_VERSION to override.
-CAMPAIGN_VERSION ?= v0.0.0-20260921013337-3ac5613baf20
+CAMPAIGN_VERSION ?= v0.0.0-20261030054638-0d773dcbac69
 SANDBOX_VERSION  ?=
 TOOLSDIR         := $(abspath tools)
 CAMPAIGN_MOD     := https://proxy.golang.org/github.com/codesweep-ai/campaign/@v/$(CAMPAIGN_VERSION).mod
@@ -23,9 +23,9 @@ CAMPAIGN_MOD     := https://proxy.golang.org/github.com/codesweep-ai/campaign/@v
 # The opencode agent that step 4 drives. Another version sends another prompt, and the
 # cassette stops matching. Upstream publishes no checksum file, so the digests were
 # recorded from the release assets themselves, as the sandbox image does.
-OPENCODE_VERSION      := 1.18.31
-OPENCODE_SHA256_X64   := e9312be75ed803b7415fc2aeabda1f4fe938912a39673762dc0c38c0e11ebde4
-OPENCODE_SHA256_ARM64 := d4e332f46b227448582c0d9fc75f6f826dfe95c9f751bc2011fc4d937a042be6
+OPENCODE_VERSION      := 1.19.5
+OPENCODE_SHA256_X64   := 588310a336fa3b9df36b3f0225b26f679d453efaad0cf3d66c3651ef3ec1647a
+OPENCODE_SHA256_ARM64 := fae5be262d693b7c5e562856cc473e59e741772936db0c0600ac0d5ed5bd088b
 
 # CS runs one pinned tool and prints the command first. CSQ does the same in silence,
 # for the places where a recipe reads the output itself.
@@ -47,7 +47,7 @@ CAMPAIGN_WS   := $(WORKDIR)/$(CAMPAIGN_NAME)
 APP_REPO      := $(WORKDIR)/hello-app
 ARCHIVE       := $(WORKDIR)/archive
 REPORTS       := $(WORKDIR)/reports
-FW_MODEL      ?= fireworks-ai/accounts/fireworks/models/kimi-k2p7-code
+FW_MODEL      ?= fireworks-ai/accounts/fireworks/models/kimi-k3
 VM_PORT       ?= 5173
 FORWARD_PID   := $(WORKDIR)/forward.pid
 VIEW_PID      := $(WORKDIR)/view.pid
@@ -618,7 +618,7 @@ demo-dispatch-page:
 	@dir="$$(dirname "$$(find $(ARCHIVE) -name campaign.json -print -quit)")"; \
 	[ -n "$$dir" ] && [ "$$dir" != "." ] || { echo "no archive found. Run: make demo-archive" >&2; exit 1; }; \
 	mkdir -p $(REPORTS); \
-	$(CS) cs-dispatch-viewer "$$dir" -o $(REPORTS)/viewer.html || exit 1; \
+	$(CS) cs-dispatch-viewer "$$dir" --file $(REPORTS)/viewer.html || exit 1; \
 	echo "wrote $(REPORTS)/viewer.html"
 
 ### demo-trajectories: build a trajectory site per member, under one index

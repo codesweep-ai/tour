@@ -14,10 +14,10 @@
       "role": "user"
     }
   ],
-  "model": "accounts/fireworks/models/kimi-k2p7-code",
+  "model": "accounts/fireworks/models/kimi-k3",
+  "reasoning_effort": "low",
   "stream": true,
   "stream_options": {
     "include_usage": true
-  },
-  "temperature": 0.5
+  }
 }

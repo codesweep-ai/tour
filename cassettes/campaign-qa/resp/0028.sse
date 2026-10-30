@@ -1,12 +1,102 @@
-data: {"id":"chatcmpl-feed4b2b79de4644a6771598a5edb06b","object":"chat.completion.chunk","created":1789959521,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null,"raw_output":null}],"usage":null}
 
-data: {"choices":[{"delta":{"reasoning_content":"Need to declare button with let/const but the variable might conflict in loop. Actually it's inside the for loop so const is fine each iteration. But I'm using `const [button]` inside the loop. That should work. But to avoid redeclaration issues in block scope, it's fine. Let me run."},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959521,"id":"chatcmpl-feed4b2b79de4644a6771598a5edb06b","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+data: {"choices":[{"delta":{"reasoning_content":"The pkill matched its own process pattern maybe, or the shell wrapper got killed because the command line contained \"vite preview\" as a string. Let me try differently with a pattern that doesn't match itself."},"finish_reason":null,"index":0,"raw_output":null}],"created":1793343981,"id":"chatcmpl-35c98054","model":"accounts/fireworks/models/kimi-k3","object":"chat.completion.chunk","usage":null}
 
-data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{\"command\": \"node /tmp/verify.js\", \"workdir\": \"/tmp\", \"timeout\": 120000}","name":"bash"},"id":"bash_28","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1789959521,"id":"chatcmpl-feed4b2b79de4644a6771598a5edb06b","model":"accounts/fireworks/models/kimi-k2p7-code","object":"chat.completion.chunk","usage":null}
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
 
-data: {"id":"chatcmpl-feed4b2b79de4644a6771598a5edb06b","object":"chat.completion.chunk","created":1789959521,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
 
-data: {"id":"chatcmpl-feed4b2b79de4644a6771598a5edb06b","object":"chat.completion.chunk","created":1789959521,"model":"accounts/fireworks/models/kimi-k2p7-code","choices":[],"usage":{"prompt_tokens":17069,"total_tokens":17168,"completion_tokens":99,"prompt_tokens_details":{"cached_tokens":11237},"completion_tokens_details":{"reasoning_tokens":62},"output_tokens_details":{"reasoning_tokens":62}}}
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"{","name":"bash"},"id":"call_ca5157e526a841259984af9a","index":0,"type":"function"}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1793343981,"id":"chatcmpl-35c98054","model":"accounts/fireworks/models/kimi-k3","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"\"command\": \"pkill -f \\\"vite pre[v]iew\\\"; sleep 1; curl -s -o /dev/null -m 2 http://localhost:4173/ \u0026\u0026 echo \\\"STILL_UP\\\" || echo \\\"SERVE_STOPPED\\\""},"index":0}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1793343981,"id":"chatcmpl-35c98054","model":"accounts/fireworks/models/kimi-k3","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"\""},"index":0}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1793343981,"id":"chatcmpl-35c98054","model":"accounts/fireworks/models/kimi-k3","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"choices":[{"delta":{"tool_calls":[{"function":{"arguments":"}"},"index":0}]},"finish_reason":null,"index":0,"raw_output":null}],"created":1793343981,"id":"chatcmpl-35c98054","model":"accounts/fireworks/models/kimi-k3","object":"chat.completion.chunk","usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{"content":""},"finish_reason":null,"raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","object":"chat.completion.chunk","created":1793343981,"model":"accounts/fireworks/models/kimi-k3","choices":[{"index":0,"delta":{},"finish_reason":"tool_calls","raw_output":null}],"usage":null}
+
+data: {"id":"chatcmpl-35c98054","choices":[],"created":1793343981,"model":"accounts/fireworks/models/kimi-k3","service_tier":null,"system_fingerprint":null,"object":"chat.completion.chunk","usage":{"prompt_tokens":19438,"completion_tokens":137,"total_tokens":19575,"prompt_tokens_details":{"audio_tokens":null,"cached_tokens":0},"completion_tokens_details":{"accepted_prediction_tokens":null,"audio_tokens":null,"reasoning_tokens":41,"rejected_prediction_tokens":null}}}
 
 data: [DONE]
 
