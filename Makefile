@@ -130,11 +130,11 @@ setup: go-version tools
 
 ### go-version: refuse to start on a Go that cannot build the tools
 ##
-## The tools ask for Go 1.27.1, the version INSTALL.md names. An older go still builds
+## The tools ask for Go 1.27.3, the version INSTALL.md names. An older go still builds
 ## them when GOTOOLCHAIN lets it fetch that version, which is Go's default. Many
 ## distributions set GOTOOLCHAIN=local, and then the first `go install` fails with an
 ## error that does not say what to do.
-GO_MIN := 1.27.1
+GO_MIN := 1.27.3
 go-version:
 	@command -v go >/dev/null 2>&1 || { \
 	  echo "make setup needs Go $(GO_MIN), and go is not on the PATH. INSTALL.md, section 1, says how to install it." >&2; exit 1; }

@@ -47,7 +47,7 @@ a key for the Fireworks model service and about a dollar.
 
 You need these, and [INSTALL.md](INSTALL.md) says how to install them:
 
-- Go 1.27.1.
+- Go 1.27.3.
 - For steps 5 to 7, Linux with podman 5.0 or later and a writable `/dev/kvm`.
 
 Then run one command:
@@ -451,7 +451,7 @@ program that runs on your machine. None of them calls a hosted service. The only
 spent is what your own model provider charges, and only `cs-campaign` and a `cs-vcr`
 recording ever call one.
 
-Five of the tools install with `go install`, which needs Go 1.27.1 and puts each binary
+Five of the tools install with `go install`, which needs Go 1.27.3 and puts each binary
 in `$(go env GOPATH)/bin`. Put that directory on your `PATH`:
 
 ```bash
